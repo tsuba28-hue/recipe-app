@@ -1,0 +1,16 @@
+{
+  "name": "きょうのレシピ帖",
+  "short_name": "レシピ帖",
+  "description": "食べたいもの・体の目標・食材から探せるレシピアプリ",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F3F5F0",
+  "theme_color": "#2C5A43",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
