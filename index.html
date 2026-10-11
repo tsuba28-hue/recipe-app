@@ -49,11 +49,14 @@ img{max-width:100%} [hidden]{display:none!important}
   color-scheme:dark }
 
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:clip;max-width:100vw;-webkit-tap-highlight-color:transparent}
+button,a,select,input,label{touch-action:manipulation}
+input,select,textarea{font-size:16px!important}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.wrap{max-width:1120px;margin:0 auto;padding-inline:16px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));min-width:0}
 .linkish{border:0;background:none;color:var(--accent);font-weight:700;padding:0;font-size:inherit;text-decoration:underline}
 
 /* header + nav */
@@ -68,7 +71,7 @@ button{cursor:pointer}
 .nav .badge:empty{display:none}
 @media (max-width:719px){
   :root{--nav-h:64px}
-  .nav{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;gap:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  .nav{position:fixed;left:0;right:0;width:100%;bottom:0;z-index:40;margin:0;gap:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
   .nav button{flex-direction:column;gap:2px;font-size:.72rem;padding:6px 2px;border-radius:12px}
   .nav button svg{width:23px;height:23px}
   .nav button[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
@@ -77,18 +80,18 @@ button{cursor:pointer}
 }
 
 /* hero + search */
-.hero{padding-block:8px 14px;display:grid;gap:6px}
+.hero{padding-block:8px 14px;display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
 .hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.3;margin:0;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .hero p{margin:0;color:var(--muted);font-size:.95rem}
 .hero p b{font-variant-numeric:tabular-nums;color:var(--ink)}
 .searchbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent}
 .searchbar.stuck{border-bottom-color:var(--line)}
-.searchbar .wrap{padding-block:10px 8px;display:grid;gap:8px}
-.search{display:flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:5px 5px 5px 14px;box-shadow:var(--shadow)}
+.searchbar .wrap{padding-block:10px 8px;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.search{min-width:0;display:flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:5px 5px 5px 14px;box-shadow:var(--shadow)}
 .search:focus-within{border-color:var(--accent)}
 .search svg{flex:none;width:21px;height:21px;stroke:var(--muted)}
-.search input{flex:1;min-width:0;border:0;background:none;padding:10px 4px;font-size:1.02rem;outline:none}
+.search input{flex:1;min-width:0;width:100%;border:0;background:none;padding:10px 4px;font-size:1.02rem;outline:none}
 .search input::-webkit-search-cancel-button{display:none}
 .search .clear{border:0;background:var(--sunk);color:var(--muted);width:30px;height:30px;border-radius:50%;padding:0;font-size:1rem;line-height:1;flex:none}
 .search .go{border:0;background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:10px 18px;font-weight:700;white-space:nowrap}
@@ -283,6 +286,9 @@ footer p{max-width:65ch;margin:0}
 .aibar i{display:block;height:100%;width:40%;background:var(--accent);border-radius:99px;animation:aibar 1.4s ease-in-out infinite}
 @keyframes aibar{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
 .tag.reg{background:var(--warn-soft);color:var(--warn);font-weight:700}
+.ill{position:absolute;inset:0;width:100%;height:100%;display:block}
+.plate .mtag,.plate .fav{z-index:1}
+.slink{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-size:.72rem;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:1px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1292,6 +1298,110 @@ const TIPS_TXT4=`
 const REGION_EXTRA={'豚丼':'北海道','鮭のちゃんちゃん焼き':'北海道','石狩鍋':'北海道','冷麺':'岩手','手羽先の甘辛揚げ':'愛知','たこ焼き':'大阪','お好み焼き':'大阪','きつねうどん':'大阪','湯豆腐':'京都','汁なし担々麺':'広島','鯛めし':'愛媛','かつおのたたき':'高知','チキン南蛮':'宮崎','冷や汁':'宮崎','もつ鍋':'福岡','水炊き':'福岡','とんこつラーメン':'福岡','筑前煮':'福岡','ちゃんぽん':'長崎','皿うどん':'長崎','ゴーヤチャンプルー':'沖縄','タコライス':'沖縄','にんじんしりしり':'沖縄','ちゃんこ鍋':'東京'};
 const AREA_OF={北海道:'北海道',青森:'東北',岩手:'東北',宮城:'東北',秋田:'東北',山形:'東北',福島:'東北',東京:'関東',千葉:'関東',神奈川:'関東',埼玉:'関東',群馬:'関東',栃木:'関東',茨城:'関東',新潟:'中部',富山:'中部',石川:'中部',福井:'中部',山梨:'中部',長野:'中部',岐阜:'中部',静岡:'中部',愛知:'中部',三重:'近畿',滋賀:'近畿',京都:'近畿',大阪:'近畿',兵庫:'近畿',奈良:'近畿',和歌山:'近畿',鳥取:'中国・四国',島根:'中国・四国',岡山:'中国・四国',広島:'中国・四国',山口:'中国・四国',徳島:'中国・四国',香川:'中国・四国',愛媛:'中国・四国',高知:'中国・四国',福岡:'九州・沖縄',佐賀:'九州・沖縄',長崎:'九州・沖縄',熊本:'九州・沖縄',大分:'九州・沖縄',宮崎:'九州・沖縄',鹿児島:'九州・沖縄',沖縄:'九州・沖縄'};
 
+const DB_TXT5=`
+昆布|season|170,5.8,1.3,64.3,32.1,6.9|枚10
+にんにくチップ|season|129,6.4,0.9,27.5,6.2,0|
+粉山椒|season|375,10.3,6.2,69.6,0,0|
+ゆず果汁|fruit|21,0.5,0.1,7,0.4,0|tb15
+黒砂糖|season|352,1.7,0,90.3,0,0.1|tb9
+一味唐辛子|season|412,16.2,12,66.8,46.4,0|tb6
+タバスコ|season|21,1.3,0.8,1,0.6,1.8|tb15
+卵黄|egg|336,16.5,34.3,0.2,0,0.1|個17
+`;
+const CATALOG5=`
+焼肉のたれ|やきにくのたれ|和食|タレ・調味料|10|りんご:1/4個,玉ねぎ:1/8個|しょうゆ:100ml,砂糖:大さじ2,みりん:大さじ2,酒:大さじ2,にんにく:1片,しょうが:1かけ,ごま油:小さじ2,いりごま:大さじ1|りんご・玉ねぎ・にんにく・しょうがをすりおろす。^小鍋にしょうゆ・砂糖・みりん・酒を入れて煮立て、アルコールを飛ばす。^すりおろした材料を加えて弱火で3分煮る。^火を止めてごま油とごまを混ぜ、冷ます。冷蔵庫で1週間保存できる。|s=8 g=焼肉 a=焼き肉のたれ,焼肉のタレ
+照り焼きのたれ|てりやきのたれ|和食|タレ・調味料|5||しょうゆ:大さじ3,みりん:大さじ3,砂糖:大さじ1.5,酒:大さじ3|すべての材料を混ぜる。^肉や魚を焼いたあと、余分な脂をふいてから加える。^中火で煮詰め、とろみと照りが出たらからめる。|s=4 g=照 a=照り焼きソース
+生姜焼きのたれ|しょうがやきのたれ|和食|タレ・調味料|5|しょうが:2かけ,玉ねぎ:1/8個|しょうゆ:大さじ2,みりん:大さじ2,酒:大さじ1,砂糖:小さじ1|しょうがと玉ねぎをすりおろす。^すべての材料を混ぜる。^豚肉を焼いたら回し入れ、煮からめる。|s=2 g=生姜
+手作りポン酢|てづくりぽんず|和食|タレ・調味料|10|昆布:1枚,かつお節:5g|しょうゆ:100ml,ゆず果汁:50ml,レモン汁:大さじ2,みりん:大さじ2,酢:大さじ1|みりんを耐熱容器に入れ、レンジで30秒加熱してアルコールを飛ばす。^保存瓶にすべての材料を入れる。^冷蔵庫でひと晩おき、昆布とかつお節をこす。冷蔵で2週間保存できる。|s=10 g=酢 a=自家製ポン酢
+自家製めんつゆ|じかせいめんつゆ|和食|タレ・調味料|15|昆布:1枚,かつお節:20g|しょうゆ:200ml,みりん:200ml,砂糖:大さじ1,水:100ml|鍋にみりんを入れて煮立て、アルコールを飛ばす。^しょうゆ・砂糖・水・昆布を加え、沸騰直前に昆布を取り出す。^かつお節を加えて弱火で2分煮て、火を止めて冷ます。^こして保存瓶に入れる。3倍濃縮として使い、冷蔵で2週間保存できる。|s=16 g=麺 a=めんつゆ,麺つゆ,そばつゆ
+天つゆ|てんつゆ|和食|タレ・調味料|5|大根:100g|だし:200ml,しょうゆ:大さじ3,みりん:大さじ3|小鍋でみりんを煮立ててアルコールを飛ばす。^だしとしょうゆを加えてひと煮立ちさせる。^温かいうちに天ぷらに添え、大根おろしを入れて食べる。|s=4 g=天 a=天つゆ
+ごまだれ|ごまだれ|和食|タレ・調味料|5||練りごま:大さじ3,すりごま:大さじ1,しょうゆ:大さじ2,砂糖:大さじ1,酢:大さじ1,だし:大さじ3|練りごまにしょうゆを少しずつ加えて、なめらかになるまで混ぜる。^砂糖・酢・すりごまを加える。^だしでのばして好みのかたさにする。しゃぶしゃぶや冷しゃぶ、棒棒鶏に。|s=4 g=胡麻 a=胡麻だれ,ごまダレ
+甘酢あん|あまずあん|中華|タレ・調味料|5||水:100ml,酢:大さじ3,砂糖:大さじ3,ケチャップ:大さじ2,しょうゆ:大さじ1,片栗粉:小さじ2|すべての材料を小鍋に入れてよく混ぜる。^中火にかけ、混ぜながら煮立てる。^とろみがついたら1分煮て火を止める。酢豚、かに玉、天津飯に。|s=4 g=甘酢 a=甘酢,甘酢だれ
+南蛮酢|なんばんず|和食|タレ・調味料|5|赤唐辛子:1本|だし:100ml,酢:100ml,砂糖:大さじ3,しょうゆ:大さじ2|小鍋にすべての材料を入れ、ひと煮立ちさせる。^砂糖が溶けたら火を止める。^揚げたての魚や鶏肉を熱いうちに漬ける。|s=4 g=酢
+すき焼きの割り下|すきやきのわりした|和食|タレ・調味料|5||しょうゆ:100ml,みりん:100ml,酒:50ml,砂糖:大さじ3,水:50ml|小鍋にみりんと酒を入れて煮立て、アルコールを飛ばす。^しょうゆ・砂糖・水を加え、砂糖を溶かす。^冷まして使う。|s=4 g=鍋 a=割り下,割下
+田楽味噌|でんがくみそ|和食|タレ・調味料|10||味噌:大さじ3,砂糖:大さじ2,みりん:大さじ2,酒:大さじ1|小鍋にすべての材料を入れて弱火にかける。^焦がさないよう混ぜながら、つやが出てぽってりするまで3分ほど練る。^なす・こんにゃく・豆腐・ふろふき大根に。|s=6 g=味噌 a=甘味噌,練り味噌
+酢味噌|すみそ|和食|タレ・調味料|5||白味噌:大さじ3,砂糖:大さじ1,酢:大さじ1.5,からし:小さじ1/2|白味噌と砂糖をよく混ぜる。^酢を少しずつ加えてのばす。^からしを混ぜる。わけぎ、いか、たこのぬたに。|s=4 g=味噌 a=からし酢味噌
+三杯酢|さんばいず|和食|タレ・調味料|5||酢:大さじ3,砂糖:大さじ1,しょうゆ:小さじ1,塩:少々,だし:大さじ1|すべての材料を混ぜ、砂糖を溶かす。^酢の物や和え物に使う。^甘めが好みなら砂糖を足して甘酢にする。|s=4 g=酢 a=甘酢,合わせ酢
+すし酢|すしず|和食|タレ・調味料|5|昆布:1枚|酢:大さじ4,砂糖:大さじ2.5,塩:小さじ1.5|小鍋にすべての材料を入れ、弱火で砂糖と塩を溶かす（煮立てない）。^冷ます。^米2合分。炊きたてのご飯に回しかけ、切るように混ぜる。|s=4 g=寿 a=寿司酢,酢飯の素
+和風ドレッシング|わふうどれっしんぐ|和食|タレ・調味料|5|玉ねぎ:1/8個|しょうゆ:大さじ2,酢:大さじ2,サラダ油:大さじ2,ごま油:小さじ1,砂糖:小さじ1|玉ねぎをすりおろす。^すべての材料を瓶に入れてよく振る。^冷蔵で1週間保存できる。|s=6 g=菜 a=玉ねぎドレッシング,醤油ドレッシング
+中華ドレッシング|ちゅうかどれっしんぐ|中華|タレ・調味料|5||しょうゆ:大さじ2,酢:大さじ2,ごま油:大さじ2,砂糖:小さじ2,いりごま:小さじ1|すべての材料をよく混ぜる。^砂糖が溶けたらでき上がり。^春雨サラダや冷やし中華にも。|s=6 g=菜
+フレンチドレッシング|ふれんちどれっしんぐ|洋食|タレ・調味料|5||オリーブオイル:大さじ3,酢:大さじ1.5,粒マスタード:小さじ1,砂糖:小さじ1/2,塩:小さじ1/3,こしょう:少々|酢・塩・砂糖・マスタードを混ぜて塩を溶かす。^オリーブオイルを少しずつ加えながら混ぜ、白っぽく乳化させる。^使う直前によく混ぜる。|s=6 g=菜 a=ヴィネグレット,ビネグレット
+ごまドレッシング|ごまどれっしんぐ|和食|タレ・調味料|5||すりごま:大さじ3,マヨネーズ:大さじ3,しょうゆ:大さじ1,砂糖:大さじ1,酢:大さじ1|すべての材料を混ぜる。^かたければ水で少しのばす。^冷しゃぶ、大根サラダ、温野菜に。|s=6 g=胡麻 a=胡麻ドレッシング
+シーザードレッシング|しーざーどれっしんぐ|洋食|タレ・調味料|5||マヨネーズ:大さじ4,牛乳:大さじ2,粉チーズ:大さじ3,レモン汁:小さじ2,にんにく:少々,黒こしょう:少々|すべての材料をよく混ぜる。^牛乳の量で濃さを調整する。^ロメインレタスやベーコンに。|s=4 g=菜
+タルタルソース|たるたるそーす|洋食|タレ・調味料|15|卵:1個,玉ねぎ:1/8個|マヨネーズ:大さじ4,レモン汁:小さじ1,砂糖:小さじ1/2,塩・こしょう:少々|卵は11分ゆでてかたゆでにし、細かく刻む。^玉ねぎはみじん切りにして水にさらし、水気をしっかり絞る。^すべての材料を混ぜる。ピクルスを刻んで加えると本格的。|s=4 g=卵 a=タルタル
+オーロラソース|おーろらそーす|洋食|タレ・調味料|3||マヨネーズ:大さじ3,ケチャップ:大さじ2,レモン汁:少々|マヨネーズとケチャップを混ぜる。^レモン汁を少し加えるとさっぱりする。^エビフライ、サラダ、サンドイッチに。|s=4 g=ソ a=オーロラ
+ハンバーグソース|はんばーぐそーす|洋食|タレ・調味料|5||ケチャップ:大さじ3,中濃ソース:大さじ3,赤ワイン:大さじ2,バター:10g,砂糖:小さじ1|ハンバーグを焼いたあとの肉汁が残るフライパンを使う。^赤ワインを入れて煮立て、アルコールを飛ばす。^ケチャップ・ソース・砂糖を加えてとろりとするまで煮詰め、バターを溶かす。|s=2 g=ソ a=デミグラス風ソース
+ホワイトソース|ほわいとそーす|洋食|タレ・調味料|15||バター:30g,薄力粉:30g,牛乳:400ml,コンソメ:小さじ1,塩・こしょう:少々|鍋にバターを溶かし、薄力粉を加えて弱火で2分、焦がさないように炒める。^火を止めて冷たい牛乳を少し加えて混ぜ、なめらかになったら残りを少しずつ加える。^再び中火にかけ、混ぜながらとろみがつくまで煮る。^コンソメと塩こしょうで調える。グラタンやドリアに。|s=4 g=白 a=ベシャメルソース,ベシャメル
+トマトソース|とまとそーす|洋食|タレ・調味料|25|トマト缶:1缶,玉ねぎ:1/2個|オリーブオイル:大さじ2,にんにく:1片,塩:小さじ1/2,砂糖:小さじ1,バジル:3枚|オリーブオイルでみじん切りのにんにくを弱火で炒めて香りを出す。^みじん切りの玉ねぎを加えてしんなりするまで炒める。^トマト缶を加えてつぶし、弱めの中火で15分煮詰める。^塩・砂糖で調え、バジルを加える。パスタ、ピザ、煮込みに。|s=4 g=赤 a=トマトソース,ポモドーロソース
+バジルソース|ばじるそーす|洋食|タレ・調味料|10|バジル:40g|オリーブオイル:100ml,にんにく:1片,粉チーズ:大さじ3,塩:小さじ1/2,くるみ:20g|バジルの葉を洗って水気をしっかりふく。^すべての材料をミキサーかフードプロセッサーでなめらかにする。^瓶に入れ、表面をオリーブオイルで覆って冷蔵する。パスタやカプレーゼに。|s=6 g=緑 a=ジェノベーゼソース,ペスト
+手作りマヨネーズ|てづくりまよねーず|洋食|タレ・調味料|10|卵黄:1個|酢:大さじ1,塩:小さじ1/3,粒マスタード:小さじ1/2,サラダ油:150ml|卵黄・酢・塩・マスタードをボウルでよく混ぜる。^サラダ油を最初は数滴ずつ、泡立て器で混ぜながら加える。^とろみがついてきたら細く糸のように加え、もったりするまで混ぜる。^冷蔵で3日を目安に食べきる。|s=10 g=卵 a=マヨネーズ
+とんかつソース|とんかつそーす|洋食|タレ・調味料|5|りんご:1/8個|ケチャップ:大さじ3,中濃ソース:大さじ3,砂糖:小さじ2,しょうゆ:小さじ1|りんごをすりおろす。^すべての材料を小鍋に入れて弱火で煮立てる。^とろりとするまで2分煮る。とんかつ、コロッケ、メンチカツに。|s=4 g=ソ a=中濃ソース,ウスターソース
+お好み焼きソース|おこのみやきそーす|和食|タレ・調味料|5||ケチャップ:大さじ2,中濃ソース:大さじ3,砂糖:小さじ2,しょうゆ:小さじ1,はちみつ:小さじ1|すべての材料を混ぜる。^レンジで20秒温めると、砂糖がよく溶けてとろみが出る。^お好み焼き、たこ焼き、焼きそばに。|s=4 g=ソ a=たこ焼きソース
+ねぎ塩だれ|ねぎしおだれ|中華|タレ・調味料|5|長ねぎ:1/2本|ごま油:大さじ3,鶏がらスープの素:小さじ1,塩:小さじ1/4,レモン汁:小さじ2,にんにく:少々,黒こしょう:少々|長ねぎは細かいみじん切りにする。^すべての材料をよく混ぜる。^10分おくとねぎがしんなりして味がなじむ。焼き肉、焼き鳥、冷奴に。|s=4 g=葱 a=ネギ塩だれ,ねぎ塩
+よだれ鶏のたれ|よだれどりのたれ|中華|タレ・調味料|5|小ねぎ:適量|しょうゆ:大さじ2,黒酢:大さじ1,砂糖:小さじ2,ラー油:大さじ1,にんにく:1片,しょうが:1かけ,いりごま:小さじ2,粉山椒:少々|にんにくとしょうがをすりおろす。^すべての材料を混ぜる。^ゆで鶏や冷奴、ゆで野菜にかける。|s=4 g=辣 spicy
+油淋鶏のたれ|ゆーりんちーのたれ|中華|タレ・調味料|5|長ねぎ:1/3本|しょうゆ:大さじ2,酢:大さじ1.5,砂糖:大さじ1,ごま油:小さじ1,しょうが:1かけ|長ねぎとしょうがをみじん切りにする。^調味料を混ぜて砂糖を溶かし、ねぎとしょうがを加える。^揚げたての鶏肉にたっぷりかける。|s=2 g=葱
+チリソース|ちりそーす|中華|タレ・調味料|10|長ねぎ:1/4本|サラダ油:小さじ2,にんにく:1片,しょうが:1かけ,豆板醤:小さじ1,ケチャップ:大さじ3,鶏がらスープの素:小さじ1/2,水:100ml,砂糖:小さじ2,片栗粉:小さじ1|油でみじん切りのにんにく・しょうが・豆板醤を弱火で炒める。^ケチャップを加えて炒め、水・鶏がらスープの素・砂糖を加えて煮立てる。^水溶き片栗粉でとろみをつけ、みじん切りのねぎを加える。エビチリに。|s=2 g=辣 a=エビチリソース spicy
+食べるラー油|たべるらーゆ|中華|タレ・調味料|20|にんにくチップ:20g,長ねぎ:1/3本|ごま油:100ml,にんにく:2片,しょうが:1かけ,一味唐辛子:大さじ1,砂糖:小さじ2,しょうゆ:小さじ2,いりごま:大さじ2|にんにく・しょうが・ねぎをみじん切りにする。^ごま油と一緒に小鍋に入れ、弱火で10分、薄く色づくまで加熱する。^火を止めて一味唐辛子・砂糖・しょうゆを加え、冷めたら砕いたにんにくチップとごまを混ぜる。^ご飯、冷奴、餃子に。|s=10 g=辣 spicy
+にんにく醤油|にんにくじょうゆ|和食|タレ・調味料|5||にんにく:5片,しょうゆ:150ml|にんにくは皮をむいて縦半分に切り、芽を取る。^清潔な瓶に入れてしょうゆを注ぐ。^冷蔵庫で1週間おくと香りが移る。チャーハン、ステーキ、炒め物に。|s=10 g=蒜 a=にんにくしょうゆ
+肉みそ|にくみそ|和食|タレ・調味料|15|豚ひき肉:200g,長ねぎ:1/3本|ごま油:小さじ2,しょうが:1かけ,味噌:大さじ3,砂糖:大さじ2,酒:大さじ2,しょうゆ:小さじ1|ごま油でみじん切りのしょうがとねぎを炒め、ひき肉をポロポロに炒める。^味噌・砂糖・酒・しょうゆを混ぜて加える。^汁気がなくなるまで炒め煮にする。^ご飯、うどん、レタス包み、冷奴に。冷蔵で5日保存できる。|s=6 g=肉 a=肉味噌,そぼろ味噌
+甘辛みたらしだれ|あまからみたらしだれ|和食|タレ・調味料|5||しょうゆ:大さじ2,砂糖:大さじ3,みりん:大さじ1,水:100ml,片栗粉:大さじ1|すべての材料を小鍋に入れてよく混ぜる。^中火にかけ、混ぜながら煮立てる。^透明になってとろみがついたら火を止める。団子、焼き餅、肉団子に。|s=4 g=甘 a=みたらしのたれ,みたらしあん
+ヤンニョムだれ|やんにょむだれ|韓国|タレ・調味料|5||コチュジャン:大さじ2,ケチャップ:大さじ2,はちみつ:大さじ1,しょうゆ:小さじ2,にんにく:1片,ごま油:小さじ1,いりごま:小さじ1|にんにくをすりおろす。^すべての材料を混ぜる。^フライパンで温めて、揚げた鶏肉にからめる。|s=3 g=辣 a=ヤンニョムソース spicy
+サルサソース|さるさそーす|洋食|タレ・調味料|10|トマト:1個,玉ねぎ:1/4個,パクチー:適量|レモン汁:大さじ1,オリーブオイル:小さじ2,塩:小さじ1/3,タバスコ:少々|トマトは1cm角、玉ねぎはみじん切りにして水にさらし、水気を絞る。^パクチーを刻む。^すべての材料を混ぜ、10分なじませる。タコス、ナチョス、焼いた肉に。|s=4 g=赤 a=サルサ fresh
+ヨーグルトソース|よーぐるとそーす|エスニック|タレ・調味料|10|きゅうり:1/2本|ヨーグルト:150g,にんにく:少々,レモン汁:小さじ2,オリーブオイル:小さじ2,塩:小さじ1/4|きゅうりをすりおろして水気をしっかり絞る。^すべての材料を混ぜる。^ケバブ、焼いた肉、野菜スティックに。|s=4 g=白 a=ツァジキ,ザジキ fresh
+黒みつ|くろみつ|和食|タレ・調味料|10||黒砂糖:100g,水:100ml|小鍋に黒砂糖と水を入れて中火にかける。^混ぜながら砂糖を溶かし、アクを取る。^弱火で5分、とろりとするまで煮詰めて冷ます。わらび餅、あんみつ、きな粉もちに。|s=8 g=蜜 sweet
+カラメルソース|からめるそーす|洋食|タレ・調味料|10||砂糖:60g,水:大さじ2,湯:大さじ3|小鍋に砂糖と水を入れ、混ぜずに中火にかける。^ふちから色づいてきたら鍋をゆすり、全体が濃い茶色になるまで加熱する。^火を止めて湯を加え（はねるので注意）、ゆすってなじませる。プリンやアイスに。|s=6 g=蜜 a=キャラメルソース sweet
+カスタードクリーム|かすたーどくりーむ|洋食|タレ・調味料|15|卵黄:3個|砂糖:60g,薄力粉:25g,牛乳:300ml,バター:10g,バニラエッセンス:少々|ボウルに卵黄と砂糖をすり混ぜ、薄力粉を加えて混ぜる。^温めた牛乳を少しずつ加えて混ぜ、こしながら鍋に戻す。^中火で絶えず混ぜ、ふつふつしてからさらに1分、つやが出るまで炊く。^火を止めてバターとバニラを加え、ラップを密着させて冷やす。|s=6 g=黄 a=カスタード sweet
+いちごジャム|いちごじゃむ|洋食|タレ・調味料|40|いちご:300g|砂糖:150g,レモン汁:大さじ1|いちごはへたを取り、砂糖をまぶして1時間おき、水分を出す。^鍋に入れて中火にかけ、アクを取りながら15分煮る。^レモン汁を加え、とろみがつくまで10分煮詰める。^熱いうちに煮沸した瓶に詰める。|s=15 g=苺 a=ジャム 春 sweet
+チョコレートソース|ちょこれーとそーす|洋食|タレ・調味料|5|チョコレート:50g|生クリーム:50ml,牛乳:大さじ1|チョコを細かく刻む。^生クリームと牛乳を沸騰直前まで温める。^チョコを加えてなめらかになるまで混ぜる。パフェ、アイス、パンケーキに。|s=4 g=甘 a=チョコソース sweet
+`;
+const TIPS_TXT5=`
+焼肉のたれ|りんごと玉ねぎのすりおろしで、肉がやわらかくなりフルーティーな甘みが出ます。^作ってから1日おくと、味がなじんでまろやかになります。
+照り焼きのたれ|しょうゆ・みりん・酒が1:1:1の黄金比。砂糖で甘さを調整します。^たれは最後に入れて煮詰めると、焦げずにきれいな照りが出ます。
+生姜焼きのたれ|しょうがは半量を焼く前に、残りを仕上げに加えると香りが立ちます。^すりおろし玉ねぎを入れると、肉がやわらかくなります。
+手作りポン酢|ゆずやすだちなど、柑橘を変えると香りの違いを楽しめます。^ひと晩おくと昆布とかつお節のうまみがしっかり出ます。
+自家製めんつゆ|ざるそばは1:3、かけうどんは1:8〜10の割合で水で薄めます。^かつお節は煮立てすぎると雑味が出るので、弱火で短時間にします。
+天つゆ|だし4:しょうゆ1:みりん1が基本の割合です。^大根おろしを入れると、天ぷらの油っぽさがやわらぎます。
+ごまだれ|練りごまにしょうゆを少しずつ加えると、分離せずなめらかになります。^ラー油を加えると担々風になります。
+甘酢あん|片栗粉は最初にほかの材料とよく混ぜておくと、ダマになりません。^とろみがついてから1分煮ると、とろみが長持ちします。
+南蛮酢|揚げたての熱いうちに漬けると、味がしっかりしみ込みます。^薄切りの玉ねぎやにんじんを一緒に漬けると、彩りも栄養もアップします。
+すき焼きの割り下|しょうゆ・みりんが1:1で、甘めが好みなら砂糖を足します。^煮詰まってきたら、水や酒で薄めながら調整します。
+田楽味噌|弱火でじっくり練ると、つやのある仕上がりになります。^白味噌で作ると上品な甘さになります。
+酢味噌|白味噌を使うと甘くまろやかになります。^からしは好みで量を調整します。
+三杯酢|酢・しょうゆ・みりん（砂糖）を合わせる基本の合わせ酢です。^だしを加えると、酸味がやわらぎます。
+すし酢|煮立てると酢の香りが飛ぶので、溶かす程度に温めます。^ご飯が熱いうちに合わせると、味がよくしみます。
+和風ドレッシング|すりおろし玉ねぎで、甘みととろみが出ます。^使う前によく振って混ぜます。
+中華ドレッシング|ごま油はいりごまを加えると香ばしさが増します。^冷蔵庫で冷やしておくとおいしいです。
+フレンチドレッシング|オイルを少しずつ加えると、分離せずなめらかに仕上がります。^マスタードが乳化を助けてくれます。
+ごまドレッシング|すりごまはいりたてをすると、香りが格段によくなります。^マヨネーズを入れると、まろやかで分離しにくくなります。
+シーザードレッシング|粉チーズはたっぷり入れるとコクが出ます。^アンチョビを少し加えると本格的な味になります。
+タルタルソース|玉ねぎの水気をしっかり絞ると、水っぽくなりません。^ゆで卵は粗めに刻むと、食感が楽しめます。
+オーロラソース|マヨネーズとケチャップは2:1が基本です。^ウスターソースを少し足すとコクが出ます。
+ハンバーグソース|肉汁の残ったフライパンで作ると、うまみがたっぷりのソースになります。^赤ワインはしっかり煮立ててアルコールを飛ばします。
+ホワイトソース|牛乳は冷たいものを少しずつ加えると、ダマになりにくいです。^バターと粉は焦がさないよう弱火で炒めます。
+トマトソース|にんにくは冷たい油から弱火で炒めると、香りがよく移ります。^煮詰めることで酸味が飛び、甘みが出ます。
+バジルソース|バジルは水気をしっかりふくと、色が悪くなりにくいです。^冷凍保存もできます。製氷皿で小分けにすると便利です。
+手作りマヨネーズ|材料はすべて室温にしておくと、分離しにくくなります。^油は最初ほんの少しずつ。乳化が始まったら加える量を増やします。
+とんかつソース|すりおろしりんごで、フルーティーなコクが出ます。^少し煮詰めるととろみがつきます。
+お好み焼きソース|はちみつを加えると、とろみと照りが出ます。^甘さは砂糖の量で調整します。
+ねぎ塩だれ|ねぎは細かく刻むほど、香りと辛みがよく出ます。^レモン汁でさっぱりと仕上げます。
+よだれ鶏のたれ|黒酢を使うと、まろやかなコクが出ます。^粉山椒（花椒）でしびれる辛さを加えると本格的です。
+油淋鶏のたれ|ねぎはたっぷり入れます。^揚げたてにかけると、ジュッと香りが立ちます。
+チリソース|豆板醤は油で炒めて香りを出します。^溶き卵を加えると、まろやかになります。
+食べるラー油|にんにくは焦げると苦くなるので、弱火でじっくり加熱します。^一味は火を止めてから加えると、焦げずに色よく仕上がります。
+にんにく醤油|にんにくの芽を取ると、えぐみが出ません。^しょうゆが減ったら継ぎ足して使えます。
+肉みそ|汁気がなくなるまで炒め煮にすると、日持ちします。^甜麺醤や豆板醤を加えると、中華風になります。
+甘辛みたらしだれ|片栗粉は最初によく混ぜておくと、ダマになりません。^透明になってから1分煮ると、とろみが安定します。
+ヤンニョムだれ|はちみつの量で甘さを調整します。^フライパンで温めてからからめると、よくなじみます。
+サルサソース|玉ねぎを水にさらすと、辛みがやわらぎます。^タバスコや青唐辛子で辛さを足します。
+ヨーグルトソース|きゅうりの水気をしっかり絞ると、水っぽくなりません。^水切りヨーグルトを使うと、さらに濃厚になります。
+黒みつ|沖縄の黒糖を使うと、風味が豊かになります。^煮詰めすぎると固まるので、少しゆるい状態で火を止めます。
+カラメルソース|砂糖を溶かす間は混ぜず、鍋をゆすって色をそろえます。^湯を加えるときは、はねるので鍋から顔を離します。
+カスタードクリーム|ふつふつしてからさらに1分炊くと、粉っぽさが消えてなめらかになります。^ラップを密着させると、表面に膜が張りません。
+いちごジャム|砂糖をまぶして水分を出してから煮ると、短時間で仕上がります。^レモン汁で色鮮やかになり、とろみもつきます。
+チョコレートソース|チョコは細かく刻むと、早く溶けます。^冷めると固まるので、使う前に温めます。
+`;
+const SAUCE_LINK={'ポン酢しょうゆ':'手作りポン酢','めんつゆ':'自家製めんつゆ','マヨネーズ':'手作りマヨネーズ','お好み焼きソース':'お好み焼きソース','中濃ソース':'とんかつソース','すし酢':'すし酢','黒みつ':'黒みつ','練りごま':'ごまだれ'};
+
 const TIPS_TXT=`
 天津飯|卵はごま油をしっかり熱してから一気に流し、ふちが固まったら大きく混ぜると、ふわふわに仕上がります。^甘酢あんは片栗粉を入れたら30秒以上ふつふつ煮ると、とろみが長持ちします。
 親子丼|鶏肉は煮すぎるとかたくなるので、5分で火を止める気持ちで。^卵は混ぜすぎず白身が残る程度にして2回に分けて入れると、とろとろの部分と固まった部分ができておいしくなります。
@@ -1705,6 +1815,421 @@ BBQスペアリブ|漬け込み時間は長いほど、味がしみます。^途
 焼き芋|低温でじっくり焼くと、甘くなります。^ねっとり系のさつまいもを使います。
 `;
 
+/* ===================== 料理イラスト（SVG） ===================== */
+const IL=(()=>{
+const mkR=seed=>{let a=(seed*2654435761)>>>0||1;return()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};};
+const f=n=>Math.round(n*10)/10;
+const E=(cx,cy,rx,ry,fill,x='')=>`<ellipse cx="${f(cx)}" cy="${f(cy)}" rx="${f(rx)}" ry="${f(ry)}" fill="${fill}"${x}/>`;
+const C=(cx,cy,r,fill,x='')=>`<circle cx="${f(cx)}" cy="${f(cy)}" r="${f(r)}" fill="${fill}"${x}/>`;
+const P=(d,fill,x='')=>`<path d="${d}" fill="${fill}"${x}/>`;
+const Rc=(x,y,w,h,r,fill,ex='')=>`<rect x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}" rx="${f(r)}" fill="${fill}"${ex}/>`;
+const G=(x,y,a,inner)=>`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(a)})">${inner}</g>`;
+const SK=' stroke="rgba(60,40,20,.18)" stroke-width="0.8"';
+const HL=(s)=>E(-s*.28,-s*.28,s*.32,s*.18,'#fff',' opacity=".35"');
+const K={plate:'#FCFBF7',rim:'#E4DFD3',shadow:'rgba(50,35,20,.16)',rice:'#FBF8EF',riceS:'#E9E2D0',lacquer:'#3A2622',lacIn:'#8E2B22',bowlW:'#F8F5EE',band:'#3E5C8A',wood:'#C79A62',woodD:'#A87A45',cab:'#D6E8A8',cabD:'#B9D27F',green:'#5E9E4A',greenD:'#3E7D3A',negi:'#8FC46A',nori:'#24301F',egg:'#F6C33B',eggW:'#FFFDF5',golden:'#D99A45',goldenD:'#B9772F',crumb:'#E9B865',lemon:'#F2D54A',red:'#D9442E',mayo:'#FFF6DA',steam:'rgba(120,105,90,.32)'};
+const PCOL={chicken:'#E7C394',liver:'#7A3A2A',pork:'#DDA98C',beef:'#8B4A33',ground:'#94573A',salmon:'#F2956B',bluefish:'#B79E86',whitefish:'#F3E9DA',tuna:'#C8323A',shrimp:'#F27A50',squid:'#F4ECDF',octopus:'#C9584A',shell:'#E6CFA8',eel:'#7A4520',tofu:'#F7F3E6',age:'#D9A04F',egg:'#F6C33B',tuna2:'#E3D2B8',beans:'#E0C27A',kani:'#E8604A',tarako:'#F08A8A'};
+function pkind(n){ if(!n) return null;
+  if(/鶏|ささみ|手羽|チキン|砂肝/.test(n)) return 'chicken'; if(/レバー/.test(n)) return 'liver';
+  if(/ひき肉/.test(n)) return 'ground'; if(/豚|ベーコン|ハム|ウインナー|焼き豚|スペアリブ|ランチョン/.test(n)) return 'pork';
+  if(/牛|ラム|タン|すじ|もつ/.test(n)) return 'beef'; if(/鮭|サーモン/.test(n)) return 'salmon';
+  if(/さば|あじ|いわし|さんま|ぶり|かつお|にしん/.test(n)) return 'bluefish'; if(/たら|鯛|かれい/.test(n)) return 'whitefish';
+  if(/まぐろ/.test(n)) return 'tuna'; if(/えび|シーフード/.test(n)) return 'shrimp'; if(/いか/.test(n)) return 'squid'; if(/たこ/.test(n)) return 'octopus';
+  if(/あさり|牡蠣|ほたて/.test(n)) return 'shell'; if(/うなぎ/.test(n)) return 'eel'; if(/豆腐/.test(n)) return 'tofu'; if(/厚揚げ|油揚げ/.test(n)) return 'age';
+  if(/^卵|卵黄/.test(n)) return 'egg'; if(/ツナ/.test(n)) return 'tuna2'; if(/大豆|納豆|ひよこ豆|レンズ豆/.test(n)) return 'beans'; if(/かに/.test(n)) return 'kani'; if(/たらこ/.test(n)) return 'tarako';
+  return null; }
+function sauceColor(r){
+  const n=r.name, fl=r.fls||new Set();
+  if(/ブラック/.test(n)) return '#3B2617';
+  if(/グリーンカレー|ジェノベーゼ|バジル|ほうれん草カレー/.test(n)) return '#8DA44A';
+  if(/バターチキン|マッサマン/.test(n)) return '#D9822F';
+  if(/カレー|ハヤシ|ストロガノフ|ハッシュド|ビーフシチュー|デミ|赤ワイン/.test(n)) return /ハヤシ|ビーフ|ストロガノフ|ハッシュド|デミ|赤ワイン/.test(n)?'#6E3320':'#B8661F';
+  if(/キムチ|チゲ|コチュ|担々|台湾|火鍋|ユッケジャン|スンドゥブ|トッポッキ|麻婆|チリ|辛|ヤンニョム|タッカルビ/.test(n)||fl.has('gochu')) return '#D2492C';
+  if(/トマト|ナポリタン|ミート|アラビアータ|ペスカトーレ|ボルシチ|ラタトゥイユ|ガスパチョ|チキンライス|オムライス|ケチャップ|ポークチャップ|ピザ|トルコ/.test(n)||fl.has('tomato')) return '#C9412A';
+  if(/クリーム|ホワイト|カルボナーラ|シチュー|グラタン|ドリア|チャウダー|とんこつ|豆乳|ポタージュ|フォンデュ|シュクメルリ|チーズ/.test(n)||fl.has('cream')) return '#F1E4C8';
+  if(/味噌|みそ|豚汁|粕汁|ほうとう|ちゃんちゃん|石狩|どて/.test(n)||fl.has('miso')) return '#B5773A';
+  if(/塩|水炊き|参鶏湯|フォー|鶏飯|ちゃんぽん|皿うどん|白湯|ポトフ|中華粥|タッカンマリ/.test(n)||fl.has('shiolemon')) return '#EFDDAE';
+  if(fl.has('curry')) return '#C4782A'; if(fl.has('goma')) return '#D7B98C'; if(fl.has('ethnic')) return '#E2BC74'; if(fl.has('oyster')) return '#6E4128';
+  if(/醤油|しょうゆ|ラーメン|そば|うどん|つゆ|すき焼き|すまし|お吸い|肉じゃが|筑前|煮/.test(n)) return '#B9783A';
+  if(fl.has('amakara')||fl.has('butter')||fl.has('wa')) return '#9C5A26';
+  if(fl.has('ponzu')) return '#C08A50'; if(fl.has('garlic')) return '#E9D29A';
+  return '#B57A3E'; }
+function parts(r){
+  const ings=r.ings||[];
+  const prot=[]; const veg=[];
+  for(const n of ings){ const k=pkind(n); if(k&&!prot.includes(k)) prot.push(k); else { const e=dbGet(n); if(e&&e.col&&!veg.includes(e.col)) veg.push(e.col); } }
+  if(!veg.length) veg.push(K.green);
+  return {prot,veg,pc:prot.length?PCOL[prot[0]]:'#C98A5A',pc2:prot[1]?PCOL[prot[1]]:null};
+}
+/* ---- 器 ---- */
+const shadow=(cx,cy,rx,ry)=>E(cx,cy,rx,ry,K.shadow);
+function plate(cx=100,cy=80,rx=74,ry=44){ return shadow(cx,cy+6,rx*.96,ry*.9)+E(cx,cy,rx,ry,K.plate,SK)+E(cx,cy,rx*.8,ry*.78,'none',' stroke="'+K.rim+'" stroke-width="1.6"'); }
+function ovalPlate(){ return shadow(100,88,80,38)+E(100,82,82,40,K.plate,SK)+E(100,82,70,32,'none',' stroke="'+K.rim+'" stroke-width="1.6"'); }
+function bowl(type,cx=100,top=70,w=62,depth=48){
+  const body=type==='lac'?K.lacquer:type==='blue'?K.bowlW:K.bowlW;
+  let s=shadow(cx,top+depth-2,w*.8,10);
+  s+=P(`M${cx-w} ${top} Q${cx-w+4} ${top+depth} ${cx} ${top+depth+2} Q${cx+w-4} ${top+depth} ${cx+w} ${top} Z`,body,SK);
+  if(type==='blue') s+=P(`M${cx-w+3} ${top+12} Q${cx} ${top+20} ${cx+w-3} ${top+12} L${cx+w-5} ${top+17} Q${cx} ${top+25} ${cx-w+5} ${top+17}Z`,K.band,' opacity=".85"');
+  if(type==='lac') s+=P(`M${cx-w+6} ${top+8} Q${cx-w+12} ${top+30} ${cx-w+24} ${top+38}`,'none',' stroke="rgba(255,255,255,.18)" stroke-width="3" stroke-linecap="round"');
+  s+=E(cx,top,w,w*.3,type==='lac'?K.lacIn:'#EFEAE0',SK);
+  return s; }
+const inner=(cx,top,w)=>({cx,cy:top+1,rx:w*.9,ry:w*.26});
+function steam(cx,top){ let s=''; for(const dx of [-16,0,16]) s+=P(`M${cx+dx} ${top-8} q-5 -7 0 -14 q5 -7 0 -14`,'none',` stroke="${K.steam}" stroke-width="3" stroke-linecap="round"`); return s; }
+/* ---- パーツ ---- */
+const chunk=(x,y,s,c,a)=>G(x,y,a,E(0,0,s,s*.72,c,SK)+HL(s));
+const cube=(x,y,s,c,a)=>G(x,y,a,Rc(-s,-s*.8,s*2,s*1.6,s*.35,c,SK)+Rc(-s*.7,-s*.6,s*.9,s*.35,s*.2,'#fff',' opacity=".35"'));
+const leaf=(x,y,s,c,a)=>G(x,y,a,P(`M${-s} 0 Q${-s*.2} ${-s*.75} ${s} 0 Q${-s*.2} ${s*.75} ${-s} 0Z`,c,SK)+P(`M${-s*.8} 0 L${s*.8} 0`,'none',' stroke="rgba(255,255,255,.4)" stroke-width="0.8"'));
+const strip=(x,y,w,h,c,a)=>G(x,y,a,Rc(-w/2,-h/2,w,h,h*.45,c,SK));
+const ring=(x,y,s,c)=>C(x,y,s,'#F4F7E6',` stroke="${c}" stroke-width="${f(s*.45)}"`);
+function pieceFor(kind,x,y,s,R){
+  const a=R()*360, c=PCOL[kind]||'#C98A5A';
+  switch(kind){
+    case 'egg': return E(x,y,s*1.2,s*.8,K.eggW,SK)+C(x+s*.1,y,s*.5,K.egg);
+    case 'tofu': case 'age': return cube(x,y,s*.8,c,a*.1);
+    case 'shrimp': return G(x,y,a,P(`M${-s} 0 A${s} ${s} 0 0 1 ${s} 0 L${s*.6} 0 A${s*.6} ${s*.6} 0 0 0 ${-s*.6} 0Z`,c,SK)+P(`M${-s*.3} ${-s*.75} L${-s*.2} ${-s*.4} M${s*.25} ${-s*.75} L${s*.18} ${-s*.4}`,'none',' stroke="#fff" stroke-width="1" opacity=".7"'));
+    case 'shell': return G(x,y,a,P(`M${-s} 0 Q0 ${-s*1.3} ${s} 0 Q0 ${s*.5} ${-s} 0Z`,'#5A4A3E',SK)+E(0,-s*.1,s*.6,s*.32,c));
+    case 'squid': return ring(x,y,s*.75,'#F7E9D6');
+    case 'beef': case 'pork': case 'liver': return strip(x,y,s*2.2,s*.9,c,a);
+    case 'ground': return C(x,y,s*.45,c,SK)+C(x+s*.6,y+s*.2,s*.35,c)+C(x-s*.5,y+s*.3,s*.3,c);
+    case 'beans': return C(x,y,s*.45,c,SK)+C(x+s*.7,y+s*.1,s*.45,c,SK);
+    default: return chunk(x,y,s,c,a);
+  } }
+function vegPiece(c,x,y,s,R){ const a=R()*360; const t=R(); return t<.4?leaf(x,y,s*1.1,c,a):t<.75?chunk(x,y,s*.75,c,a):strip(x,y,s*1.8,s*.6,c,a); }
+function scatter(R,n,cx,cy,rx,ry){ const pts=[]; for(let i=0;i<n;i++){ const t=R()*Math.PI*2, d=Math.sqrt(R())*.92; pts.push([cx+Math.cos(t)*rx*d,cy+Math.sin(t)*ry*d]); } return pts.sort((a,b)=>a[1]-b[1]); }
+function mixed(r,R,cx,cy,rx,ry,n=10,s=7){ const pp=parts(r); let out=''; scatter(R,n,cx,cy,rx,ry).forEach(([x,y],i)=>{ const pk=pp.prot.length&&(i%2===0)?pp.prot[(i/2|0)%pp.prot.length]:null; out+=pk?pieceFor(pk,x,y,s,R):vegPiece(pp.veg[i%pp.veg.length],x,y,s,R); }); return out; }
+function negiDots(R,cx,cy,rx,ry,n=8){ let o=''; scatter(R,n,cx,cy,rx,ry).forEach(([x,y])=>o+=ring(x,y,2.2,K.negi)); return o; }
+function sesame(R,cx,cy,rx,ry,n=10,c='#FFF8E8'){ let o=''; scatter(R,n,cx,cy,rx,ry).forEach(([x,y])=>o+=E(x,y,1.2,.7,c)); return o; }
+function cabbage(R,cx,cy,w,h){ let o=E(cx,cy,w,h,K.cab); for(let i=0;i<14;i++){ const x=cx-w+R()*w*2, y=cy-h*.6+R()*h*1.2; o+=P(`M${f(x)} ${f(y)} q${f(6+R()*6)} ${f(-3+R()*6)} ${f(14+R()*6)} ${f(-1+R()*2)}`,'none',` stroke="${R()<.5?K.cabD:'#EEF5D4'}" stroke-width="1.4" stroke-linecap="round"`); } return o; }
+function lemon(x,y){ return G(x,y,-20,P('M-9 0 A9 9 0 0 1 9 0Z',K.lemon,SK)+P('M-6.5 -.5 A6.5 6.5 0 0 1 6.5 -.5Z','#FBEFA0')); }
+function cutletSlices(R,cx,cy,n=5,w=13,h=30,c=K.golden){ let o=''; for(let i=0;i<n;i++){ const x=cx-(n-1)*w*.5+i*w; o+=G(x,cy+(i%2)*1.5,-8,Rc(-w/2,-h/2,w,h,4,c,SK)+Rc(-w/2+2,-h/2+2,w-4,4,2,'#F6E2BE',' opacity=".9"')+C(-2,3,1.2,K.goldenD)+C(2,-5,1,K.goldenD)+C(1,9,1.1,K.goldenD)); } return o; }
+function karaage(R,cx,cy,n=6,c=K.golden){ let o=''; scatter(R,n,cx,cy,26,12).forEach(([x,y])=>{ const s=9+R()*3; o+=G(x,y,R()*360,P(`M${-s} 0 Q${-s} ${-s*.9} 0 ${-s*.8} Q${s} ${-s*.9} ${s} 0 Q${s*.9} ${s*.8} 0 ${s*.75} Q${-s*.9} ${s*.8} ${-s} 0Z`,c,SK)+HL(s)+C(s*.2,s*.2,1.2,K.goldenD)); }); return o; }
+function tempuraShrimp(x,y,a,len=34){ return G(x,y,a,P(`M${-len/2} -6 Q0 -9 ${len/2-6} -5 Q${len/2} 0 ${len/2-6} 5 Q0 9 ${-len/2} 6 Q${-len/2-3} 0 ${-len/2} -6Z`,'#F0CF83',SK)+P(`M${len/2-6} -4 L${len/2+6} -8 L${len/2+4} 0 L${len/2+6} 8 L${len/2-6} 4Z`,'#E4512E')+C(-6,-2,1.3,'#E2B05A')+C(4,2,1.2,'#E2B05A')); }
+function friedEgg(x,y,s=1){ return P(`M${x-18*s} ${y} Q${x-20*s} ${y-12*s} ${x-4*s} ${y-12*s} Q${x+16*s} ${y-14*s} ${x+18*s} ${y-2*s} Q${x+19*s} ${y+10*s} ${x+2*s} ${y+10*s} Q${x-16*s} ${y+12*s} ${x-18*s} ${y}Z`,K.eggW,SK)+C(x+1,y-1,7*s,K.egg)+E(x-1,y-3,2.5*s,1.5*s,'#fff',' opacity=".55"'); }
+function halfEgg(x,y,a=0){ return G(x,y,a,E(0,0,10,7,K.eggW,SK)+E(0,0,5.5,4,'#F2A23A')); }
+function noodlesIn(R,cx,cy,rx,ry,c,thick=2.2,n=9){ let o=''; for(let i=0;i<n;i++){ const y=cy-ry*.7+i*(ry*1.4/n)+R()*2, x0=cx-rx*(0.75+R()*.2), x1=cx+rx*(0.75+R()*.2); o+=P(`M${f(x0)} ${f(y)} q${f((x1-x0)/4)} ${f(-4+R()*8)} ${f((x1-x0)/2)} 0 t${f((x1-x0)/2)} 0`,'none',` stroke="${c}" stroke-width="${thick}" stroke-linecap="round" opacity=".95"`); } return o; }
+function swirl(cx,cy,rx,ry,c,w=2.4){ let o=''; for(let i=0;i<6;i++){ const k=1-i*.15; o+=E(cx+(i%2?2:-2),cy+(i%2?1:-1),rx*k,ry*k,'none',` stroke="${c}" stroke-width="${w}"`); } return o; }
+const BASE_RICE=(cx,cy,rx,ry,c=K.rice)=>E(cx,cy,rx,ry,c)+E(cx-rx*.3,cy-ry*.3,rx*.35,ry*.25,'#fff',' opacity=".45"');
+/* ---- 種類ごとの絵 ---- */
+const D={};
+D.donburi=(r,R)=>{ const n=r.name; let s=bowl(r.cu==='和食'?'lac':'blue'); const I=inner(100,70,62); s+=E(I.cx,I.cy,I.rx,I.ry,K.rice); const cy=I.cy-2;
+  if(/天津|かに玉/.test(n)) s+=E(100,cy,44,13,'#F4B83A',SK)+E(100,cy-1,40,10,'#E59A3A',' opacity=".55"')+E(92,cy-4,10,3,'#fff',' opacity=".35"')+C(110,cy-2,2,K.green)+C(86,cy+2,2,K.green);
+  else if(/親子|他人|卵とじ|カツ丼|かつ丼|味噌カツ丼|ソースカツ|タレカツ|デミカツ/.test(n)){ s+=E(100,cy,46,13,/ソース|デミ|タレ/.test(n)?'#6E3E22':'#F4D274'); if(/カツ|かつ/.test(n)) s+=cutletSlices(R,100,cy-2,5,13,18,/味噌|デミ|ソース|タレ/.test(n)?'#9A5B2A':K.golden); else s+=mixed(r,R,100,cy,36,8,8,6); s+=C(90,cy-5,2,K.green)+C(112,cy-3,2,K.green); }
+  else if(/天丼/.test(n)) s+=tempuraShrimp(84,cy-4,-15,32)+tempuraShrimp(112,cy-4,12,32)+E(100,cy+3,10,5,'#7A4A2A',' opacity=".6"');
+  else if(/海鮮|鉄火|漬け|ポキ|サーモン/.test(n)){ const cs=/鉄火|漬け/.test(n)?['#B8283A','#C8323A']:/サーモン/.test(n)?['#F2956B','#F7A880']:['#C8323A','#F2956B','#F7F0E2','#F2956B']; for(let i=0;i<7;i++){ const a=-70+i*23; s+=G(100+Math.cos(a*Math.PI/180)*20,cy+Math.sin(a*Math.PI/180)*5,a+90,Rc(-6,-12,12,22,4,cs[i%cs.length],SK)); } s+=leaf(76,cy+2,7,K.greenD,20); }
+  else if(/ビビンバ/.test(n)){ const cs=['#3E7D3A','#E9822F','#F2EEDC','#8B4A33','#D9502E']; cs.forEach((c,i)=>{ const a=i*72*Math.PI/180; s+=E(100+Math.cos(a)*26,cy+Math.sin(a)*7,13,5,c,SK); }); s+=friedEgg(100,cy,.55); }
+  else if(/ガパオ|ロコモコ|ルーロー/.test(n)){ s+=E(96,cy,40,11,/ロコモコ/.test(n)?'#6E3E22':'#94573A'); s+=mixed(r,R,90,cy,30,7,6,5); s+=friedEgg(110,cy-3,.6); }
+  else if(/うな|ひつまぶし/.test(n)){ for(let i=0;i<4;i++) s+=G(80+i*13,cy+(i%2),-6,Rc(-6,-11,12,20,3,'#7A4520',SK)+Rc(-5,-10,10,3,1.5,'#B27040',' opacity=".8"')); }
+  else if(/三色|そぼろ/.test(n)){ s+=P(`M60 ${cy} L100 ${cy-10} L100 ${cy+12}Z`,'#94573A')+P(`M100 ${cy-10} L140 ${cy} L100 ${cy+12}Z`,K.egg)+E(100,cy+9,14,4,'#5E9E4A'); }
+  else if(/しらす/.test(n)){ for(let i=0;i<40;i++) s+=E(64+R()*72,cy-8+R()*16,2.2,.9,'#F8F3E8',' stroke="#D8CDB8" stroke-width=".4"'); s+=leaf(100,cy-2,7,K.greenD,10); }
+  else if(/牛丼|豚丼|焼き鳥丼|すき/.test(n)){ s+=E(100,cy,44,12,'#8A4A2A',' opacity=".6"'); for(let i=0;i<10;i++) s+=strip(66+R()*68,cy-7+R()*14,16,6,/豚|焼き鳥/.test(n)?'#B8743E':'#7A3E26',R()*60-30); if(/牛丼/.test(n)) s+=E(122,cy+2,6,4,'#E04A5A'); }
+  else if(/ちらし/.test(n)){ s+=E(100,cy,46,12,K.rice); for(let i=0;i<16;i++) s+=C(62+R()*76,cy-8+R()*16,2.6,['#F4C43B','#F27A50','#3E7D3A','#E9822F','#C8323A'][i%5]); }
+  else s+=E(100,cy,44,12,sauceColor(r),' opacity=".55"')+mixed(r,R,100,cy,38,8,9,6.5);
+  if(r.tg&T.warm) s=steam(100,52)+s; return s; };
+D.noodlebowl=(r,R)=>{ const n=r.name; const lac=r.cu==='和食'&&!/ラーメン|ちゃんぽん|担々/.test(n); let s=bowl(lac?'lac':'blue'); const I=inner(100,70,62); const broth=sauceColor(r);
+  s+=E(I.cx,I.cy,I.rx,I.ry,broth); const nc=/そば|蕎麦/.test(n)&&!/焼きそば|沖縄/.test(n)?'#8E6E50':/うどん|きしめん|ほうとう|伊勢|かけ/.test(n)?'#F8F1DE':/春雨|太平燕|フォー|冷麺|にゅうめん|そうめん/.test(n)?'#F4EEE2':'#F2D27A';
+  s+=noodlesIn(R,100,I.cy,44,9,nc,/うどん|きしめん|ほうとう|伊勢|かけ/.test(n)?3.4:2.2);
+  if(/ラーメン|ブラック|ちゃんぽん|サンマーメン|担々|台湾|つけ麺/.test(n)){ s+=Rc(118,I.cy-20,14,22,2,K.nori)+C(80,I.cy-1,9,'#C98F78',SK)+C(80,I.cy-1,6,'#E8B9A4')+halfEgg(104,I.cy+2,-10)+negiDots(R,96,I.cy-2,30,6,6);
+    if(/台湾|担々|味噌/.test(n)) s+=C(96,I.cy-4,9,'#94573A')+strip(110,I.cy-4,18,3,K.green,20);
+    if(/ちゃんぽん|サンマーメン/.test(n)) s+=mixed(r,R,100,I.cy,34,7,10,5.5); }
+  else if(/きつね/.test(n)) s+=G(100,I.cy-2,-8,Rc(-20,-9,40,18,4,'#C8893C',SK)+Rc(-17,-6,34,3,1.5,'#E2AE60'))+negiDots(R,100,I.cy,36,7,5);
+  else if(/月見|かき玉/.test(n)) s+=E(100,I.cy,16,8,K.eggW)+C(100,I.cy-1,6,K.egg)+negiDots(R,100,I.cy,36,7,5);
+  else if(/天ぷら/.test(n)) s+=tempuraShrimp(96,I.cy-2,-10,36)+negiDots(R,100,I.cy+2,30,6,4);
+  else if(/肉|牛|すじ/.test(n)) { for(let i=0;i<6;i++) s+=strip(82+R()*36,I.cy-5+R()*10,15,6,'#7A3E26',R()*40-20); s+=negiDots(R,100,I.cy,36,7,5); }
+  else if(/沖縄|ソーキ/.test(n)) s+=Rc(78,I.cy-8,22,12,3,'#9C5A26',SK)+Rc(102,I.cy-6,20,11,3,'#9C5A26',SK)+strip(118,I.cy+3,12,5,'#F28A9A',10)+C(88,I.cy+4,3,'#E04A5A');
+  else if(/にしん/.test(n)) s+=G(100,I.cy-2,-6,Rc(-22,-6,44,12,5,'#6E4128',SK))+negiDots(R,100,I.cy,36,7,4);
+  else if(/フォー/.test(n)) s+=mixed(r,R,100,I.cy,30,6,5,6)+leaf(84,I.cy+2,6,K.green,20)+leaf(118,I.cy-2,6,K.green,-30)+lemon(122,I.cy+4);
+  else s+=mixed(r,R,100,I.cy,34,7,8,6)+negiDots(R,100,I.cy,36,7,4);
+  if(r.tg&T.warm||/ラーメン|うどん|そば/.test(n)) s=steam(100,52)+s; return s; };
+D.zaru=(r,R)=>{ const n=r.name; let s=shadow(92,108,62,10)+Rc(30,62,124,46,8,K.wood,SK); for(let i=0;i<9;i++) s+=P(`M${36+i*13} 66 L${36+i*13} 104`,'none',` stroke="${K.woodD}" stroke-width="1"`);
+  const nc=/そば/.test(n)?'#8E6E50':/うどん/.test(n)?'#F8F1DE':/そうめん/.test(n)?'#FBF7EE':'#F2D27A';
+  s+=E(84,84,40,16,nc,' opacity=".6"'); for(let i=0;i<10;i++) s+=P(`M${50+R()*8} ${74+i*2} q${18+R()*10} ${-6+R()*12} ${34+R()*14} 0 t${20} 0`,'none',` stroke="${nc}" stroke-width="2.4" stroke-linecap="round"`);
+  if(/そば|ざる/.test(n)&&!/うどん|そうめん/.test(n)) for(let i=0;i<10;i++) s+=strip(66+R()*36,76+R()*12,5,1.6,K.nori,R()*180);
+  s+=shadow(158,112,16,5)+P('M142 84 L144 108 Q158 114 172 108 L174 84Z','#2E2622',SK)+E(158,84,16,5,sauceColor(r)); return s; };
+D.friednoodle=(r,R)=>{ const n=r.name; let s=plate(); const nc=/塩|ビーフン|パッタイ/.test(n)?'#F0DDA8':/皿うどん|あんかけ/.test(n)?'#E9C178':/そばめし/.test(n)?'#9C5A26':'#A8642C';
+  s+=E(100,76,52,20,nc,' opacity=".5"'); for(let i=0;i<14;i++) s+=P(`M${f(54+R()*14)} ${f(64+i*1.8)} q${f(14+R()*10)} ${f(-6+R()*12)} ${f(30+R()*14)} 0 t${f(30)} 0`,'none',` stroke="${nc}" stroke-width="2.6" stroke-linecap="round"`);
+  if(/あんかけ|皿うどん/.test(n)) s+=E(100,74,40,13,'#E8C98F',' opacity=".75"');
+  s+=mixed(r,R,100,74,40,13,9,6); if(/焼きそば|そばめし|焼きうどん/.test(n)) s+=sesame(R,100,72,36,11,14,'#4E8A3A')+strip(122,70,10,4,'#E04A5A',20); if(/パッタイ|ミーゴレン/.test(n)) s+=lemon(140,84); return s; };
+D.pasta=(r,R)=>{ const n=r.name; let s=plate(); const sc=sauceColor(r); const nc='#F2D27A';
+  s+=swirl(100,74,40,16,nc,2.6)+swirl(100,73,30,12,nc,2.4);
+  if(!/ペペロンチーノ|ボンゴレ|和風|たらこ|明太|ツナ|納豆/.test(n)) s+=E(100,71,26,9,sc,' opacity=".85"');
+  if(/たらこ|明太/.test(n)) s+=E(100,71,22,8,'#F2A2A0',' opacity=".85"');
+  if(/ボンゴレ|ペスカトーレ/.test(n)) for(let i=0;i<6;i++) s+=pieceFor('shell',66+R()*68,64+R()*18,6,R);
+  s+=mixed(r,R,100,72,34,12,7,5.5);
+  if(/カルボナーラ/.test(n)) s+=C(100,68,6,K.egg)+sesame(R,100,72,30,10,16,'#3A3A3A');
+  if(/ジェノベーゼ|バジル|ペペロンチーノ/.test(n)) for(let i=0;i<5;i++) s+=leaf(76+R()*48,64+R()*16,4.5,K.greenD,R()*360);
+  if(/和風|たらこ|ツナ|納豆/.test(n)) for(let i=0;i<8;i++) s+=strip(84+R()*32,64+R()*10,6,1.6,/たらこ|ツナ|和風/.test(n)?K.nori:K.green,R()*180);
+  if(/ナポリタン|カルボナーラ|アラビアータ|ミート/.test(n)) s+=sesame(R,100,70,24,8,10,'#FFF6DA'); return s; };
+D.curry=(r,R)=>{ const n=r.name; if(/スープカレー/.test(n)){ let s=bowl('blue',100,68,64,46); const I=inner(100,68,64); s+=E(I.cx,I.cy,I.rx,I.ry,'#A85A22')+chunk(84,I.cy-2,11,'#D9A06A',20)+halfEgg(112,I.cy-3,10)+leaf(122,I.cy+3,9,'#3E8E3A',30)+chunk(98,I.cy+5,8,'#E3A02A',0)+strip(70,I.cy+3,16,7,'#5B3A6B',-20); return steam(100,50)+s; }
+  let s=ovalPlate(); const sc=sauceColor(r);
+  s+=P('M30 82 Q30 60 70 58 Q96 58 100 70 Q104 92 76 102 Q38 104 30 82Z',K.rice,SK)+E(56,70,14,6,'#fff',' opacity=".5"');
+  s+=P('M100 66 Q110 56 140 58 Q176 62 172 84 Q168 104 128 104 Q96 102 98 82Z',sc,SK)+E(136,68,18,4,'#fff',' opacity=".18"');
+  if(/キーマ|タコ/.test(n)) s+=sesame(R,134,82,26,14,22,'#6E3E22');
+  else { const pp=parts(r); scatter(R,8,134,82,28,14).forEach(([x,y],i)=>{ s+=i%3===0&&pp.prot[0]?pieceFor(pp.prot[0],x,y,6.5,R):chunk(x,y,6,['#E9C46A','#E9822F','#D9B970'][i%3],R()*90); }); }
+  if(/カツ/.test(n)) s+=cutletSlices(R,128,76,4,11,20);
+  s+=C(58,92,3,'#D9442E'); return s; };
+D.rice=(r,R)=>{ const n=r.name; let s=plate();
+  if(/オムライス/.test(n)) return s+P('M44 80 Q44 54 100 54 Q156 54 156 80 Q156 100 100 100 Q44 100 44 80Z','#F5C746',SK)+E(84,64,20,5,'#fff',' opacity=".35"')+P('M68 72 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l8 -6','none',' stroke="#C9302A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"');
+  if(/トルコ/.test(n)) return s+P('M40 80 Q42 58 80 60 L96 80 L80 100 Q42 100 40 80Z','#E9C46A',SK)+swirl(122,82,22,10,'#D9673E',2.4)+cutletSlices(R,100,66,4,12,20)+E(100,60,18,4,'#6E3E22',' opacity=".7"');
+  if(/カオマンガイ/.test(n)) return s+BASE_RICE(84,78,34,16,'#F6EFD8')+cutletSlices(R,118,74,4,10,22,'#F2DDBA')+strip(70,92,22,5,'#4F8A3F',10)+leaf(134,90,6,K.green,20);
+  const rc=/チャーハン|焼き飯|ナシゴレン|高菜|ジャンバラヤ|ビリヤニ|ガーリック/.test(n)?'#E9C77A':/チキンライス|パエリア|トマト/.test(n)?'#D9673E':/カレー|ピラフ|ビリヤニ/.test(n)?'#EBC35A':/赤飯/.test(n)?'#C9727A':/炊き込み|きのこ|五目|たけのこ|はらこ|鯛|栗|さつまいも/.test(n)?'#E5C694':/そばめし/.test(n)?'#9C5A26':K.rice;
+  s+=P('M50 82 Q52 52 100 50 Q148 52 150 82 Q126 96 100 96 Q74 96 50 82Z',rc,SK)+E(84,62,18,6,'#fff',' opacity=".35"');
+  for(let i=0;i<22;i++) s+=E(58+R()*84,58+R()*32,1.8,1.1,'rgba(255,255,255,.55)');
+  if(/赤飯/.test(n)) s+=sesame(R,100,72,40,16,18,'#2A2020');
+  else if(/栗/.test(n)) for(let i=0;i<5;i++) s+=chunk(70+R()*60,62+R()*24,7,'#F2C14E',R()*90);
+  else if(/はらこ/.test(n)) { for(let i=0;i<4;i++) s+=chunk(72+i*16,66+R()*10,7,'#F2956B',0); for(let i=0;i<24;i++) s+=C(66+R()*68,60+R()*28,2.4,'#F05A28',' stroke="#C33A18" stroke-width=".4"'); }
+  else if(/鯛/.test(n)) s+=G(100,66,0,P('M-26 0 Q-10 -12 14 -6 L26 -12 L24 0 L26 12 L14 6 Q-10 12 -26 0Z','#E8796A',SK)+C(-16,-2,2,'#2A2020'));
+  else s+=mixed(r,R,100,70,40,16,10,5.5);
+  if(/チャーハン|高菜|ナシゴレン/.test(n)) s+=negiDots(R,100,70,36,14,6); if(/ナシゴレン|ガパオ/.test(n)) s+=friedEgg(118,64,.55);
+  return s; };
+D.porridge=(r,R)=>{ let s=bowl('lac'); const I=inner(100,70,62); s+=E(I.cx,I.cy,I.rx,I.ry,/茶漬け/.test(r.name)?'#D9C08A':'#F2EAD6'); for(let i=0;i<30;i++) s+=E(60+R()*80,I.cy-9+R()*18,1.8,1,'#fff'); if(/卵|雑炊/.test(r.name)) s+=E(96,I.cy,20,6,K.egg,' opacity=".7"'); s+=mixed(r,R,100,I.cy,30,7,5,5)+negiDots(R,100,I.cy,30,6,5); if(/茶漬け/.test(r.name)) s+=chunk(100,I.cy-2,9,'#F2956B',0)+strip(116,I.cy-4,12,2,K.nori,20); return steam(100,52)+s; };
+D.onigiri=(r,R)=>{ const n=r.name; let s=shadow(100,112,70,10)+E(100,104,74,16,/五平/.test(n)?'#A87A45':'#E8DCC4',SK);
+  if(/ポーク/.test(n)){ for(const x of [72,128]) s+=G(x,84,0,Rc(-22,-22,44,40,6,K.nori,SK)+Rc(-22,-6,44,8,2,K.egg)+Rc(-22,2,44,8,2,'#E58A7A')+Rc(-22,-22,44,16,4,K.rice)+Rc(-22,10,44,8,3,K.rice)); return s; }
+  const rc=/焼き/.test(n)?'#C8893C':K.rice;
+  for(const [x,a] of [[74,-8],[126,8]]) s+=G(x,82,a,P('M0 -30 Q8 -30 26 2 Q32 16 18 18 L-18 18 Q-32 16 -26 2 Q-8 -30 0 -30Z',rc,SK)+(/焼き/.test(n)?'':Rc(-16,2,32,16,3,K.nori))+E(-6,-12,7,4,'#fff',' opacity=".45"')+(/天むす/.test(n)?P('M-2 -30 L6 -44 L10 -32Z','#E4512E'):'')+(/梅|おにぎり/.test(n)&&x>100?C(0,-6,4,'#C0303A'):''));
+  if(/五平/.test(n)) s=shadow(100,112,70,10)+E(100,104,74,16,'#E8DCC4',SK)+[76,124].map(x=>G(x,78,20,Rc(-2,-6,4,50,2,'#D9B98A')+Rc(-14,-30,28,40,12,'#E9DCC0',SK)+Rc(-12,-26,24,30,10,'#9C5A26',' opacity=".85"'))).join('');
+  return s; };
+D.sushi=(r,R)=>{ const n=r.name; let s=shadow(100,110,72,10)+Rc(28,66,144,40,6,K.wood,SK)+Rc(28,66,144,6,3,K.woodD,' opacity=".5"');
+  if(/いなり/.test(n)){ for(let i=0;i<4;i++) s+=G(52+i*32,82,0,Rc(-14,-12,28,24,9,'#B8742E',SK)+E(-4,-6,7,3,'#fff',' opacity=".3"')); return s; }
+  if(/さば寿司|棒寿司/.test(n)){ for(let i=0;i<5;i++) s+=G(46+i*27,82,0,Rc(-12,-10,24,22,4,K.rice,SK)+Rc(-12,-14,24,10,4,'#C7D0D8')+Rc(-12,-14,24,4,2,'#7A8794')); return s; }
+  const cs=['#F2956B','#C8323A','#3E7D3A','#F4C43B','#E8604A'];
+  for(let i=0;i<5;i++){ const x=48+i*26; s+=C(x,84,12,K.nori,SK)+C(x,84,9,K.rice)+C(x-2,84,3.4,cs[i%5])+C(x+3,85,2.6,cs[(i+2)%5]); }
+  return s; };
+D.nabe=(r,R)=>{ const n=r.name; let s=shadow(100,118,70,10); const body=/土手|おでん|すき焼き/.test(n)?'#2E2622':/トマト|チーズ/.test(n)?'#C9302A':'#3B3530';
+  s+=Rc(22,70,20,10,5,body,SK)+Rc(158,70,20,10,5,body,SK);
+  s+=P('M34 72 Q36 118 100 120 Q164 118 166 72Z',body,SK)+E(100,72,66,20,'#2A2420')+E(100,73,60,17,sauceColor(r));
+  if(/すき焼き/.test(n)){ for(let i=0;i<5;i++) s+=strip(70+i*14,70+R()*6,20,9,'#B8604A',R()*40-20); s+=cube(128,74,7,'#F7F3E6',0)+leaf(76,80,9,K.greenD,20)+ring(118,82,5,K.negi)+C(140,66,7,'#E9D2A8'); return steam(100,50)+s; }
+  if(/おでん/.test(n)){ s+=cube(76,70,9,'#E9D6A8',0)+E(102,72,10,8,K.eggW,SK)+Rc(118,64,20,14,4,'#B9B4A8',SK)+G(86,82,20,Rc(-14,-4,28,8,4,'#D9A04F',SK))+C(130,82,8,'#E2C094',SK); return steam(100,50)+s; }
+  if(/チーズフォンデュ/.test(n)) return s+E(100,73,60,17,'#F4D67A')+E(90,70,20,4,'#fff',' opacity=".4"');
+  const pp=parts(r); const pts=scatter(R,12,100,73,50,13);
+  pts.forEach(([x,y],i)=>{ const k=i%4; s+=k===0&&pp.prot.length?pieceFor(pp.prot[i/4%pp.prot.length|0],x,y,8,R):k===1?leaf(x,y,9,pp.veg[i%pp.veg.length]||K.green,R()*360):k===2?cube(x,y,6,'#F7F3E6',R()*20):(R()<.5?C(x,y,5.5,'#8A6A4D',SK)+C(x,y,2.5,'#C4A88A'):ring(x,y,4.5,K.negi)); });
+  if(/キムチ|チゲ|火鍋/.test(n)) s+=sesame(R,100,73,50,13,14,'#B8281A');
+  if(/もつ/.test(n)) for(let i=0;i<8;i++) s+=strip(70+R()*60,66+R()*14,14,3,K.green,R()*180);
+  return steam(100,50)+s; };
+D.soup=(r,R)=>{ const n=r.name; const wa=r.cu==='和食'||/味噌汁|すまし|吸い|豚汁|けんちん|粕汁/.test(n); const potage=/ポタージュ|コーン|チャウダー|ガスパチョ|ヴィシソワーズ/.test(n);
+  let s=''; if(wa){ s+=bowl('lac',100,72,54,40); } else { s+=shadow(100,112,56,9)+P('M46 74 Q48 112 100 114 Q152 112 154 74Z',K.bowlW,SK)+P('M154 84 q18 0 16 12 q-2 10 -18 6','none',` stroke="${K.bowlW}" stroke-width="5"`)+E(100,74,54,15,'#EFEAE0',SK); }
+  const I={cx:100,cy:73,rx:wa?48:48,ry:wa?13:12}; s+=E(I.cx,I.cy,I.rx,I.ry,sauceColor(r));
+  if(potage){ s+=P(`M${82} ${I.cy} q10 -6 20 0 t20 0`,'none',' stroke="#fff" stroke-width="2" opacity=".6"')+C(104,I.cy-2,2,K.green)+C(110,I.cy+1,1.6,K.green); return steam(100,54)+s; }
+  if(/わかめ|味噌汁/.test(n)) for(let i=0;i<6;i++) s+=leaf(80+R()*40,I.cy-5+R()*10,6,'#2F5A3A',R()*360);
+  if(/豆腐|味噌汁|けんちん/.test(n)) for(let i=0;i<4;i++) s+=cube(80+R()*40,I.cy-5+R()*10,3.5,'#F7F3E6',R()*20);
+  if(/かき玉|卵/.test(n)) s+=E(100,I.cy,30,6,K.egg,' opacity=".55"');
+  s+=mixed(r,R,100,I.cy,36,8,/豚汁|けんちん|ミネストローネ|ボルシチ|ポトフ|チゲ|トムヤム|参鶏湯|いも煮|せんべい|粕汁|つみれ|ブイヤベース/.test(n)?9:4,5);
+  if(/トムヤム|トムカー/.test(n)) s+=leaf(118,I.cy-3,6,K.green,30);
+  s+=negiDots(R,100,I.cy,34,6,wa?5:2); return steam(100,54)+s; };
+D.salad=(r,R)=>{ const n=r.name; let s=plate(100,82,70,40);
+  if(/カプレーゼ/.test(n)){ for(let i=0;i<6;i++){ const x=58+i*16; s+=E(x,80+(i%2)*4,10,8,i%2?'#F8F4EA':'#D9442E',SK)+(i%2?'':leaf(x+5,74,4,K.greenD,30)); } return s; }
+  if(/カルパッチョ|マリネ/.test(n)){ for(let i=0;i<8;i++){ const a=i*45*Math.PI/180; s+=G(100+Math.cos(a)*30,80+Math.sin(a)*14,i*45,E(0,0,11,6,/鯛|白身/.test(n)?'#F6E2DA':/サーモン/.test(n)?'#F2956B':'#E9D29A',SK)); } return s+mixed(r,R,100,80,14,6,4,4); }
+  if(/ポテト|マカロニ|かぼちゃ|ごぼう|タルタル|コールスロー|ラペ/.test(n)){ const c=/かぼちゃ/.test(n)?'#F0C04A':/ラペ/.test(n)?'#E9822F':/ごぼう/.test(n)?'#C9A77A':/コールスロー/.test(n)?'#E3EFC0':'#F5EBCF'; s+=leaf(70,80,16,'#8DC26F',-10)+P('M66 82 Q70 58 100 58 Q132 58 134 82 Q120 96 100 96 Q78 96 66 82Z',c,SK); for(let i=0;i<14;i++) s+=chunk(74+R()*52,64+R()*24,3,['#E9822F','#9CC56B','#F2C4A8','#fff'][i%4],R()*90); return s; }
+  for(let i=0;i<10;i++) s+=leaf(64+R()*72,70+R()*20,13,['#8DC26F','#6FA35A','#B5D98A','#4F8A3F'][i%4],R()*360);
+  s+=mixed(r,R,100,78,36,12,8,6);
+  if(/シーザー|コブ/.test(n)) s+=sesame(R,100,76,30,10,10,'#F2E3B5'); if(/トマト|コブ|ニース/.test(n)) s+=G(80,84,20,P('M-8 0 A8 8 0 0 1 8 0Z','#D9442E',SK))+G(122,74,-30,P('M-8 0 A8 8 0 0 1 8 0Z','#D9442E',SK));
+  return s; };
+D.mainplate=(r,R)=>{ const n=r.name; let s=plate(); const pp=parts(r); const k=pp.prot[0];
+  const garnish=()=>/塩焼き|西京|かれい|ぶり|さば|みぞれ/.test(n)?E(132,90,12,7,'#F8F6EE',SK)+leaf(144,82,6,K.green,30):cabbage(R,128,78,22,12)+G(146,90,0,P('M-6 0 A6 6 0 0 1 6 0Z',K.red,SK));
+  if(/ハンバーグ/.test(n)) return s+garnish()+E(88,76,30,17,'#6E3E22',SK)+E(84,70,16,6,'#9C5A34',' opacity=".7"')+P('M64 74 Q80 66 110 70','none',` stroke="${/おろし/.test(n)?'#fff':'#4A2614'}" stroke-width="5" stroke-linecap="round" opacity=".8"`)+(/おろし/.test(n)?E(88,70,12,6,'#F8F6EE')+leaf(92,66,5,K.green,0):'')+chunk(70,90,6,'#E9822F',0)+leaf(108,92,6,K.greenD,10);
+  if(/ステーキ|ローストビーフ|牛タン/.test(n)) return s+garnish()+(/ローストビーフ|牛タン/.test(n)?[0,1,2,3].map(i=>G(72+i*14,78,-10,E(0,0,9,15,/ロースト/.test(n)?'#C8616A':'#B5715E',SK)+E(0,0,6,11,/ロースト/.test(n)?'#D9808A':'#C98A78'))).join(''):G(88,78,-8,Rc(-30,-16,60,32,10,'#7A3E26',SK)+[-14,0,14].map(x=>P(`M${x-8} -12 L${x+8} 12`,'none',' stroke="#3A1E12" stroke-width="2.4" opacity=".7"')).join('')))+(/牛タン/.test(n)?E(80,90,14,5,'#F4F7E6')+negiDots(R,80,90,12,4,5):'');
+  if(/塩焼き|西京|ムニエル|かれい|照り焼き|さば|ぶり|ガイヤーン|ローストチキン|ソテー|生姜焼き|ポークチャップ|ピカタ|ジンギスカン|山賊|鶏ちゃん|味噌漬け|ちゃんちゃん/.test(n)){
+    if(/さんま/.test(n)) return s+garnish()+G(86,78,-10,P('M-50 0 Q-20 -10 30 -6 L48 -14 L44 0 L48 14 L30 6 Q-20 10 -50 0Z','#6E6A60',SK)+P('M-46 2 Q-10 8 30 4','none',' stroke="#C9C2B4" stroke-width="3"')+C(-40,-2,2,'#2A2020'));
+    if(/生姜焼き|ジンギスカン|鶏ちゃん|味噌漬け/.test(n)) return s+cabbage(R,124,74,24,13)+[0,1,2,3,4].map(i=>G(66+i*9,80+(i%2)*3,-20,E(0,0,13,8,/ジンギスカン/.test(n)?'#8B4A33':'#C8864E',SK)+E(-3,-3,6,2,'#fff',' opacity=".3"'))).join('')+(/ジンギスカン|鶏ちゃん/.test(n)?mixed(r,R,80,82,20,8,4,5):'');
+    const fish=/鮭|さば|ぶり|たら|鯛|かれい|あじ/.test(n)||['salmon','bluefish','whitefish'].includes(k);
+    if(fish) return s+garnish()+G(88,78,-6,Rc(-30,-14,60,28,10,PCOL[k]||'#F2956B',SK)+Rc(-30,-14,60,7,4,/鮭|サーモン/.test(n)?'#C9C2B4':'#7A8794',' opacity=".9"')+(/照り|西京|味噌|ちゃんちゃん/.test(n)?Rc(-26,-6,52,16,6,'#9C5A26',' opacity=".55"'):'')+P('M-20 4 L-10 -4 M-4 6 L6 -4 M10 6 L20 -4','none',' stroke="rgba(120,60,30,.35)" stroke-width="1.6"'))+(/ちゃんちゃん/.test(n)?mixed(r,R,108,84,28,10,8,5):'');
+    return s+garnish()+[0,1,2,3].map(i=>G(70+i*14,78,-10,Rc(-6,-15,12,30,5,/照り|甘辛/.test(n)?'#9C5A26':'#D9A060',SK)+Rc(-6,-15,12,6,3,'#F2D0A0',' opacity=".7"'))).join('')+(/照り/.test(n)?sesame(R,90,78,22,10,8):'');
+  }
+  return s+garnish()+mixed(r,R,90,78,34,14,10,7); };
+D.fried=(r,R)=>{ const n=r.name; let s=plate();
+  if(/カツ|かつ|シュニッツェル|メンチ|フライ(?!ド)|コロッケ/.test(n)&&!/エビフライ|あじフライ|牡蠣/.test(n)){ s+=cabbage(R,124,76,26,14);
+    if(/コロッケ|メンチ/.test(n)) s+=[0,1].map(i=>G(78+i*8,76+i*8,-10,E(0,0,20,13,K.golden,SK)+C(-6,-4,1.4,K.goldenD)+C(6,3,1.4,K.goldenD)+C(0,6,1.2,K.goldenD)+HL(16))).join('');
+    else s+=cutletSlices(R,82,78,5,12,30,/味噌/.test(n)?'#C78A40':K.golden)+(/味噌/.test(n)?P('M60 72 Q82 62 104 72','none',' stroke="#5A2E14" stroke-width="7" stroke-linecap="round" opacity=".9"')+sesame(R,82,70,18,4,8):'')+(/シュニッツェル/.test(n)?lemon(140,90):'');
+    return s; }
+  if(/エビフライ|天ぷら|天むす|かき揚げ|とり天|えび/.test(n)){ s+=Rc(54,58,92,42,3,'#FFFDF7',' stroke="#E2DACB" stroke-width="1" transform="rotate(-6 100 79)"'); if(/かき揚げ/.test(n)) return s+G(100,78,0,E(0,0,26,16,'#E9B865',SK)+[...Array(12)].map(()=>strip(-18+R()*36,-10+R()*20,10,3,['#E9822F','#F0E2A8','#8FC46A'][R()*3|0],R()*180)).join(''));
+    s+=tempuraShrimp(84,70,-10,40)+tempuraShrimp(96,86,-4,40); if(/天ぷら/.test(n)) s+=G(130,74,10,E(0,0,12,9,'#F0CF83',SK)+E(0,0,8,6,'#5B3A6B'))+G(128,92,0,E(0,0,10,8,'#F0CF83',SK)+E(0,0,6,5,'#E3A02A'));
+    if(/エビフライ/.test(n)) s+=E(132,84,10,7,K.mayo,SK)+cabbage(R,126,70,14,7); return s; }
+  if(/牡蠣|あじ/.test(n)) return s+cabbage(R,126,76,24,12)+[0,1,2].map(i=>G(70+i*14,74+i*6,-20,P('M-14 0 Q-12 -12 4 -12 Q16 -10 16 0 Q14 12 0 12 Q-14 10 -14 0Z',K.golden,SK)+C(-4,-2,1.3,K.goldenD)+C(5,4,1.2,K.goldenD))).join('')+lemon(140,94);
+  if(/春巻き/.test(n)) return s+[0,1,2].map(i=>G(86+i*4,66+i*12,-12,Rc(-30,-7,60,14,7,'#D9A045',SK)+P('M-24 -3 L24 -3','none',' stroke="#B9772F" stroke-width="1"'))).join('')+leaf(136,86,9,'#8DC26F',20);
+  s+=leaf(132,78,14,'#8DC26F',-20)+leaf(124,90,12,'#6FA35A',20)+karaage(R,92,78,6,/竜田|ザンギ/.test(n)?'#C98A4A':/ヤンニョム/.test(n)?'#C0402A':/南蛮/.test(n)?'#D9A045':K.golden);
+  if(/南蛮/.test(n)) s+=P('M70 72 q10 -6 20 0 t20 0','none',' stroke="#FFF6DA" stroke-width="7" stroke-linecap="round"');
+  if(/ヤンニョム|甘辛|手羽/.test(n)) s+=sesame(R,92,76,22,10,12);
+  if(!/ヤンニョム|南蛮/.test(n)) s+=lemon(142,94); return s; };
+D.nimono=(r,R)=>{ const n=r.name; const west=/シチュー|ポトフ|煮込み|トマト煮|クリーム煮|赤ワイン|ストロガノフ|ラタトゥイユ|チリコンカン|ポークビーンズ|ミートボール|ボルシチ/.test(n)&&!/どて|もつ|すじ/.test(n);
+  let s=west?shadow(100,112,62,9)+P('M40 74 Q42 110 100 112 Q158 110 160 74Z',K.bowlW,SK)+E(100,74,60,17,'#EFEAE0',SK):bowl(r.cu==='和食'?'blue':'blue',100,72,60,40);
+  const I={cx:100,cy:west?75:73,rx:52,ry:14}; s+=E(I.cx,I.cy,I.rx,I.ry,sauceColor(r));
+  if(/角煮|ラフテー/.test(n)) return s+[0,1,2].map(i=>G(78+i*20,I.cy-2+(i%2)*3,0,Rc(-10,-9,20,18,4,'#7A3E1C',SK)+Rc(-10,-9,20,5,2,'#D9B48A',' opacity=".8"'))).join('')+E(122,I.cy+4,9,6,'#C9873A',SK)+C(84,I.cy+7,3,K.lemon)+leaf(70,I.cy+4,7,K.green,20);
+  const pp=parts(r); scatter(R,9,I.cx,I.cy-1,40,10).forEach(([x,y],i)=>{ s+=i%3===0&&pp.prot[0]?pieceFor(pp.prot[i/3%pp.prot.length|0],x,y,7.5,R):/肉じゃが|シチュー|ポトフ|カレー/.test(n)&&i%3===1?chunk(x,y,8,'#E9D29A',R()*90):i%3===2&&/筑前|けんちん|おでん|どて|もつ|すじ/.test(n)?cube(x,y,5,'#8A8478',R()*30):chunk(x,y,7,pp.veg[i%pp.veg.length],R()*90); });
+  if(/肉じゃが|筑前|ひじき/.test(n)) s+=strip(118,I.cy-3,14,3.4,'#5E9E4A',20)+strip(84,I.cy+3,14,3.4,'#5E9E4A',-10);
+  if(/どて|もつ|すじ/.test(n)) s+=negiDots(R,100,I.cy,36,8,8);
+  return steam(100,52)+s; };
+D.stirfry=(r,R)=>{ let s=plate(); s+=E(100,78,48,18,sauceColor(r),' opacity=".35"')+mixed(r,R,100,76,44,16,16,7); if(/ニラ玉|トマトと卵|えびと卵|ゴーヤ|しりしり|かに玉/.test(r.name)) for(let i=0;i<6;i++) s+=chunk(70+R()*60,66+R()*22,7,K.egg,R()*90); if(/麻婆/.test(r.name)) s+=sesame(R,100,76,40,14,18,'#7A2A18'); return s; };
+D.gratin=(r,R)=>{ const n=r.name; let s=shadow(100,104,72,14)+E(100,92,74,24,'#F8F5EE',SK)+E(100,84,70,26,'#F8F5EE',SK)+E(100,84,62,22,/キッシュ|ラザニア/.test(n)?'#E9C26A':'#F2D27A');
+  for(let i=0;i<10;i++) s+=E(60+R()*80,70+R()*28,4+R()*5,2.5+R()*3,i%3?'#C98A3A':'#A86A2A',' opacity=".75"');
+  if(/トマト|ラザニア/.test(n)) for(let i=0;i<5;i++) s+=E(64+R()*72,74+R()*20,6,3.5,'#C9412A',' opacity=".8"');
+  if(/シェパーズ/.test(n)) for(let i=0;i<8;i++) s+=P(`M${f(64+R()*72)} ${f(72+R()*22)} q6 -4 12 0`,'none',' stroke="#C98A3A" stroke-width="2.2"');
+  s+=C(86,78,2,K.green)+C(110,86,1.8,K.green)+C(98,96,1.6,K.green); return s; };
+D.disc=(r,R)=>{ const n=r.name; let s=plate();
+  if(/ピザ/.test(n)) return s+E(100,78,52,26,'#E9C28A',SK)+E(100,78,44,21,'#C9412A')+[...Array(9)].map(()=>E(70+R()*60,66+R()*24,6,4,'#F8E6A6')).join('')+mixed(r,R,100,78,36,16,8,4.5)+[...Array(5)].map(()=>leaf(70+R()*60,66+R()*24,3.5,K.greenD,R()*360)).join('');
+  if(/チヂミ|ねぎ焼き/.test(n)) return s+E(100,78,50,24,'#E9C26A',SK)+[...Array(14)].map(()=>strip(64+R()*72,64+R()*28,16,2.6,K.green,R()*40-20)).join('')+mixed(r,R,100,78,36,14,5,4.5)+G(146,96,0,E(0,0,10,5,'#5A3A22',SK));
+  if(/もんじゃ/.test(n)) return s+P('M52 80 Q54 60 80 62 Q100 54 124 62 Q150 64 148 82 Q146 98 120 96 Q100 102 78 96 Q52 98 52 80Z','#B5773A',SK)+cabbage(R,100,78,30,10)+[...Array(10)].map(()=>C(64+R()*72,66+R()*24,2.4,'#F08A8A')).join('')+sesame(R,100,78,36,12,10,'#4E8A3A');
+  if(/クレープ|ケサディーヤ|バインセオ|ブリトー|タコス|ケバブ/.test(n)) return s+G(100,78,-8,P('M-44 10 Q-40 -22 0 -24 Q40 -22 44 10 Q0 22 -44 10Z',/バインセオ/.test(n)?'#F0C84A':'#F0D9A8',SK)+P('M-38 6 Q0 -4 38 6','none',' stroke="#D9B07A" stroke-width="1.4"'))+mixed(r,R,100,70,30,8,6,5)+leaf(140,92,8,'#8DC26F',20);
+  s+=E(100,78,50,24,'#A8642C',SK)+E(100,76,44,20,'#6E3E22')+P('M62 70 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8','none',' stroke="#FFF6DA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"')+sesame(R,100,76,38,16,16,'#4E8A3A');
+  for(let i=0;i<6;i++) s+=leaf(76+R()*48,66+R()*20,4,'#E8B9A8',R()*360); if(/広島/.test(n)) s+=P('M52 86 Q100 104 148 86','none',' stroke="#F2D27A" stroke-width="3"'); return s; };
+D.balls=(r,R)=>{ const n=r.name; const akashi=/明石/.test(n), sweet=/団子|アンダギー|ごま団子|ドーナツ/.test(n);
+  let s=akashi?Rc(36,60,110,44,6,'#C79A62',SK):/たこ焼き/.test(n)?shadow(100,108,64,8)+P('M34 70 L166 70 L156 104 L44 104Z','#D9B98A',SK):plate();
+  const col=akashi?'#F5D67A':/ごま団子/.test(n)?'#F4E6C4':/アンダギー|ドーナツ/.test(n)?'#C47A30':K.golden;
+  const pts=akashi?[[56,82],[76,82],[96,82],[116,82],[66,72],[86,72],[106,72]]:[[70,86],[92,88],[114,86],[136,84],[80,74],[102,74],[124,72]];
+  pts.forEach(([x,y])=>{ s+=C(x,y,11,col,SK)+E(x-3,y-4,4,2.5,'#fff',' opacity=".4"'); if(/ごま団子/.test(n)) s+=sesame(R,x,y,9,9,8,'#fff'); if(/アンダギー/.test(n)) s+=P(`M${x-6} ${y-4} q6 4 12 0`,'none',' stroke="#F2D28A" stroke-width="2"'); });
+  if(/たこ焼き/.test(n)) s+=P('M60 72 Q90 92 140 76','none',' stroke="#5A2E14" stroke-width="7" stroke-linecap="round" opacity=".85"')+P('M62 82 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6 l10 -6','none',' stroke="#FFF6DA" stroke-width="2" stroke-linecap="round"')+sesame(R,100,80,36,10,12,'#4E8A3A');
+  if(akashi) s+=shadow(160,112,14,4)+P('M146 88 L148 108 Q160 112 172 108 L174 88Z','#F4F0E6',SK)+E(160,88,14,4,'#E8C483');
+  return s; };
+D.egg=(r,R)=>{ const n=r.name; let s=plate();
+  if(/卵焼き|だし巻き/.test(n)) return s+[0,1,2,3].map(i=>G(70+i*18,78,0,Rc(-8,-14,16,28,4,/だし/.test(n)?'#F6D877':'#F5C746',SK)+P('M-4 -8 q8 2 4 8 q-6 4 -2 -6','none',' stroke="#FBEAA8" stroke-width="1.4"'))).join('')+E(136,90,10,6,'#F8F6EE',SK);
+  if(/オムレツ/.test(n)) return s+P('M52 78 Q60 56 100 56 Q140 56 148 78 Q140 98 100 98 Q60 98 52 78Z',/スパニッシュ/.test(n)?'#E9B84A':'#F5C746',SK)+E(90,66,22,5,'#fff',' opacity=".35"')+(/スパニッシュ/.test(n)?mixed(r,R,100,78,36,14,8,4.5):P('M80 74 q20 -8 40 0','none',' stroke="#C9302A" stroke-width="5" stroke-linecap="round"'));
+  if(/茶碗蒸し/.test(n)) return shadow(100,112,34,7)+P('M66 66 Q68 110 100 112 Q132 110 134 66Z','#F4F0E6',SK)+E(100,66,34,10,'#F6DD8E')+C(92,66,3,'#C9584A')+leaf(108,64,5,K.green,20)+E(100,56,30,7,'#F4F0E6',SK);
+  if(/スクランブル|ハムエッグ|目玉/.test(n)) return s+(/ハム/.test(n)?E(86,80,26,14,'#F2A0A0',SK):'')+(/スクランブル/.test(n)?[...Array(10)].map(()=>chunk(80+R()*40,70+R()*18,9,'#F6D04A',R()*90)).join(''):friedEgg(96,76,1.2)+friedEgg(118,86,.9))+leaf(140,90,6,K.green,10);
+  return s+P('M48 78 Q54 58 100 58 Q146 58 152 78 Q146 98 100 98 Q54 98 48 78Z','#F2C14E',SK)+E(100,76,30,10,/かに玉|天津/.test(n)?'#E59A3A':sauceColor(r),' opacity=".65"')+mixed(r,R,100,76,36,12,6,4.5); };
+D.dumplings=(r,R)=>{ const n=r.name; let s=plate();
+  if(/焼売|シュウマイ/.test(n)) { [[74,82],[100,86],[126,82],[87,70],[113,70]].forEach(([x,y])=>s+=Rc(x-11,y-10,22,20,7,'#F2E6C8',SK)+E(x,y-10,10,4,'#D9A082')+C(x,y-11,2.2,'#8FC46A')); return s; }
+  if(/水餃子|ワンタン/.test(n)){ s=bowl('blue'); s+=E(100,71,56,16,'#EFDDAE'); [[78,72],[100,68],[122,72],[90,78],[112,78]].forEach(([x,y],i)=>s+=G(x,y,i*30,P('M-12 2 Q-10 -10 0 -10 Q10 -10 12 2 Q0 8 -12 2Z','#F8F2E4',SK))); return steam(100,52)+s+negiDots(R,100,72,40,8,6); }
+  if(/サモサ/.test(n)) return s+[[78,82],[104,86],[124,74]].map(([x,y],i)=>G(x,y,i*25-10,P('M-14 10 L0 -14 L14 10Z',K.golden,SK)+C(-3,2,1.3,K.goldenD))).join('')+E(140,90,9,5,'#8DA44A',SK);
+  for(let i=0;i<6;i++){ const x=58+i*16; s+=G(x,78,-8,P('M-9 14 Q-12 -10 0 -16 Q12 -10 9 14Z','#F4E8CC',SK)+P('M-9 14 Q0 18 9 14 L8 8 Q0 12 -8 8Z','#C8863A')+P('M-4 -8 l2 4 M1 -10 l1 4 M5 -7 l0 4','none',' stroke="#D9C8A4" stroke-width="1"')); }
+  return s+G(146,96,0,E(0,0,10,5,'#4A2E1E',SK)); };
+D.skewer=(r,R)=>{ const n=r.name; let s=plate(100,84,74,38); const wagashi=/団子|みたらし|五平/.test(n);
+  [[70,0],[100,8],[130,0]].slice(0,wagashi?2:3).forEach(([x,dy],i)=>{ s+=G(x,82+dy,-62,Rc(-46,-1.4,92,2.8,1.4,'#D9B98A')+[ -24,-6,12].map((p,j)=>{ if(wagashi) return C(p,0,10,'#F4ECDA',SK)+E(p,-2,9,6,'#9C5A26',' opacity=".8"');
+    if(/串カツ|串揚げ/.test(n)) return Rc(p-9,-8,18,16,5,K.golden,SK)+C(p-2,-2,1.2,K.goldenD);
+    if(/焼き鳥/.test(n)) return j===1?Rc(p-6,-6,12,12,3,'#E9F2C8',SK):Rc(p-8,-8,16,16,5,i%2?'#9C5A26':'#E2B880',SK);
+    return chunk(p,0,8,i%2?'#C8864E':'#9C5A26',0); }).join('')); });
+  return s; };
+D.bread=(r,R)=>{ const n=r.name; let s=plate();
+  if(/サンド/.test(n)&&!/ホットサンド|フルーツ/.test(n)||/BLT|クラブ/.test(n)) return s+[[78,-8],[122,8]].map(([x,a])=>G(x,78,a,P('M-26 18 L0 -24 L26 18Z','#F7EBD0',SK)+P('M-22 12 L22 12','none',` stroke="${/卵/.test(n)?K.egg:'#8DC26F'}" stroke-width="5"`)+P('M-18 6 L18 6','none',` stroke="${/卵/.test(n)?K.egg:/BLT|クラブ/.test(n)?'#D9442E':'#F2A0A0'}" stroke-width="4"`)+P('M-26 18 L0 -24 L26 18','none',' stroke="#D9B07A" stroke-width="2"'))).join('');
+  if(/フルーツサンド/.test(n)) return s+[[78,-8],[122,8]].map(([x,a])=>G(x,78,a,Rc(-24,-20,48,40,4,'#F7EBD0',SK)+Rc(-20,-10,40,20,8,'#FFF8EE')+C(-8,0,6,'#F2D04A')+C(8,0,6,'#E0303F'))).join('');
+  if(/バーガー/.test(n)) return s+shadow(100,96,40,7)+P('M62 86 Q62 96 100 96 Q138 96 138 86Z','#D99A55',SK)+Rc(60,78,80,8,3,'#6E3E22')+P('M60 78 q10 -6 20 0 t20 0 t20 0 t20 0','none',' stroke="#8DC26F" stroke-width="5"')+Rc(64,74,72,4,2,'#F4C430')+P('M62 72 Q62 46 100 46 Q138 46 138 72Z','#D99A55',SK)+sesame(R,100,58,26,8,10,'#FFF4D8');
+  if(/ホットドッグ/.test(n)) return s+G(100,78,-6,Rc(-44,-10,88,22,11,'#D99A55',SK)+Rc(-46,-6,92,10,5,'#B8492E')+P('M-36 -2 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0','none',' stroke="#F2C230" stroke-width="2.4"'));
+  if(/バインミー/.test(n)) return s+G(100,78,-6,Rc(-48,-12,96,26,12,'#E2B070',SK)+Rc(-42,-4,84,8,3,'#8DC26F')+Rc(-40,0,80,4,2,'#E9822F'));
+  if(/フレンチ/.test(n)) return s+[[84,74],[112,84]].map(([x,y],i)=>G(x,y,i*10-6,Rc(-20,-18,40,36,6,'#E2A94C',SK)+Rc(-16,-14,32,28,4,'#F2CC74'))).join('')+P('M80 70 q20 10 40 4','none',' stroke="#B9772F" stroke-width="3" opacity=".7"')+Rc(96,68,10,8,2,'#FFF4C8');
+  if(/ナン/.test(n)) return s+G(100,78,-10,P('M-40 0 Q-36 -22 0 -20 Q46 -14 44 2 Q38 20 0 18 Q-42 16 -40 0Z','#EBC98A',SK)+[...Array(8)].map(()=>E(-30+R()*60,-12+R()*22,4,2.5,'#B8772E',' opacity=".7"')).join(''));
+  const top=/小倉/.test(n)?'#7A3A3A':/ピザ/.test(n)?'#C9412A':/アボカド/.test(n)?'#8DB04A':/クロック/.test(n)?'#E9C26A':/エッグ/.test(n)?K.egg:'#F2CC74';
+  return s+G(100,78,-6,Rc(-34,-26,68,52,8,'#C98A3A',SK)+Rc(-30,-22,60,44,6,'#F2D9A0')+Rc(-28,-20,56,40,6,top,' opacity=".9"')+(/小倉/.test(n)?Rc(4,-18,22,14,3,'#FFF4C8'):'')+(/ピザ/.test(n)?[...Array(6)].map(()=>E(-20+R()*40,-12+R()*24,6,4,'#F8E6A6')).join(''):'')); };
+D.cake=(r,R)=>{ const n=r.name; let s=shadow(100,108,60,9)+E(100,100,62,16,K.plate,SK);
+  const choc=/ショコラ|ブラウニー|チョコ/.test(n), cheese=/チーズ/.test(n), tira=/ティラミス/.test(n), straw=/いちご|ショート/.test(n);
+  if(/ロール/.test(n)) return s+E(84,82,24,20,'#F2D9A0',SK)+E(84,82,20,16,'#FFF8EE')+P('M84 82 m-12 0 a12 10 0 1 1 24 0 a8 7 0 1 1 -16 0 a4 3 0 1 1 8 0','none',' stroke="#E8C88A" stroke-width="3"')+Rc(84,62,46,40,4,'#E9C47A',SK)+E(130,82,8,20,'#F2D9A0');
+  if(/タルト/.test(n)) return s+E(100,86,46,16,'#D9A055',SK)+E(100,84,40,13,'#F6E2A0')+[...Array(10)].map((_,i)=>C(72+R()*56,78+R()*12,5,['#E0303F','#7FA33A','#F2C14E'][i%3],SK)).join('');
+  if(/ブラウニー|パウンド|バナナブレッド|キャロット/.test(n)) return s+[0,1].map(i=>G(82+i*30,86-i*6,0,Rc(-14,-14,28,26,3,/ブラウニー/.test(n)?'#5A2E1E':/キャロット/.test(n)?'#C98A4A':'#D9A055',SK)+(/キャロット/.test(n)?Rc(-14,-14,28,6,2,'#FFF4E0'):'')+C(-4,-4,2.4,'#8A5A3A'))).join('');
+  if(/ミルクレープ/.test(n)) { s+=P('M60 92 L100 62 L140 92Z','#F8E2B0',SK); for(let i=0;i<8;i++) s+=P(`M${64+i*0} ${90-i*3.5} L136 ${90-i*3.5}`,'none',` stroke="${i%2?'#FFF8EE':'#E9C47A'}" stroke-width="2.4"`); return s+P('M60 92 L100 62 L140 92','none',' stroke="#E9C47A" stroke-width="2"'); }
+  if(/シフォン|マドレーヌ/.test(n)) return s+P('M58 96 Q60 64 100 60 Q140 64 142 96Z','#F2D08A',SK)+E(100,74,12,5,'#E9C47A')+E(100,74,6,3,'#fff');
+  const sideA=choc?'#5A2E1E':tira?'#E9DCC4':cheese?'#F6E7B8':'#F2D9A0', topC=choc?'#4A2418':tira?'#7A4A2A':cheese?(/スフレ|ベイクド/.test(n)?'#C98A3A':'#FFF6DA'):'#FFF8EE';
+  s+=P('M56 96 L60 70 L128 58 L140 84Z',sideA,SK)+P('M56 96 L140 84 L140 92 L56 104Z',choc?'#3A1E14':cheese?'#E9D49A':'#E9C88A',SK)+P('M60 70 L128 58 L140 84 L56 96Z',topC,' opacity=".95"');
+  if(straw) s+=P('M58 84 L140 72','none',' stroke="#E0303F" stroke-width="3"')+C(108,62,7,'#E0303F',SK)+leaf(112,56,3,K.green,-30)+E(92,66,7,4,'#FFF8EE',SK);
+  if(cheese&&/レア/.test(n)) s+=E(100,70,14,4,'#E0303F',' opacity=".6"'); if(tira) s+=sesame(R,98,76,26,8,20,'#5A2E1E');
+  return s; };
+D.pudding=(r,R)=>{ const n=r.name; const glass=/ゼリー|パンナコッタ|杏仁|ムース|マンゴー|抹茶|コーヒー|パフェ|フローズン|フルーツポンチ/.test(n), block=/ようかん|寒天|わらび/.test(n);
+  if(block){ let s=plate(100,86,70,30); const c=/水ようかん/.test(n)?'#4A2A2A':/芋/.test(n)?'#F2C04A':/わらび/.test(n)?'#E8DCC0':'#F8F4EA'; [[78,82],[104,86],[126,80]].forEach(([x,y])=>s+=Rc(x-12,y-12,24,20,4,c,SK)+Rc(x-10,y-12,10,4,2,'#fff',' opacity=".35"')); if(/わらび/.test(n)) s+=sesame(R,100,82,34,10,20,'#C9A060'); if(/牛乳寒天/.test(n)) s+=C(84,80,4,'#F29A2E')+C(110,84,4,'#F29A2E'); return s; }
+  if(glass){ const c=/マンゴー/.test(n)?'#F2A93B':/抹茶/.test(n)?'#8DA44A':/コーヒー/.test(n)?'#4A2A1E':/ムース/.test(n)?'#6E3E22':/ゼリー/.test(n)?'#F29A2E':'#FBF6EA';
+    let s=shadow(100,114,34,6)+P('M70 54 L74 108 Q100 116 126 108 L130 54Z','rgba(220,235,240,.55)',' stroke="rgba(120,140,150,.5)" stroke-width="1.2"')+P('M73 68 L75 106 Q100 114 125 106 L127 68Z',c)+E(100,68,27,6,c)+E(100,54,30,6,'rgba(235,245,248,.6)',' stroke="rgba(120,140,150,.5)" stroke-width="1.2"');
+    if(/コーヒー/.test(n)) s+=E(100,68,20,4,'#FFF8EE'); if(/パンナコッタ|杏仁/.test(n)) s+=E(100,68,18,4,/杏仁/.test(n)?'#F29A2E':'#C0303A'); if(/ゼリー/.test(n)) s+=C(92,86,5,'#F7C060')+C(108,96,5,'#F2C14E'); if(/マンゴー|抹茶|ムース/.test(n)) s+=E(100,66,10,3,'#FFF8EE');
+    return s; }
+  let s=shadow(100,112,50,8)+E(100,104,52,13,K.plate,SK); const body=/ブリュレ/.test(n)?'#F6E2A0':/かぼちゃ/.test(n)?'#F0B84A':'#F6D27A';
+  if(/ブリュレ/.test(n)) return s+P('M66 74 L68 100 Q100 106 132 100 L134 74Z','#F4F0E6',SK)+E(100,74,34,8,'#C98A3A')+E(92,72,10,2,'#E9B86A');
+  return s+P('M74 66 Q72 98 74 100 Q100 106 126 100 Q128 98 126 66Z',body,SK)+E(100,66,26,7,'#7A3E1C')+P('M78 66 q2 10 4 0 M100 70 q2 12 4 0 M118 66 q2 8 4 0','#7A3E1C')+E(88,82,5,10,'#fff',' opacity=".3"')+(/かぼちゃ/.test(n)?C(100,62,4,'#FFF8EE'):''); };
+D.baked=(r,R)=>{ const n=r.name; let s=plate(100,84,72,36);
+  if(/マフィン/.test(n)) return s+[[80,0],[120,4]].map(([x,dy])=>P(`M${x-16} ${78+dy} L${x-12} ${100+dy} L${x+12} ${100+dy} L${x+16} ${78+dy}Z`,'#F2E6D0',SK)+P(`M${x-18} ${80+dy} Q${x-18} ${58+dy} ${x} ${58+dy} Q${x+18} ${58+dy} ${x+18} ${80+dy}Z`,'#C98A3A',SK)).join('');
+  if(/ドーナツ/.test(n)) return s+[[80,82],[118,80]].map(([x,y])=>C(x,y,16,'#C47A30',SK)+C(x,y,6,K.plate)+sesame(R,x,y,12,10,10,'#fff')).join('');
+  if(/チュロス|ラスク/.test(n)) return s+[0,1,2].map(i=>G(80+i*18,80,-30+i*10,Rc(-30,-5,60,10,5,/ラスク/.test(n)?'#E2B070':'#D99A45',SK)+(/チュロス/.test(n)?P('M-26 0 L26 0','none',' stroke="#B9772F" stroke-width="1.2"'):''))).join('')+sesame(R,100,80,30,12,14,'#FFF4E0');
+  if(/マドレーヌ|フィナンシェ/.test(n)) return s+[[78,82],[104,86],[128,78]].map(([x,y],i)=>/フィナンシェ/.test(n)?Rc(x-12,y-8,24,16,3,'#C9862F',SK):G(x,y,i*20-20,P('M-14 6 Q-14 -12 0 -12 Q14 -12 14 6Z','#E2A94C',SK)+P('M-8 4 L-6 -8 M0 4 L0 -10 M8 4 L6 -8','none',' stroke="#C98A3A" stroke-width="1"'))).join('');
+  if(/スコーン/.test(n)) return s+[[82,80],[116,84]].map(([x,y])=>Rc(x-14,y-14,28,24,8,'#E2B070',SK)+Rc(x-14,y-2,28,4,2,'#F6E2BE')).join('')+E(138,94,8,5,'#E0303F',SK);
+  if(/メレンゲ/.test(n)) return s+[...Array(7)].map((_,i)=>{ const x=66+i*11, y=80+(i%2)*8; return P(`M${x-6} ${y} Q${x} ${y-14} ${x+6} ${y}Z`,'#FFF8F0',SK); }).join('');
+  if(/ホットケーキ|パンケーキ/.test(n)) return s+[0,1,2].map(i=>E(100,90-i*8,40,12,'#D99A45',SK)+E(100,88-i*8,38,10,'#E9B865')).join('')+Rc(92,62,14,8,2,'#FFF4C8')+P('M70 72 q10 14 20 4 q14 -6 30 6','none',' stroke="#B9772F" stroke-width="3" opacity=".8"');
+  return s+[[74,80],[100,88],[126,80],[88,70],[114,70]].map(([x,y])=>C(x,y,12,'#E2B070',SK)+(/チョコ/.test(n)?C(x-3,y-2,2,'#4A2418')+C(x+4,y+3,2,'#4A2418'):C(x,y,8,'#ECC488'))).join(''); };
+D.ice=(r,R)=>{ const n=r.name;
+  if(/かき氷/.test(n)) return shadow(100,112,34,6)+P('M70 98 L80 112 L120 112 L130 98Z','rgba(220,235,240,.8)',SK)+P('M60 98 Q62 52 100 46 Q138 52 140 98Z','#FBFDFE',SK)+P('M68 70 Q100 50 132 70 Q136 84 120 80 Q100 92 80 82 Q64 86 68 70Z','#E0303F',' opacity=".85"')+C(100,58,5,'#E0303F');
+  if(/パフェ/.test(n)) return shadow(100,114,22,5)+P('M78 40 L84 100 L116 100 L122 40Z','rgba(230,240,245,.6)',' stroke="rgba(120,140,150,.5)" stroke-width="1.2"')+Rc(80,84,40,14,0,'#E2B070')+Rc(79,70,42,14,0,'#FFF8EE')+Rc(78,56,44,14,0,'#F2A0A0')+E(100,44,24,10,'#FFF8EE',SK)+C(100,34,7,'#E0303F',SK)+Rc(98,104,4,8,1,'#C9C2B4')+E(100,112,14,3,'#C9C2B4');
+  return shadow(100,112,40,7)+P('M64 80 Q66 110 100 112 Q134 110 136 80Z','#F4F0E6',SK)+E(100,80,36,8,'#EFEAE0')+C(86,74,14,/フローズン/.test(n)?'#F8D6DC':'#FFF6DA',SK)+C(112,72,14,/いちご|フローズン/.test(n)?'#F2A0A0':'#FFF6DA',SK)+leaf(122,62,5,K.green,-30); };
+D.wagashi=(r,R)=>{ const n=r.name; let s=shadow(100,110,66,8)+E(100,100,68,18,/桜|大福/.test(n)?'#3A2A24':'#E8DCC4',SK);
+  if(/どら焼き/.test(n)) return s+[[84,84],[118,80]].map(([x,y])=>E(x,y,22,12,'#B8742E',SK)+E(x,y-2,20,9,'#D99A45')).join('');
+  if(/ぜんざい|しるこ/.test(n)) return bowl('lac',100,70,52,40)+E(100,71,46,13,'#5A2622')+C(88,70,7,'#FBF6EA',SK)+C(108,72,7,'#FBF6EA',SK)+steam(100,52);
+  if(/おはぎ/.test(n)) return s+[[80,86,'#5A2622'],[106,84,'#C9A060'],[126,88,'#5A2622']].map(([x,y,c])=>E(x,y,14,10,c,SK)+(c==='#C9A060'?sesame(R,x,y,10,7,8,'#E9D2A0'):'')).join('');
+  if(/桜餅/.test(n)) return s+[[84,86],[114,84]].map(([x,y],i)=>G(x,y,i*10-5,leaf(0,4,18,'#6E8E3A',0)+E(0,0,15,9,'#F4B8C4',SK))).join('');
+  if(/大福/.test(n)) return s+[[82,84],[114,86]].map(([x,y])=>C(x,y,14,'#FBF6EE',SK)+(/いちご/.test(n)?P(`M${x-6} ${y-10} Q${x} ${y-20} ${x+6} ${y-10}Z`,'#E0303F'):'')).join('');
+  if(/安倍川|きな粉/.test(n)) return s+[[80,86],[104,82],[126,88]].map(([x,y])=>Rc(x-12,y-9,24,18,6,'#E8C88A',SK)).join('')+sesame(R,104,84,30,8,16,'#C9A060');
+  if(/ずんだ/.test(n)) return s+[[80,86],[104,82],[126,88]].map(([x,y])=>E(x,y,13,9,'#9CC56B',SK)+sesame(R,x,y,9,6,5,'#7FA33A')).join('');
+  if(/白玉/.test(n)) return s+[[80,86],[104,82],[126,88]].map(([x,y])=>C(x,y,10,'#FBF6EA',SK)).join('')+E(102,92,20,6,'#5A2622');
+  return s+[[80,86],[104,82],[126,88]].map(([x,y])=>C(x,y,11,'#F4ECDA',SK)).join(''); };
+D.sweetpotato=(r,R)=>{ const n=r.name; let s=plate();
+  if(/焼き芋/.test(n)) return s+G(100,78,-10,P('M-46 0 Q-40 -18 0 -16 Q44 -14 46 0 Q40 16 0 16 Q-42 16 -46 0Z','#8A2E4A',SK)+P('M-20 -14 Q0 -2 -10 14 L10 14 Q20 -2 0 -16Z','#F2C04A'));
+  if(/スイートポテト/.test(n)) return s+[[80,82],[118,80]].map(([x,y])=>G(x,y,0,P('M-18 8 Q-20 -10 0 -12 Q20 -10 18 8Z','#E2A43A',SK)+E(0,-6,10,4,'#F6D27A'))).join('');
+  if(/ようかん/.test(n)) return s+[[78,80],[104,84],[128,78]].map(([x,y])=>Rc(x-12,y-10,24,20,4,'#F2C04A',SK)).join('');
+  return s+[...Array(8)].map(()=>{ const x=70+R()*60,y=68+R()*22; return G(x,y,R()*360,Rc(-12,-6,24,12,5,/けんぴ/.test(n)?'#E9B84A':'#E2A43A',SK)+Rc(-12,-6,4,12,2,'#8A2E4A')); }).join('')+(/大学/.test(n)?sesame(R,100,78,30,12,14,'#2A2020'):''); };
+D.glass=(r,R)=>{ const n=r.name; const c=/タピオカ/.test(n)?'#D9B490':'#F6E7A8';
+  let s=shadow(100,116,28,5)+P('M76 40 L80 112 L120 112 L124 40Z','rgba(225,238,242,.55)',' stroke="rgba(120,140,150,.5)" stroke-width="1.2"')+P('M77 54 L80 110 L120 110 L123 54Z',c);
+  if(/タピオカ/.test(n)) for(let i=0;i<14;i++) s+=C(84+R()*32,96+R()*12,4,'#2A1A14');
+  else for(let i=0;i<7;i++) s+=chunk(86+R()*28,64+R()*40,6,['#F29A2E','#F2C14E','#7FA33A','#E0303F'][i%4],R()*90);
+  return s+P('M112 30 L106 100','none',' stroke="#E04A5A" stroke-width="4" stroke-linecap="round"'); };
+D.kobachi=(r,R)=>{ const n=r.name; const pp=parts(r); let s=bowl(r.cu==='和食'?'lac':'blue',100,74,46,34); const I={cx:100,cy:74,rx:40,ry:12};
+  if(/冷奴|湯豆腐/.test(n)) return s+cube(100,I.cy-4,14,'#F7F3E6',0)+negiDots(R,100,I.cy-8,8,3,4)+E(100,I.cy-12,6,3,'#E8B9A8');
+  if(/枝豆/.test(n)) { for(let i=0;i<10;i++) s+=G(80+R()*40,I.cy-6+R()*8,R()*180,Rc(-10,-4,20,8,4,'#7DB35F',SK)); return s; }
+  if(/煮卵|温泉|卵黄/.test(n)) return s+(/温泉|卵黄/.test(n)?E(100,I.cy,30,8,'#C99A5A',' opacity=".7"')+C(100,I.cy-2,9,'#F6B33B',SK):halfEgg(90,I.cy-3,-10)+halfEgg(112,I.cy-1,10).replace(/#F2A23A/g,'#E9862A'));
+  const mound=/ひじき/.test(n)?'#2A2420':/きんぴら|ごぼう/.test(n)?'#9C6A3A':/切り干し/.test(n)?'#C9A77A':/白和え/.test(n)?'#F2EEE2':/なます|大根/.test(n)?'#F6F2E4':/納豆/.test(n)?'#B9864A':/もずく/.test(n)?'#3A4A2B':/キムチ/.test(n)?'#D9502E':pp.veg[0]||K.green;
+  s+=P(`M66 ${I.cy+2} Q72 ${I.cy-22} 100 ${I.cy-24} Q128 ${I.cy-22} 134 ${I.cy+2} Q100 ${I.cy+10} 66 ${I.cy+2}Z`,mound,SK);
+  if(/きんぴら|しりしり|ラペ|切り干し|ごぼう|なます|大根/.test(n)) for(let i=0;i<16;i++) s+=strip(76+R()*48,I.cy-16+R()*16,12,2.2,R()<.5?'#E9822F':mound,R()*180-90);
+  else if(/おひたし|ナムル|ごま和え|菜の花|小松菜|ほうれん草|いんげん|春菊|水菜/.test(n)) for(let i=0;i<10;i++) s+=strip(76+R()*48,I.cy-16+R()*16,16,3,i%2?'#3E7D3A':'#5E9E4A',R()*40-20);
+  else s+=mixed(r,R,100,I.cy-10,26,8,7,5);
+  if(/おかか|おひたし|土佐|かつお/.test(n)) for(let i=0;i<6;i++) s+=leaf(86+R()*28,I.cy-18+R()*6,4,'#E8B9A8',R()*360);
+  if(/ごま/.test(n)) s+=sesame(R,100,I.cy-10,24,8,14,'#E9D2A0');
+  return s; };
+D.sauce=(r,R)=>{ const n=r.name; const c=/ポン酢|天つゆ|めんつゆ|割り下|照り焼き|生姜焼き|焼肉|にんにく醤油|南蛮|和風/.test(n)?(/ポン酢|南蛮/.test(n)?'#B07A3A':'#5A2E14'):/ごま|田楽|味噌|酢味噌|肉みそ/.test(n)?(/ごま/.test(n)?'#D7B98C':'#8A5228'):/マヨ|タルタル|シーザー|ホワイト|ヨーグルト|カスタード/.test(n)?(/カスタード/.test(n)?'#F6D27A':'#F8F0DA'):/トマト|チリ|ヤンニョム|ラー油|オーロラ|サルサ|よだれ|いちご|ハンバーグ|とんかつ|お好み/.test(n)?(/オーロラ/.test(n)?'#F29A7A':/ハンバーグ|とんかつ|お好み/.test(n)?'#4A2414':'#C9302A'):/バジル|ねぎ/.test(n)?(/ねぎ/.test(n)?'#EEF2D8':'#5E8A3A'):/黒みつ|カラメル|チョコ/.test(n)?'#3A1E10':/すし酢|三杯酢|甘酢/.test(n)?'#F2E6C2':/フレンチ|中華|ドレッシング/.test(n)?'#E9C47A':'#C08A50';
+  const jar=/ジャム|みそ|味噌|ラー油|ペースト|カスタード|マヨ|タルタル|肉みそ|バジル|田楽|にんにく醤油/.test(n);
+  let s=shadow(100,114,50,7);
+  if(jar){ s+=Rc(70,54,60,58,10,'rgba(225,238,242,.6)',' stroke="rgba(120,140,150,.55)" stroke-width="1.4"')+Rc(73,66,54,43,8,c)+Rc(68,44,64,14,4,'#C9584A',SK)+Rc(78,76,44,20,3,'#FFFDF5',' opacity=".9"')+Rc(84,82,32,3,1.5,'#C9B89A')+Rc(84,88,22,3,1.5,'#C9B89A');
+    if(/ラー油|ねぎ|バジル|肉みそ/.test(n)) for(let i=0;i<14;i++) s+=C(76+R()*48,98+R()*8,1.6,/ラー油/.test(n)?'#7A2A10':/ねぎ/.test(n)?K.negi:'#2E4A20'); return s; }
+  if(/ドレッシング|ポン酢|めんつゆ|割り下|すし酢|三杯酢|にんにく|焼肉/.test(n)){ s+=P('M84 46 L84 58 Q70 66 70 80 L70 108 Q70 114 76 114 L124 114 Q130 114 130 108 L130 80 Q130 66 116 58 L116 46Z','rgba(225,238,242,.6)',' stroke="rgba(120,140,150,.55)" stroke-width="1.4"')+P('M73 78 L73 108 Q73 111 77 111 L123 111 Q127 111 127 108 L127 78Z',c)+Rc(82,34,36,14,3,'#3A3A3A',SK)+Rc(78,84,44,18,3,'#FFFDF5',' opacity=".85"')+Rc(84,90,30,3,1.5,'#C9B89A');
+    if(/ドレッシング/.test(n)) s+=sesame(R,100,104,22,4,10,'#fff'); return s; }
+  s+=E(100,104,54,12,K.plate,SK)+P('M62 70 Q64 98 100 100 Q136 98 138 70Z','#F4F0E6',SK)+E(100,70,38,10,c)+E(90,68,12,3,'#fff',' opacity=".3"');
+  if(/チリ|サルサ/.test(n)) for(let i=0;i<8;i++) s+=C(80+R()*40,66+R()*8,2,'#F2E0C0'); if(/甘酢|みたらし|カラメル|黒みつ|チョコ/.test(n)) s+=P('M100 70 q6 -18 20 -26','none',` stroke="${c}" stroke-width="4" stroke-linecap="round"`);
+  return s; };
+/* ---- 振り分け ---- */
+function typeOf(r){
+  const n=r.name, c=r.cat;
+  if(c==='タレ・調味料') return 'sauce';
+  if(!r.named){ const m=r.m.id; return {itame:'stirfry',ni:'nimono',mushi:'mainplate',yaki:'mainplate',age:'fried',soup:'soup',nabe:'nabe',salad:'salad',don:'donburi',pasta:'pasta',gratin:'gratin',takikomi:'rice',udon:r.f.id==='butter'?'friednoodle':'noodlebowl'}[m]||'stirfry'; }
+  if(c==='おやつ'){
+    if(/ケーキ|ティラミス|タルト|ブラウニー|ショコラ|ミルクレープ|ロール|シフォン|パウンド|バナナブレッド|アップルパイ/.test(n)) return 'cake';
+    if(/かき氷|アイス|パフェ|フローズン/.test(n)) return 'ice';
+    if(/プリン|ブリュレ|パンナコッタ|杏仁|ゼリー|ムース|寒天|ようかん|わらび/.test(n)) return /芋ようかん/.test(n)?'sweetpotato':'pudding';
+    if(/芋|いも|ポテト/.test(n)) return 'sweetpotato';
+    if(/タピオカ|ポンチ/.test(n)) return 'glass';
+    if(/団子|みたらし|五平/.test(n)) return /五平/.test(n)?'onigiri':'skewer';
+    if(/ごま団子|アンダギー/.test(n)) return 'balls';
+    if(/大福|餅|もち|おはぎ|白玉|ぜんざい|どら焼き|桜|ずんだ/.test(n)) return 'wagashi';
+    if(/クレープ/.test(n)) return 'disc';
+    return 'baked'; }
+  if(/ざる|そうめん|つけ麺|瓦そば|ぶっかけ|釜玉|冷やしうどん|ビビン麺/.test(n)) return /ビビン麺|冷やしうどん|ぶっかけ|釜玉/.test(n)?'noodlebowl':'zaru';
+  if(/焼きそば|焼きうどん|ビーフン|パッタイ|ミーゴレン|皿うどん|あんかけ焼きそば|油そば|じゃじゃ麺|汁なし|伊勢うどん|そばめし/.test(n)) return /そばめし/.test(n)?'rice':/油そば|じゃじゃ|汁なし|伊勢/.test(n)?'noodlebowl':'friednoodle';
+  if(/パスタ|スパゲッティ|ナポリタン|カルボナーラ|ペペロンチーノ|ボンゴレ|ジェノベーゼ|ペスカトーレ|アラビアータ|マカロニチーズ/.test(n)) return 'pasta';
+  if(/ラーメン|ちゃんぽん|担々麺|フォー|冷やし中華|冷麺|うどん|そば|きしめん|ほうとう|にゅうめん|太平燕|サンマーメン|富山ブラック/.test(n)) return /冷やし中華/.test(n)?'friednoodle':'noodlebowl';
+  if(c==='鍋'||/おでん/.test(n)) return 'nabe';
+  if(/カレー|ハヤシ|ハッシュドビーフ|ストロガノフ/.test(n)&&c!=='鍋') return 'curry';
+  if(/おにぎり|天むす|ポーク卵/.test(n)) return 'onigiri';
+  if(/寿司|キンパ|いなり/.test(n)&&!/ちらし/.test(n)) return 'sushi';
+  if(/丼|ビビンバ|ロコモコ|ガパオ|ルーロー|タコライス|ひつまぶし|深川|ちらし|天津飯|シシリアン|卵かけ|納豆ご飯/.test(n)) return 'donburi';
+  if(/雑炊|粥|茶漬け|鶏飯|冷や汁/.test(n)) return /鶏飯|冷や汁/.test(n)?'soup':'porridge';
+  if(/グラタン|ドリア|ラザニア|キッシュ|シェパーズ/.test(n)) return 'gratin';
+  if(c==='ご飯もの') return 'rice';
+  if(c==='汁物') return 'soup';
+  if(/お好み焼き|もんじゃ|チヂミ|ピザ(?!トースト)|ねぎ焼き|ケサディーヤ|バインセオ|ブリトー|タコス|ケバブ/.test(n)) return 'disc';
+  if(/たこ焼き|明石焼き/.test(n)) return 'balls';
+  if(/餃子|焼売|シュウマイ|ワンタン|サモサ/.test(n)) return 'dumplings';
+  if(/焼き鳥|串カツ|サテ|串/.test(n)) return 'skewer';
+  if(c==='パン・朝食'||/トースト|サンド|バーガー|ホットドッグ|バインミー|ナン|ピロシキ|おやき|ブルスケッタ/.test(n)) return /オムレツ|スクランブル|ハムエッグ|エッグベネ|シャクシュカ|オートミール/.test(n)?(/オートミール/.test(n)?'porridge':/シャクシュカ/.test(n)?'nimono':/エッグベネ/.test(n)?'bread':'egg'):/おやき|ピロシキ/.test(n)?'baked':'bread';
+  if(/卵焼き|だし巻き|オムレツ|茶碗蒸し|かに玉/.test(n)) return 'egg';
+  if(/カツ|とんかつ|フライ|唐揚げ|竜田|ザンギ|天ぷら|かき揚げ|コロッケ|メンチ|南蛮|とり天|フライドチキン|シュニッツェル|春巻き|手羽先|ヤンニョム|油淋鶏|エビマヨ|ちくわの磯辺|オニオンリング|フライドポテト|山賊焼き/.test(n)) return /フライドポテト|オニオンリング/.test(n)?'kobachi':/山賊/.test(n)?'fried':'fried';
+  if(/サラダ|カプレーゼ|カルパッチョ|マリネ|コールスロー|ラペ|生春巻き|ソムタム|ラープ|ヤムウンセン|ワカモレ|フムス/.test(n)) return /生春巻き/.test(n)?'dumplings':'salad';
+  if(/ハンバーグ|ステーキ|ソテー|ムニエル|照り焼き|生姜焼き|塩焼き|ローストビーフ|ポークチャップ|ピカタ|ローストチキン|ガイヤーン|ジンギスカン|牛タン|西京|ちゃんちゃん|鶏ハム|ホイル焼き|蒲焼き|味噌漬け|鶏ちゃん|たたき|ねぎ塩焼き|ガーリックシュリンプ|BBQ|スペアリブ|ポッサム|サムギョプサル|清蒸|味噌カツ|ちゃんぽん/.test(n)) return 'mainplate';
+  if(/炒め|チャンプルー|ニラ玉|回鍋肉|青椒|プルコギ|豚キムチ|チャプチェ|麻婆|八宝菜|エビチリ|しりしり|ほたて|砂肝/.test(n)) return /しりしり/.test(n)?'kobachi':'stirfry';
+  if(/煮|角煮|ラフテー|シチュー|ポトフ|肉じゃが|筑前|肉豆腐|ラタトゥイユ|チリコンカン|ポークビーンズ|ミートボール|アクアパッツァ|シャクシュカ|もつ|すじ|どて|治部/.test(n)) return 'nimono';
+  if(c==='副菜'||c==='一品') return 'kobachi';
+  return 'mainplate'; }
+function svg(r){
+  const R=mkR(r.id+7); let t=typeOf(r);
+  const body=(D[t]||D.mainplate)(r,R);
+  return `<svg class="ill" viewBox="0 0 200 150" role="img" aria-hidden="true" focusable="false">${body}</svg>`; }
+return {svg,typeOf};
+})();
+
 
 /* ===================== 基本データ ===================== */
 const SEA={春:[3,4,5],夏:[6,7,8],秋:[9,10,11],冬:[12,1,2]};
@@ -1771,7 +2296,7 @@ const VG=[
 
 /* 食材データベース */
 const DB={};
-for(const line of (DB_TXT.trim()+'\n'+DB_TXT2.trim()+'\n'+DB_TXT3.trim()+'\n'+DB_TXT4.trim()).split('\n')){
+for(const line of (DB_TXT.trim()+'\n'+DB_TXT2.trim()+'\n'+DB_TXT3.trim()+'\n'+DB_TXT4.trim()+'\n'+DB_TXT5.trim()).split('\n')){
   const [n,cat,nut,units,sea,col]=line.split('|'); const v=nut.split(',').map(Number); const u={}; let tb=0;
   (units||'').split(' ').filter(Boolean).forEach(t=>{const m=t.match(/^(.+?)([\d.]+)$/); if(!m) return; if(m[1]==='tb') tb=+m[2]; else u[m[1]]=+m[2];});
   DB[n]={n,cat,k:v[0],p:v[1],f:v[2],c:v[3],fib:v[4],salt:v[5],u,tb,sea:sea||'',col:col||''};
@@ -1852,8 +2377,8 @@ const CU_KEY={和食:'wa',洋食:'yo',中華:'chu',韓国:'kan',エスニック:
 const T={diet:1,protein:2,lowcarb:4,quick:8,veg:16,salt:32,season:64,warm:128,fresh:256,rich:512,spicy:1024,bento:2048,one:4096,classic:8192,kids:16384,party:32768};
 const TL={diet:'ダイエット向け',protein:'高たんぱく',lowcarb:'低糖質',quick:'時短',veg:'野菜たっぷり',salt:'減塩',season:'旬',warm:'温まる',fresh:'さっぱり',rich:'がっつり',spicy:'ピリ辛',bento:'お弁当向き',one:'一皿で満足',classic:'定番',kids:'子どもが喜ぶ',party:'おもてなし'};
 const TDESC={diet:'400kcal以下',protein:'たんぱく質25g以上',lowcarb:'炭水化物15g以下',quick:'15分以内',veg:'食物繊維4g以上',salt:'塩分1.5g以下'};
-const CATS=[['ご飯もの','飯'],['麺','麺'],['主菜','菜'],['副菜','和'],['一品','肴'],['汁物','汁'],['鍋','鍋'],['粉もの','粉'],['パン・朝食','朝'],['おやつ','甘']];
-const CAT_LABEL={'粉もの':'粉もの・軽食','一品':'おつまみ・もう一品','おやつ':'デザート・おやつ'};
+const CATS=[['ご飯もの','飯'],['麺','麺'],['主菜','菜'],['副菜','和'],['一品','肴'],['汁物','汁'],['鍋','鍋'],['粉もの','粉'],['パン・朝食','朝'],['おやつ','甘'],['タレ・調味料','醤']];
+const CAT_LABEL={'タレ・調味料':'タレ・調味料','粉もの':'粉もの・軽食','一品':'おつまみ・もう一品','おやつ':'デザート・おやつ'};
 const R1=x=>Math.round(x*10)/10;
 function healthScore(kcal,P,F,fib,salt,cat){
   let h=50;
@@ -1902,8 +2427,8 @@ function flavorsOf(names,dish){
 }
 const SPICY_RE=/豆板醤|ラー油|赤唐辛子|コチュジャン|キムチ|カレーペースト|柚子こしょう/;
 const NAMED=[];
-const TIPS={}; (TIPS_TXT.trim()+'\n'+TIPS_TXT3.trim()+'\n'+TIPS_TXT4.trim()).split('\n').forEach(l=>{const i=l.indexOf('|'); if(i>0) TIPS[l.slice(0,i)]=l.slice(i+1).split('^');});
-for(const line of (CATALOG.trim()+'\n'+CATALOG2.trim()+'\n'+CATALOG3.trim()+'\n'+CATALOG4.trim()).split('\n')){
+const TIPS={}; (TIPS_TXT.trim()+'\n'+TIPS_TXT3.trim()+'\n'+TIPS_TXT4.trim()+'\n'+TIPS_TXT5.trim()).split('\n').forEach(l=>{const i=l.indexOf('|'); if(i>0) TIPS[l.slice(0,i)]=l.slice(i+1).split('^');});
+for(const line of (CATALOG.trim()+'\n'+CATALOG2.trim()+'\n'+CATALOG3.trim()+'\n'+CATALOG4.trim()+'\n'+CATALOG5.trim()).split('\n')){
   const [name,read,cu,cat,t,ingS,seaS,stepS,optS]=line.split('|');
   const o={flags:new Set()};
   (optS||'').split(' ').filter(Boolean).forEach(tok=>{const i=tok.indexOf('='); if(i>0) o[tok.slice(0,i)]=tok.slice(i+1); else o.flags.add(tok);});
@@ -1933,6 +2458,7 @@ function makeNamed(id,d){
   const sn=all.map(x=>x[0]).join(' ');
   const kcal=Math.round(K);
   let tg=T.classic;
+  const SAUCE=d.cat==='タレ・調味料';
   if(kcal<=400&&d.cat!=='おやつ') tg|=T.diet;
   if(P>=25) tg|=T.protein;
   if(C<=15&&d.cat!=='おやつ') tg|=T.lowcarb;
@@ -1948,6 +2474,7 @@ function makeNamed(id,d){
   if(d.cat==='ご飯もの'||d.cat==='麺') tg|=T.one;
   if(d.flags.has('kids')) tg|=T.kids;
   if(d.flags.has('party')) tg|=T.party;
+  if(SAUCE) tg=d.flags.has('spicy')?T.spicy:0;
   const main=ings.find(n=>{const e=dbGet(n); return e&&/meat|fish|egg|soy/.test(e.cat);});
   const firstVeg=ings.find(n=>{const e=dbGet(n); return e&&e.col;});
   const glyph=d.g||CAT_GLYPH[d.cat]||(main?((PR.find(p=>p.n===main)||{}).s||main.slice(0,1)):'菜');
@@ -2122,7 +2649,7 @@ function buildPref(){
   Object.entries(views).forEach(([id,c])=>ALL[id]&&add(ALL[id],Math.min(c,3)*0.25));
 }
 function recScore(r,seed){
-  let s=r.h+(r.named?30:0);
+  let s=r.h+(r.named?30:0)-(r.cat==='タレ・調味料'?80:0);
   if(r.tg&T.season) s+=14;
   if(!r.named&&(r.tg&T.classic)) s+=10;
   const c=r.cat, mid=r.ms;
@@ -2279,6 +2806,9 @@ kw('おつまみ つまみ 酒の肴 肴 一品料理 一品 1品 もう一品 �
 kw('汁物 汁',{t:'cat',label:'汁物',cats:['汁物']});
 kw('粉もの 粉物 軽食',{t:'cat',label:'粉もの・軽食',cats:['粉もの']});
 kw('パン 朝食 トースト',{t:'cat',label:'パン・朝食',cats:['パン・朝食']});
+kw('ドレッシング',{t:'nm',label:'ドレッシング',keys:['どれっしんぐ']});
+kw('ジャム',{t:'nm',label:'ジャム',keys:['じゃむ']});
+kw('たれ タレ ソース 調味料 合わせ調味料 ディップ ジャム 合わせ酢 自家製 手作り調味料',{t:'cat',label:'タレ・調味料',cats:['タレ・調味料']});
 kw('おやつ デザート スイーツ 甘いもの お菓子 甘い 洋菓子 焼き菓子',{t:'cat',label:'デザート・おやつ',cats:['おやつ']});
 kw('和菓子',{t:'cat',label:'和菓子',cats:['おやつ'],cu:'和食'});
 kw('ケーキ',{t:'nm',label:'ケーキ',keys:['けーき']});
@@ -2290,7 +2820,7 @@ kw('ポン酢 ぽん酢 ポンズ',{t:'fl',label:'ポン酢味',ids:['ponzu']});
 kw('甘辛',{t:'fl',label:'甘辛味',ids:['amakara']});
 kw('塩レモン レモン',{t:'fl',label:'塩レモン味',ids:['shiolemon']});
 kw('ガーリック にんにく ニンニク',{t:'fl',label:'ガーリック味',ids:['garlic']});
-kw('オイスター',{t:'fl',label:'オイスター味',ids:['oyster']});
+kw('オイスター オイスターソース',{t:'fl',label:'オイスター味',ids:['oyster']});
 kw('カレー',{t:'fl',label:'カレー',ids:['curry']});
 kw('ごま 胡麻 ゴマ 担々',{t:'fl',label:'ごま味',ids:['goma']});
 kw('梅 うめ しそ 大葉',{t:'fl',label:'梅しそ味',ids:['umeshiso']});
@@ -2395,6 +2925,7 @@ function runFilter(R,uiTags,uiCu){
     if(R.fl&&![...R.fl].some(x=>r.fls.has(x))) return false;
     if([...R.exFl].some(x=>r.fls.has(x))) return false;
     if(R.cats&&!R.cats.has(r.cat)) return false;
+    if(r.cat==='タレ・調味料'&&!(R.cats&&R.cats.has(r.cat))&&!R.names.length&&!R.free.length&&!R.nm.length) return false;
     if(R.anyReg&&!r.region) return false;
     if((R.regs||R.areas)&&!((R.regs&&R.regs.has(r.region))||(R.areas&&R.areas.has(r.area)))) return false;
     if(cuSet.size&&!cuSet.has(r.cu)) return false;
@@ -2430,11 +2961,10 @@ let toastT;
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true,2200); }
 
 function plate(r){
-  const len=[...r.glyph].length, w=len>=3?' class="w3"':len===2?' class="w2"':'';
   return `<div class="plate pl-${CU_KEY[r.cu]||'yo'}">
     <span class="mtag">${esc(r.label)}</span>
     <button class="fav" type="button" data-fav="${r.id}" aria-pressed="${favs.has(r.id)}" aria-label="お気に入り">${HEART}</button>
-    <div class="dish" style="--g:${r.col}" aria-hidden="true"><b${w}>${esc(r.glyph)}</b><i>${esc(r.sub)}</i></div></div>`;
+    ${IL.svg(r)}</div>`;
 }
 function tagHtml(r,n=3){
   const order=['season','diet','protein','quick','veg','lowcarb','salt','spicy','kids'];
@@ -2473,11 +3003,11 @@ function renderHome(){
   setChrome('home');
   if(!POOL.length){ $('#view').innerHTML=`<section class="block"><div class="empty"><h3>表示できるレシピがありません</h3><p>苦手・アレルギーの設定で、すべてのレシピが除外されています。</p><button class="btn" type="button" data-tab="set">設定を見直す</button></div></section>`; return; }
   const top=POOL.slice().sort(byRS);
-  const topN=top.filter(r=>r.named);
+  const topN=top.filter(r=>r.named&&r.cat!=='タレ・調味料'); const sauces=top.filter(r=>r.cat==='タレ・調味料');
   const pool=topN.slice(0,120);
   const feat=pool[Math.floor(rnd(S.spin+7,DAYSEED)*pool.length)]||top[0];
   const used=new Set([feat.id]);
-  const row=(list,n=12)=>diverse(list.filter(r=>!used.has(r.id)),n).map(r=>{used.add(r.id);return card(r);}).join('');
+  const row=(list,n=12)=>diverse(list.filter(r=>!used.has(r.id)&&r.cat!=='タレ・調味料'),n).map(r=>{used.add(r.id);return card(r);}).join('');
   const seaItems=[...PR.filter(p=>inSeason(p.sea)).map(p=>({n:p.nm,c:'var(--yolk)'})),...VG.filter(v=>inSeason(v.sea)).map(v=>({n:v.n,c:v.col})),...Object.values(DB).filter(e=>e.sea&&inSeason(e.sea)&&/veg|fruit|fish/.test(e.cat)&&!PR.some(p=>p.n===e.n)&&!VG.some(v=>v.n===e.n)).map(e=>({n:e.n.replace(/\(.+?\)/,''),c:e.col||'var(--yolk)'}))];
   const why=reasons(feat);
   const ms=menuSet(DAYSEED+S.menuSpin*977);
@@ -2530,6 +3060,8 @@ function renderHome(){
     <div class="shelf" style="margin-top:14px">${row(topN.filter(r=>r.region),14)}</div></section>
   <section class="block"><div class="bh"><h2>デザート・おやつ</h2><span class="note">${catCount('おやつ')}品</span><button class="more" type="button" data-cat="おやつ">すべて見る</button></div>
     <div class="shelf">${row(topN.filter(r=>r.cat==='おやつ'),14)}</div></section>
+  <section class="block"><div class="bh"><h2>手作りのタレ・調味料</h2><span class="note">${catCount('タレ・調味料')}種</span><button class="more" type="button" data-cat="タレ・調味料">すべて見る</button></div>
+    <div class="shelf">${diverse(sauces,14).map(card).join('')}</div></section>
   <section class="block"><div class="bh"><h2>おつまみ・もう一品</h2><span class="note">${catCount('一品')}品</span><button class="more" type="button" data-cat="一品">すべて見る</button></div>
     <div class="shelf">${row(topN.filter(r=>r.cat==='一品'||(r.cat==='副菜'&&r.t<=10)),14)}</div></section>
   <section class="block"><div class="bh"><h2>冷蔵庫の食材でアレンジ</h2><span class="note">肉・魚と野菜の組み合わせから</span></div>
@@ -2634,7 +3166,7 @@ function nrow(label,v,unit,tgt,inv){
 }
 function renderDetail(){
   const r=cur, ing=ingredients(r,serv), st=steps(r);
-  const simPool=POOL.filter(x=>x.id!==r.id&&x.named);
+  const simPool=POOL.filter(x=>x.id!==r.id&&x.named&&(x.cat==='タレ・調味料')===(r.cat==='タレ・調味料'));
   const sim=diverse(simPool.filter(x=>(x.k1===r.k1&&r.k1)||x.ings.includes(r.k2)||(x.cat===r.cat&&x.cu===r.cu)).sort(byRS),4);
   const why=reasons(r);
   const inShop=shop.some(g=>g.name===r.name);
@@ -2644,19 +3176,19 @@ function renderDetail(){
     ${plate(r)}
     <div class="sbody">
       <div><h2>${esc(r.name)}</h2>
-        <div class="kv"><span><b>${r.t}</b>分</span><span><b>${r.kcal}</b>kcal（1人分）</span><span>${r.cu}・${esc(r.label)}</span>${r.region?`<span>${esc(r.region)}のご当地料理</span>`:''}</div>
+        <div class="kv"><span><b>${r.t}</b>分</span><span><b>${r.kcal}</b>kcal（${r.cat==='タレ・調味料'?'1回分':'1人分'}）</span><span>${r.cu}・${esc(r.label)}</span>${r.region?`<span>${esc(r.region)}のご当地料理</span>`:''}</div>
         <div class="tags" style="margin-top:10px">${tagHtml(r,6)}</div>
         ${why.length?`<ul class="why" style="margin-top:12px">${why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:''}
         ${r.named?'':`<p class="hint">食材と味つけの組み合わせから作ったアレンジレシピです。</p>`}</div>
-      <div><h3>材料 <span class="aside serv"><button type="button" id="sm" aria-label="1人分減らす">−</button><output id="sv">${serv}人分</output><button type="button" id="sp" aria-label="1人分増やす">＋</button></span></h3>
+      <div><h3>材料 <span class="aside serv"><button type="button" id="sm" aria-label="1人分減らす">−</button><output id="sv">${serv}${r.cat==='タレ・調味料'?'回分':'人分'}</output><button type="button" id="sp" aria-label="1人分増やす">＋</button></span></h3>
         <ul class="ing">${ing.main.concat(ing.base).map(([n,q])=>`<li><span>${esc(n)}</span><span>${esc(q)}</span></li>`).join('')}
-          <li class="h">${r.named?'調味料など':esc(r.f.w)+'の調味料'}</li>${ing.sea.map(([n,q])=>`<li><span>${esc(n)}</span><span>${esc(q)}</span></li>`).join('')}</ul>
+          <li class="h">${r.named?'調味料など':esc(r.f.w)+'の調味料'}</li>${ing.sea.map(([n,q])=>`<li><span>${esc(n)}${sauceLink(n,r)}</span><span>${esc(q)}</span></li>`).join('')}</ul>
         <button class="btn${inShop?'':' primary'}" type="button" id="addShop">${inShop?`買い物リストを${serv}人分で更新`:'買い物リストに追加'}</button></div>
       <div><h3>作り方 <span class="aside"><button class="btn small wake" type="button" id="wakeBtn" aria-pressed="${!!wake}">画面をつけたままにする</button></span></h3>
         <ol class="steps">${st.map((s,i)=>`<li class="${done[i]?'done':''}"><span>${esc(s)}</span></li>`).join('')}</ol>
         <p class="hint">終わった手順をタップするとチェックが付きます。</p></div>
       ${r.named&&r.d.tips&&r.d.tips.length?`<div><h3>おいしく作るコツ</h3><ul class="tips">${r.d.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`:''}
-      <div><h3>栄養（1人分）</h3>
+      <div><h3>栄養（${r.cat==='タレ・調味料'?'1回分の目安':'1人分'}）</h3>
         <div class="nut">
           ${nrow('エネルギー',r.kcal,'kcal',TARGET.kcal)}
           ${nrow('たんぱく質',r.P,'g',TARGET.P)}
@@ -2669,6 +3201,7 @@ function renderDetail(){
       ${sim.length?`<div><h3>こちらもおすすめ</h3><div class="sim">${sim.map(card).join('')}</div></div>`:''}
     </div></div>`;
 }
+function sauceLink(n,r){ const t=SAUCE_LINK[n]; if(!t||t===r.name) return ''; const id=idOf(t); return id==null?'':` <button class="slink" type="button" data-id="${id}">手作りレシピ</button>`; }
 function addToShop(r){
   const ing=ingredients(r,serv);
   const skip=/^(水|冷水|湯|サラダ油|揚げ油|塩|塩\(ゆで用\)|酒|塩・こしょう|こしょう|黒こしょう)$/;
