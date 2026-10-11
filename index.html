@@ -248,27 +248,88 @@ footer p{max-width:65ch;margin:0}
 .ing{list-style:none;margin:0 0 12px;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .ing li{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:.97rem}
 .ing li:last-child{border-bottom:0}
-.ing li span:last-child{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.ing li span:last-child{color:var(--ink);font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.ing.chk li:not(.h){cursor:pointer;position:relative;padding-left:40px}
+.ing.chk li:not(.h)::before{content:"";position:absolute;left:14px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:5px;border:2px solid var(--line)}
+.ing.chk li.got{color:var(--muted)}
+.ing.chk li.got span{text-decoration:line-through}
+.ing.chk li.got::before{background:var(--accent);border-color:var(--accent)}
+.ing.chk li.got::after{content:"✓";position:absolute;left:17px;top:50%;transform:translateY(-52%);color:var(--accent-ink);font-size:.75rem;font-weight:700}
+.ihint{margin:-4px 0 8px}
+.ibtns{display:flex;flex-wrap:wrap;gap:8px}
+.scalenote{font-size:.85rem;background:var(--yolk-soft);border-radius:10px;padding:8px 12px;margin:0 0 12px;line-height:1.6}
+.step:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .ing li.h{background:var(--sunk);font-size:.78rem;font-weight:700;letter-spacing:.06em;color:var(--muted);padding-block:5px}
-.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:6px}
-.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;font-size:1.02rem;line-height:1.8;padding:10px;border-radius:12px;cursor:pointer}
-.steps li:hover{background:var(--surface)}
-.steps li::before{content:counter(s);font-family:var(--f-display);width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:.95rem}
-.steps li.done{color:var(--muted)}
-.steps li.done span{text-decoration:line-through}
-.steps li.done::before{content:"✓";background:var(--accent);color:var(--accent-ink);font-family:var(--f-body);font-weight:700}
 .hint{font-size:.82rem;color:var(--muted);margin:6px 0 0}
 .sim{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .wake[aria-pressed="true"]{background:var(--yolk-soft);border-color:var(--yolk)}
 
-.steps .heat{font-weight:700;padding:0 5px;border-radius:6px;white-space:nowrap}
-.steps .h3{background:var(--warn-soft);color:var(--warn)}
-.steps .h2{background:var(--yolk-soft);color:var(--ink)}
-.steps .h1{background:var(--accent-soft);color:var(--accent)}
-.steps .temp{font-weight:700;color:var(--warn);white-space:nowrap}
-.steps .tmr{font:inherit;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:8px;padding:0 6px;margin:0 1px;cursor:pointer;white-space:nowrap;line-height:1.6}
-.steps .tmr::after{content:" ⏱";font-size:.8em}
-.steps .tmr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px 14px;cursor:pointer;transition:opacity .2s,border-color .2s}
+.step .sh{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin-bottom:8px}
+.step .num,.ck-step .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--f-display);font-size:.95rem}
+.ph{font-size:.76rem;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.ph-加熱{background:var(--warn-soft);color:var(--warn)}
+.ph-仕上げ{background:var(--accent-soft);color:var(--accent)}
+.ph-待つ{background:var(--yolk-soft);color:var(--ink)}
+.step .chips,.ck-step .chips{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 auto}
+.sc{display:inline-flex;align-items:center;font-size:.82rem;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;line-height:1.4}
+.sc.tc{background:var(--warn-soft);color:var(--warn)}
+.step .chk{margin-left:auto;flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line)}
+.step .sb p,.ck-step .sb p{margin:0 0 .5em;font-size:1.06rem;line-height:1.85;color:var(--ink)}
+.step .sb p:last-child,.ck-step .sb p:last-child{margin-bottom:0}
+.steps .note{font-size:.86em;color:var(--muted)}
+.steps .lab{display:inline-block;font-size:.82em;background:var(--sunk);padding:1px 8px;border-radius:6px;margin-right:4px}
+.step.done{opacity:.55;border-style:dashed}
+.step.done .sb p{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent)}
+.step.done .chk{background:var(--accent);border-color:var(--accent)}
+.step.done .chk::after{content:"✓";display:grid;place-items:center;height:100%;color:var(--accent-ink);font-weight:700;font-size:.85rem}
+.steps .heat,.steps-hint .heat,.ck-step .heat{font-weight:700;padding:0 5px;border-radius:6px;white-space:nowrap}
+.sc.heat{padding:3px 8px}
+:is(.steps,.steps-hint,.ck-step) .sc.tmr{line-height:1.4;padding:3px 8px;font-size:.82rem}
+.cnt{font-size:.8rem;font-weight:500;color:var(--muted)}
+.cookbtn{width:100%;justify-content:center;flex-direction:column;gap:2px;padding:12px 16px;margin:0 0 12px;font-size:1.02rem;display:flex;align-items:center;height:auto;min-height:56px}
+.cookbtn small{font-weight:500;font-size:.78rem;opacity:.85}
+.steps-hint{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.82rem;color:var(--muted);margin:0 0 12px}
+.snav{position:sticky;top:0;z-index:3;display:flex;gap:6px;padding:8px 0;margin:-12px 0 -8px;background:var(--bg);border-bottom:1px solid var(--line)}
+.snav button{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:.88rem;border-radius:999px;height:38px;cursor:pointer}
+.snav button:active{background:var(--accent-soft)}
+#sec-ing,#sec-steps,#sec-tips,#sec-nut{scroll-margin-top:60px}
+.cook{position:fixed;inset:0;z-index:72;background:var(--bg);display:grid;grid-template-rows:auto auto auto 1fr auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.cook[hidden]{display:none}
+.ck-top{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.ck-top button{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:.88rem;border-radius:999px;height:40px;padding:0 14px;cursor:pointer;white-space:nowrap}
+.ck-top .ck-ing[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.ck-tt{flex:1;min-width:0;display:grid;text-align:center}
+.ck-tt b{font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ck-tt span{font-size:.8rem;color:var(--muted)}
+.ck-prog{display:flex;gap:4px;padding:0 16px 8px}
+.ck-prog i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.ck-prog i.d{background:var(--accent)}
+.ck-prog i.c{background:var(--yolk)}
+.ck-ings{max-height:38vh;overflow:auto;padding:0 16px 8px}
+.ck-ings h4{margin:4px 0 8px;font-size:.9rem}
+.ck-main{overflow:auto;padding:8px 16px 16px;overscroll-behavior:contain}
+.ck-step{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px 18px;max-width:720px;margin:0 auto}
+.ck-step .sh{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.ck-step .sb p{font-size:1.32rem;line-height:1.85}
+.ck-nextup{max-width:720px;margin:14px auto 0;font-size:.9rem;color:var(--muted);line-height:1.7}
+.ck-nextup span{display:block;font-size:.75rem;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.ck-nextup.done{font-weight:700;color:var(--accent);text-align:center;font-size:1rem}
+.ck-nav{display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:10px 16px 14px;border-top:1px solid var(--line);background:var(--bg)}
+.ck-nav .btn{height:58px;font-size:1.08rem;justify-content:center}
+.ck-nav .btn:disabled{opacity:.4}
+.has-tmr .cook .ck-main{padding-bottom:110px}
+.has-tmr .timers{bottom:calc(var(--nav-h) + 12px + env(safe-area-inset-bottom,0px))}
+body:has(#cook:not([hidden])) .timers{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+
+:is(.steps,.steps-hint,.ck-step) .h3{background:var(--warn-soft);color:var(--warn)}
+:is(.steps,.steps-hint,.ck-step) .h2{background:var(--yolk-soft);color:var(--ink)}
+:is(.steps,.steps-hint,.ck-step) .h1{background:var(--accent-soft);color:var(--accent)}
+:is(.steps,.steps-hint,.ck-step) .temp{font-weight:700;color:var(--warn);white-space:nowrap}
+:is(.steps,.steps-hint,.ck-step) .tmr{font:inherit;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:8px;padding:0 6px;margin:0 1px;cursor:pointer;white-space:nowrap;line-height:1.6}
+:is(.steps,.steps-hint,.ck-step) .tmr::after{content:" ⏱";font-size:.8em}
+:is(.steps,.steps-hint,.ck-step) .tmr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .timers{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--nav-h) + 12px + env(safe-area-inset-bottom,0px));z-index:75;display:grid;gap:6px;width:min(420px,calc(100% - 32px))}
 .timers:empty{display:none}
 .tmrbar{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;background:var(--ink);color:var(--bg);border-radius:14px;padding:8px 8px 8px 14px;box-shadow:var(--shadow)}
@@ -3156,14 +3217,14 @@ for(const line of (CATALOG.trim()+'\n'+CATALOG2.trim()+'\n'+CATALOG3.trim()+'\n'
 }
 const CAT_GLYPH={一品:'肴',ご飯もの:'飯',麺:'麺',汁物:'汁',鍋:'鍋',おやつ:'甘','パン・朝食':'朝',粉もの:'粉'};
 function makeNamed(id,d){
-  let K=0,P=0,F=0,C=0,fib=0,salt=0;
+  let K=0,P=0,F=0,C=0,fib=0,salt=0,vegG=0;
   const all=[...d.ings,...d.seas];
   for(const [n,q] of all){
     if(n==='揚げ油'){ F+=12*d.s; K+=108*d.s; continue; }
     const e=dbGet(n); if(!e) continue; const g=grams(q,e);
-    K+=e.k*g/100; P+=e.p*g/100; F+=e.f*g/100; C+=e.c*g/100; fib+=e.fib*g/100; salt+=e.salt*g/100;
+    K+=e.k*g/100; P+=e.p*g/100; F+=e.f*g/100; C+=e.c*g/100; fib+=e.fib*g/100; salt+=e.salt*g/100; if(e.cat==='veg') vegG+=g;
   }
-  const s=d.s; K/=s;P/=s;F/=s;C/=s;fib/=s;salt/=s;
+  const s=d.s; vegG/=s; K/=s;P/=s;F/=s;C/=s;fib/=s;salt/=s;
   if(d.nut){ K=d.nut.kcal; P=d.nut.P; F=d.nut.F; C=d.nut.C; fib=d.nut.fib; salt=d.nut.salt; }
   const ings=d.ings.map(x=>canon(x[0])), allN=all.map(x=>canon(x[0]));
   const fls=flavorsOf(all.map(x=>x[0]),d.name);
@@ -3180,8 +3241,9 @@ function makeNamed(id,d){
   if(P>=25) tg|=T.protein;
   if(C<=15&&d.cat!=='おやつ') tg|=T.lowcarb;
   if(d.t<=15) tg|=T.quick;
-  if(fib>=4) tg|=T.veg;
-  if(salt<=1.5) tg|=T.salt;
+  const SWEET=d.cat==='おやつ';
+  if(fib>=3&&vegG>=100&&!SWEET&&!SAUCE) tg|=T.veg;
+  if(salt<=1.5&&!SWEET&&!SAUCE) tg|=T.salt;
   if([...d.flags].includes(SEASON)||seasonIng) tg|=T.season;
   if(d.flags.has('warm')||ms.has('soup')||ms.has('nabe')||d.cat==='汁物'||d.cat==='鍋') tg|=T.warm;
   if(d.flags.has('fresh')||ms.has('salad')) tg|=T.fresh;
@@ -3290,6 +3352,8 @@ const steps=r=>r.named?r.d.steps:comboSteps(r);
 /* ===================== 手順の強調とタイマー ===================== */
 function stepHTML(t){
   let h=esc(t);
+  h=h.replace(/【([^】]+)】/g,'<b class="lab">$1</b>');
+  h=h.replace(/（[^（）]*(?:（[^（）]*）[^（）]*)*）/g,m=>m.length>=6?`<span class="note">${m}</span>`:m);
   h=h.replace(/(ごく弱火|弱めの中火|強めの中火|弱火|中火|強火)/g,m=>`<b class="heat ${/強/.test(m)?'h3':/中火/.test(m)?'h2':'h1'}">${m}</b>`);
   h=h.replace(/(\d+)℃/g,'<b class="temp">$1℃</b>');
   h=h.replace(/(\d+(?:\.\d+)?)(?:〜(\d+(?:\.\d+)?))?(時間|分半|分|秒)(?![立目の量])/g,(m,a,b,u)=>{
@@ -3297,6 +3361,52 @@ function stepHTML(t){
     if(sec<5||sec>6*3600) return m; return `<button type="button" class="tmr" data-sec="${sec}" aria-label="${m}のタイマーを開始">${m}</button>`;});
   return h;
 }
+
+function splitSent(t){ const out=[]; let c='',d=0; for(const ch of t){ c+=ch; if(ch==='（'||ch==='(') d++; else if(ch==='）'||ch===')') d=Math.max(0,d-1); else if(ch==='。'&&d===0){ out.push(c); c=''; } } if(c.trim()) out.push(c); return out.map(x=>x.trim()).filter(Boolean); }
+const HEAT_RE=/(ごく弱火|弱めの中火|強めの中火|弱火|中火|強火)/g;
+function stepPhase(t0,i,n){
+  const t=t0.replace(/（[^（）]*）/g,'');
+  const heat=/(火で|火にかけ|火を弱め|熱し|℃|オーブン|レンジ|トースター|グリル|蒸し器|炊飯器|ゆでる|ゆで、|ゆでて|揚げる|揚げ、|揚げて|焼く|焼き、|焼いて|炒め|煮る|煮て|煮立|煮詰|沸騰|蒸す|蒸し焼き|温め|炊く|焼き色)/.test(t);
+  const fin=/(器に盛|皿に盛|盛り付|盛る|添える|をのせる|をかける|をふる。?$|切り分け|完成)/.test(t);
+  if(/(室温に戻|冷蔵庫から出|砂抜き|水切り|浸水|もどす|戻す)/.test(t)&&!/(火にかけ|熱し|ゆで|揚げ|炒め)/.test(t)) return '下ごしらえ';
+  if(i===n-1&&(fin||/火を止め/.test(t)||!heat)) return '仕上げ';
+  if(heat&&!/^火を止め/.test(t)) return '加熱';
+  if(fin&&i>=n-2) return '仕上げ';
+  if(/(冷蔵庫|冷やし固|おく。|漬ける|休ませ|寝かせ|冷ます|発酵)/.test(t)) return '待つ';
+  return '下ごしらえ';
+}
+function stepChips(t){
+  const heats=[...new Set(t.match(HEAT_RE)||[])].slice(0,2);
+  const temp=(t.match(/(\d+)℃/)||[])[0];
+  let best=null; t.replace(/(\d+(?:\.\d+)?)(?:〜(\d+(?:\.\d+)?))?(時間|分半|分|秒)(?![立目の量])/g,(m,a,b,u)=>{const mul=u==='時間'?3600:u==='秒'?1:60; const sec=Math.round(+a*mul)+(u==='分半'?30:0); if(sec>=5&&sec<=6*3600&&(!best||sec>best.sec)) best={sec,m}; return m;});
+  return heats.map(h=>`<span class="sc heat ${/強/.test(h)?'h3':/中火/.test(h)?'h2':'h1'}">🔥${h}</span>`).join('')
+    +(temp?`<span class="sc tc">🌡${temp}</span>`:'')
+    +(best?`<button type="button" class="sc tmr tchip" data-sec="${best.sec}" aria-label="${best.m}のタイマーを開始">${best.m}</button>`:'');
+}
+function stepBody(t){ return splitSent(t).map(x=>`<p>${stepHTML(x)}</p>`).join(''); }
+function stepCard(t,i,n,done){
+  const ph=stepPhase(t,i,n);
+  return `<li class="step${done?' done':''}" tabindex="0" aria-label="手順${i+1}（タップで完了チェック）"><div class="sh"><span class="num" aria-hidden="true">${i+1}</span><span class="ph ph-${ph}">${ph}</span><span class="chips">${stepChips(t)}</span><span class="chk" aria-hidden="true"></span></div><div class="sb">${stepBody(t)}</div></li>`;
+}
+/* ===== 調理モード ===== */
+let CK=null;
+function openCook(start){ if(!cur) return; const st=steps(cur); CK={r:cur,st,i:Math.max(0,Math.min(st.length-1,start||0)),ing:false};
+  let el=$('#cook'); if(!el){ el=document.createElement('div'); el.id='cook'; el.className='cook'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); document.body.appendChild(el); }
+  el.hidden=false; renderCook(); try{ if(!wake&&navigator.wakeLock) navigator.wakeLock.request('screen').then(w=>{wake=w; const b=$('#wakeBtn'); if(b) b.setAttribute('aria-pressed','true');}).catch(()=>{}); }catch(e){}
+  el.querySelector('.ck-next')?.focus({preventScroll:true}); }
+function closeCook(){ const el=$('#cook'); if(el){ el.hidden=true; el.innerHTML=''; } CK=null; }
+function renderCook(){ const el=$('#cook'); if(!el||!CK) return; const {r,st,i}=CK, n=st.length, t=st[i], ing=ingredients(r,serv);
+  el.setAttribute('aria-label',`${r.name} 調理モード`);
+  el.innerHTML=`<div class="ck-top"><button type="button" class="ck-x" aria-label="調理モードを閉じる">✕ 閉じる</button><div class="ck-tt"><b>${esc(r.name)}</b><span>手順 ${i+1} / ${n}</span></div><button type="button" class="ck-ing" aria-pressed="${CK.ing}">材料</button></div>
+    <div class="ck-prog" aria-hidden="true">${st.map((_,k)=>`<i class="${k<i?'d':k===i?'c':''}"></i>`).join('')}</div>
+    ${CK.ing?`<div class="ck-ings"><h4>材料（${serv}${r.cat==='タレ・調味料'?'回分':'人分'}）</h4><ul class="ing">${ing.main.concat(ing.base,ing.sea).map(([a,q])=>`<li><span>${esc(a)}</span><span>${esc(q)}</span></li>`).join('')}</ul></div>`:''}
+    <div class="ck-main"><div class="ck-step"><div class="sh"><span class="num">${i+1}</span><span class="ph ph-${stepPhase(t,i,n)}">${stepPhase(t,i,n)}</span><span class="chips">${stepChips(t)}</span></div><div class="sb steps">${stepBody(t)}</div></div>
+      ${i<n-1?`<div class="ck-nextup"><span>次の手順</span>${esc(splitSent(st[i+1])[0]||'')}</div>`:`<div class="ck-nextup done">これで完成です。おいしく召し上がれ！</div>`}</div>
+    <div class="ck-nav"><button type="button" class="btn ck-prev" ${i===0?'disabled':''}>‹ 前へ</button><button type="button" class="btn primary ck-next">${i<n-1?'次へ ›':'完成！閉じる'}</button></div>`;
+}
+function cookGo(d){ if(!CK) return; const n=CK.st.length; if(d>0&&CK.i>=n-1){ closeCook(); toast('おつかれさまでした！'); return; } CK.i=Math.max(0,Math.min(n-1,CK.i+d)); renderCook(); const m=$('#cook .ck-main'); if(m) m.scrollTop=0; }
+(function(){ let x0=null,y0=null; document.addEventListener('touchstart',e=>{ if(!e.target.closest||!e.target.closest('#cook .ck-main')) return; x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
+  document.addEventListener('touchend',e=>{ if(x0==null) return; const dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) cookGo(dx<0?1:-1); },{passive:true}); })();
 const TMR=[]; let tmrIv=null, actx=null;
 function beep(){ try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); const t0=actx.currentTime;
   [0,.35,.7].forEach(d=>{const o=actx.createOscillator(),g=actx.createGain(); o.type='sine'; o.frequency.value=880; g.gain.setValueAtTime(.0001,t0+d); g.gain.exponentialRampToValueAtTime(.4,t0+d+.02); g.gain.exponentialRampToValueAtTime(.0001,t0+d+.28); o.connect(g).connect(actx.destination); o.start(t0+d); o.stop(t0+d+.3);});
@@ -3420,7 +3530,7 @@ function reasons(r){
   if(MEAL==='morning'&&r.t<=15) out.push(`朝でも${r.t}分で作れます`);
   else if(r.t<=15) out.push(`${r.t}分でできる時短レシピです`);
   if(r.P>=25&&r.kcal<=500) out.push(`たんぱく質${r.P}gで${r.kcal}kcal。高たんぱく・低カロリーです`);
-  else if(r.fib>=4) out.push(`食物繊維が${r.fib}gとれて、野菜もしっかり食べられます`);
+  else if(r.fib>=4&&(r.tg&T.veg)) out.push(`食物繊維が${r.fib}gとれて、野菜もしっかり食べられます`);
   else if(r.h>=75) out.push(`たんぱく質・脂質・塩分のバランスが良い一品です`);
   if(r.tg&T.warm&&(SEASON==='秋'||SEASON==='冬')) out.push(`肌寒い季節に体が温まります`);
   return out.slice(0,3);
@@ -3893,7 +4003,7 @@ function openDetail(id){
 }
 function closeDetail(fromPop){
   if(!cur) return;
-  $('#scrim').hidden=true; $('#scrim').innerHTML=''; document.body.style.overflow=''; cur=null;
+  closeCook(); $('#scrim').hidden=true; $('#scrim').innerHTML=''; document.body.style.overflow=''; cur=null;
   releaseWake();
   if(pushed&&!fromPop){ pushed=false; try{ history.back(); }catch(e){} } else pushed=false;
   if(S.view==='home') renderHome();
@@ -3916,6 +4026,7 @@ function renderDetail(){
   const why=reasons(r);
   const inShop=shop.some(g=>g.name===r.name);
   const done=[...document.querySelectorAll('.steps li')].map(li=>li.classList.contains('done'));
+  const got=new Set([...document.querySelectorAll('.ing.chk li.got span:first-child')].map(x=>x.textContent));
   $('#scrim').innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
     <button class="x" type="button" aria-label="閉じる"><span aria-hidden="true">‹</span> 戻る</button>
     ${plate(r)}
@@ -3925,15 +4036,19 @@ function renderDetail(){
         <div class="tags" style="margin-top:10px">${tagHtml(r,6)}</div>
         ${why.length?`<ul class="why" style="margin-top:12px">${why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:''}
         ${r.named?'':`<p class="hint">食材と味つけの組み合わせから作ったアレンジレシピです。</p>`}</div>
-      <div><h3>材料 <span class="aside serv"><button type="button" id="sm" aria-label="1人分減らす">−</button><output id="sv">${serv}${r.cat==='タレ・調味料'?'回分':'人分'}</output><button type="button" id="sp" aria-label="1人分増やす">＋</button></span></h3>
-        <ul class="ing">${ing.main.concat(ing.base).map(([n,q])=>`<li><span>${esc(n)}</span><span>${esc(q)}</span></li>`).join('')}
-          <li class="h">${r.named?'調味料など':esc(r.f.w)+'の調味料'}</li>${ing.sea.map(([n,q])=>`<li><span>${esc(n)}${sauceLink(n,r)}</span><span>${esc(q)}</span></li>`).join('')}</ul>
-        <button class="btn${inShop?'':' primary'}" type="button" id="addShop">${inShop?`買い物リストを${serv}人分で更新`:'買い物リストに追加'}</button></div>
-      <div><h3>作り方 <span class="aside"><button class="btn small wake" type="button" id="wakeBtn" aria-pressed="${!!wake}">画面をつけたままにする</button></span></h3>
-        <p class="steps-hint">緑の「3分⏱」などをタップするとタイマーが動きます。</p><ol class="steps">${st.map((s,i)=>`<li class="${done[i]?'done':''}"><span>${stepHTML(s)}</span></li>`).join('')}</ol>
-        <p class="hint">終わった手順をタップするとチェックが付きます。タイマーは画面下に表示され、時間になると音とバイブでお知らせします（マナーモードでは音が出ない場合があります）。</p></div>
-      ${r.named&&r.d.tips&&r.d.tips.length?`<div><h3>おいしく作るコツ</h3><ul class="tips">${r.d.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`:''}
-      <div><h3>栄養（${r.cat==='タレ・調味料'?'1回分の目安':'1人分'}）</h3>
+      <nav class="snav" aria-label="このレシピの目次"><button type="button" data-jump="sec-ing">材料</button><button type="button" data-jump="sec-steps">作り方</button>${r.named&&r.d.tips&&r.d.tips.length?'<button type="button" data-jump="sec-tips">コツ</button>':''}<button type="button" data-jump="sec-nut">栄養</button></nav>
+      <div id="sec-ing"><h3>材料 <span class="aside serv"><button type="button" id="sm" aria-label="1人分減らす">−</button><output id="sv">${serv}${r.cat==='タレ・調味料'?'回分':'人分'}</output><button type="button" id="sp" aria-label="1人分増やす">＋</button></span></h3>
+        <p class="hint ihint">材料はタップで「用意できた」チェックができます。</p><ul class="ing chk">${ing.main.concat(ing.base).map(([n,q])=>`<li class="${got.has(n)?'got':''}"><span>${esc(n)}</span><span>${esc(q)}</span></li>`).join('')}
+          <li class="h">${r.named?'調味料など':esc(r.f.w)+'の調味料'}</li>${ing.sea.map(([n,q])=>`<li class="${got.has(n)?'got':''}"><span>${esc(n)}${sauceLink(n,r)}</span><span>${esc(q)}</span></li>`).join('')}</ul>
+        <div class="ibtns"><button class="btn${inShop?'':' primary'}" type="button" id="addShop">${inShop?`買い物リストを${serv}人分で更新`:'買い物リストに追加'}</button><button class="btn" type="button" id="shareBtn">レシピを送る</button></div>
+        <div id="copyArea"></div></div>
+      <div id="sec-steps"><h3>作り方 <small class="cnt">${done.filter(Boolean).length?`${done.filter(Boolean).length} / ${st.length} 完了`:`全${st.length}手順`}</small><span class="aside"><button class="btn small wake" type="button" id="wakeBtn" aria-pressed="${!!wake}">画面をつけたままにする</button></span></h3>
+        <button class="btn primary cookbtn" type="button" id="cookBtn">▶ 調理モードで作る<small>大きな文字で1手順ずつ表示</small></button>
+        <p class="steps-hint"><span class="sc h2 heat">🔥火加減</span><span class="sc tc">🌡温度</span><span class="sc tmr tdemo">3分</span>＝タップでタイマー。手順はタップで完了チェック。</p>
+        ${r.named&&serv!==r.d.s?`<p class="scalenote">材料は${serv}人分に計算し直しています。作り方の中の分量（水200mlなど）は${r.d.s}人分の表記なので、${serv>r.d.s?'多め':'少なめ'}に調整してください。</p>`:''}<ol class="steps">${st.map((x,i)=>stepCard(x,i,st.length,done[i])).join('')}</ol>
+        <p class="hint">タイマーは画面下に表示され、時間になると音とバイブでお知らせします（マナーモードでは音が出ない場合があります）。</p></div>
+      ${r.named&&r.d.tips&&r.d.tips.length?`<div id="sec-tips"><h3>おいしく作るコツ</h3><ul class="tips">${r.d.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`:''}
+      <div id="sec-nut"><h3>栄養（${r.cat==='タレ・調味料'?'1回分の目安':'1人分'}）</h3>
         <div class="nut">
           ${nrow('エネルギー',r.kcal,'kcal',TARGET.kcal)}
           ${nrow('たんぱく質',r.P,'g',TARGET.P)}
@@ -3953,9 +4068,14 @@ function addToShop(r){
   const items=ing.main.concat(ing.base,ing.sea).filter(([n])=>!skip.test(n)).map(([n,qq])=>[n,qq,false]);
   shop=shop.filter(g=>g.name!==r.name); shop.push({name:r.name,serv,items}); store.set(SK+'shop',shop); badges();
 }
+function recipeText(r){ const ing=ingredients(r,serv), st=steps(r);
+  return `【${r.name}】${serv}${r.cat==='タレ・調味料'?'回分':'人分'}・${r.t}分・${r.kcal}kcal/人\n\n■材料\n${ing.main.concat(ing.base,ing.sea).map(([n,q])=>`・${n} ${q}`).join('\n')}\n\n■作り方\n${st.map((x,i)=>`${i+1}. ${x}`).join('\n')}${r.named&&r.d.tips&&r.d.tips.length?`\n\n■コツ\n${r.d.tips.map(t=>'・'+t).join('\n')}`:''}\n\n${location.href.split('#')[0]}`; }
+async function shareRecipe(r){ const txt=recipeText(r);
+  if(navigator.share){ try{ await navigator.share({title:r.name,text:txt}); return; }catch(e){ if(e&&e.name==='AbortError') return; } }
+  copyText(txt); }
 async function copyText(txt){
   try{ await navigator.clipboard.writeText(txt); toast('コピーしました'); }
-  catch(e){ const a=$('#copyArea'); if(a){ a.innerHTML=`<p class="hint">自動でコピーできなかったので、下の文字を長押ししてコピーしてください。</p><textarea class="copybox" id="copyBox" readonly></textarea>`; const t=$('#copyBox'); t.value=txt; t.focus(); t.select(); } }
+  catch(e){ const a=(cur&&document.querySelector('#scrim #copyArea'))||$('#copyArea'); if(a){ a.innerHTML=`<p class="hint">自動でコピーできなかったので、下の文字を長押ししてコピーしてください。</p><textarea class="copybox" id="copyBox" readonly></textarea>`; const t=a.querySelector('.copybox'); t.value=txt; t.focus(); t.select(); } }
 }
 
 /* イベント */
@@ -3986,9 +4106,14 @@ document.addEventListener('click',e=>{
     toast(on?'お気に入りに追加しました':'お気に入りから外しました'); buildPref();
     if(S.view==='fav'&&!cur) renderFavs(); return; }
   if(T0.closest('.x')||T0.id==='scrim'){ closeDetail(); return; }
-  const tb=T0.closest('.tmr'); if(tb){ e.stopPropagation(); const li=tb.closest('li'); const idx=li?[...li.parentNode.children].indexOf(li)+1:0; startTimer(+tb.dataset.sec,`${tb.textContent}・手順${idx}${cur?'・'+cur.name:''}`); return; }
+  if(T0.closest('#cook')){ if(T0.closest('.ck-x')){ closeCook(); return; } if(T0.closest('.ck-next')){ cookGo(1); return; } if(T0.closest('.ck-prev')){ cookGo(-1); return; } if(T0.closest('.ck-ing')){ CK.ing=!CK.ing; renderCook(); return; } }
+  const jp=T0.closest('[data-jump]'); if(jp){ const tg=document.getElementById(jp.dataset.jump), sh=T0.closest('.sheet'); if(tg&&sh){ const nav=sh.querySelector('.snav'); sh.scrollTo({top:tg.offsetTop-(nav?nav.offsetHeight:0)-8,behavior:'smooth'}); } return; }
+  if(T0.closest('#cookBtn')){ const lis=[...document.querySelectorAll('.steps li')]; const k=lis.findIndex(li=>!li.classList.contains('done')); openCook(k<0?0:k); return; }
+  if(T0.closest('.tdemo')) return;
+  const tb=T0.closest('.tmr'); if(tb){ e.stopPropagation(); const li=tb.closest('li'); const idx=CK&&tb.closest('#cook')?CK.i+1:li?[...li.parentNode.children].indexOf(li)+1:0; startTimer(+tb.dataset.sec,`${tb.textContent}・手順${idx}${cur?'・'+cur.name:''}`); return; }
   const ta=T0.closest('[data-tact]'); if(ta){ const t=TMR.find(x=>String(x.id)===ta.closest('[data-tid]').dataset.tid); if(t){ if(ta.dataset.tact==='stop'){ TMR.splice(TMR.indexOf(t),1); } else if(t.paused){ t.paused=false; t.end=Date.now()+t.left*1000; if(!tmrIv) tmrIv=setInterval(tickTimers,250);} else { t.left=(t.end-Date.now())/1000; t.paused=true; } renderTimers(); } return; }
-  const stp=T0.closest('.steps li'); if(stp){ stp.classList.toggle('done'); return; }
+  const il=T0.closest('.ing.chk li'); if(il&&!il.classList.contains('h')&&!T0.closest('button')){ il.classList.toggle('got'); return; }
+  const stp=T0.closest('.steps li'); if(stp){ stp.classList.toggle('done'); const a=document.querySelectorAll('.steps li').length,b=document.querySelectorAll('.steps li.done').length; const c=$('.cnt'); if(c) c.textContent=b?`${b} / ${a} 完了`:`全${a}手順`; return; }
   const tab=T0.closest('[data-tab]');
   if(tab){ closeDetail(); const t=tab.dataset.tab; if(t==='home') goHome(); else if(t==='fav') renderFavs(); else if(t==='shop') renderShop(); else renderSettings(); window.scrollTo(0,0); return; }
   const tg=T0.closest('[data-tag]');
@@ -4016,13 +4141,16 @@ document.addEventListener('click',e=>{
     case 'sp': if(serv<8){serv++; renderDetail();} break;
     case 'addShop': addToShop(cur); renderDetail(); toast(`${serv}人分の材料を買い物リストに入れました`); break;
     case 'wakeBtn': toggleWake(T0.closest('button')); break;
+    case 'shareBtn': shareRecipe(cur); break;
     case 'shopCopy': copyText(shopText()); break;
     case 'shopClear': shop=[]; store.set(SK+'shop',shop); badges(); renderShop(); toast('買い物リストを空にしました'); break;
     case 'resetSet': settings={ng:[],allergy:[]}; store.set(SK+'settings',settings); rebuildPool(); renderSettings(); break;
   }
 });
 document.addEventListener('keydown',e=>{
+  if(CK){ if(e.key==='Escape'){ closeCook(); return; } if(e.key==='ArrowRight'){ cookGo(1); return; } if(e.key==='ArrowLeft'){ cookGo(-1); return; } }
   if(e.key==='Escape'&&cur) closeDetail();
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.steps li.step')){ e.preventDefault(); e.target.click(); return; }
   if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.card[data-id]')){ e.preventDefault(); openDetail(+e.target.dataset.id); }
 });
 document.addEventListener('visibilitychange',async()=>{ if(document.visibilityState==='visible'&&cur&&!wake&&$('#wakeBtn')?.getAttribute('aria-pressed')==='true'){ try{wake=await navigator.wakeLock.request('screen');}catch(e){} } });
