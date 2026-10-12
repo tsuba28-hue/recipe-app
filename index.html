@@ -71,7 +71,7 @@ button{cursor:pointer}
 .nav .badge:empty{display:none}
 @media (max-width:719px){
   :root{--nav-h:64px}
-  .nav{position:fixed;left:0;right:0;width:100%;bottom:0;z-index:40;margin:0;gap:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  .nav{position:fixed;left:0;right:0;width:100%;bottom:0;z-index:40;margin:0;gap:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
   .nav button{flex-direction:column;gap:2px;font-size:.72rem;padding:6px 2px;border-radius:12px}
   .nav button svg{width:23px;height:23px}
   .nav button[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
@@ -341,6 +341,41 @@ body:has(#cook:not([hidden])) .timers{bottom:calc(92px + env(safe-area-inset-bot
 @keyframes tpulse{50%{transform:scale(1.02)}}
 @media (prefers-reduced-motion:reduce){.tmrbar.end{animation:none}}
 .steps-hint{font-size:.85rem;color:var(--muted);margin:-2px 0 8px}
+.frcta{width:100%;margin-bottom:6px;display:flex;align-items:center;gap:14px;text-align:left;border:0;cursor:pointer;background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:16px 18px;font:inherit;box-shadow:var(--shadow)}
+.frcta .ico{flex:none;width:46px;height:46px;border-radius:12px;background:color-mix(in srgb,var(--accent-ink) 18%,transparent);display:grid;place-items:center}
+.frcta svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.frcta b{display:block;font-size:1.05rem}
+.frcta small{display:block;font-size:.82rem;opacity:.9;margin-top:2px;line-height:1.5}
+.frcta .arr{margin-left:auto;font-size:1.6rem;line-height:1}
+.fsel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px;margin-bottom:14px}
+.fsel-h{display:flex;justify-content:space-between;align-items:center}
+.fsel .btn.wide{justify-content:center;text-decoration:none}
+.btn.wide{width:100%;justify-content:center;margin-top:12px}
+.fchips{display:flex;flex-wrap:wrap;gap:8px}
+.fchip,.fmore{font:inherit;font-size:.92rem;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:0 14px;height:40px;cursor:pointer}
+.fchip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.fchip[aria-pressed="true"]::before{content:"✓ "}
+.fmore{border-style:dashed;color:var(--muted)}
+.ftag{display:inline-flex;align-items:center;gap:2px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.92rem;border-radius:999px;padding:0 4px;height:38px}
+.ftag.must{background:var(--yolk-soft);color:var(--ink)}
+.ftag button{border:0;background:none;color:inherit;font:inherit;min-width:32px;height:32px;border-radius:50%;cursor:pointer}
+.ftag button[data-frmust]{color:var(--yolk);font-size:1.05rem}
+.fsearch{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px;height:46px;margin-bottom:6px}
+.fsearch svg{width:20px;height:20px;fill:none;stroke:var(--muted);stroke-width:2;flex:none}
+.fsearch input{border:0;background:none;flex:1;min-width:0;color:var(--ink);outline:none}
+.fgroup{margin-top:16px}
+.fgroup h3{font-size:.85rem;color:var(--muted);margin:0 0 8px;letter-spacing:.04em}
+.fcats{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.fcats .chip{flex:none}
+#fr-res{scroll-margin-top:10px}
+.fm{display:grid;gap:3px;margin:6px 0 4px;font-size:.8rem;line-height:1.45}
+.fm-ok{color:var(--accent);font-weight:700}
+.fm-miss{color:var(--warn)}
+.fm-miss b{font-weight:700}
+.fm-sub{color:var(--muted)}
+.fm-opt{color:var(--muted)}
+.ing em.home{font-style:normal;font-size:.72rem;font-weight:700;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 6px;margin-left:4px;text-decoration:none;display:inline-block}
+.ing em.home.sub{background:var(--sunk);color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.9rem;font-weight:700;z-index:80;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
 .copybox{width:100%;min-height:120px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);font-size:.9rem;margin-top:8px}
 .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
@@ -377,6 +412,7 @@ body:has(#cook:not([hidden])) .timers{bottom:calc(92px + env(safe-area-inset-bot
     <button class="logo" id="logo" type="button"><i aria-hidden="true"></i><span>きょうのレシピ帖</span></button>
     <nav class="nav" aria-label="メニュー">
       <button type="button" data-tab="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>さがす</button>
+      <button type="button" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M5 10h14M8.5 6v1.5M8.5 13v3"/></svg>冷蔵庫<span class="badge" id="frN"></span></button>
       <button type="button" data-tab="fav"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-9.3-9.7C1.6 7.1 3.8 4 7 4c2 0 3.6 1.1 4.5 2.6h1C13.4 5.1 15 4 17 4c3.2 0 5.4 3.1 4.3 6.6-1.7 5.1-9.3 9.7-9.3 9.7z"/></svg>お気に入り<span class="badge" id="favN"></span></button>
       <button type="button" data-tab="shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>買い物<span class="badge" id="shopN"></span></button>
       <button type="button" data-tab="set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>設定</button>
@@ -3846,11 +3882,11 @@ function renderChips(){
 const IDEAS=['味噌カツ','名古屋めし','冷やし中華','ケーキ','おつまみ','鶏むね肉でダイエット','15分でできる晩ごはん',`旬の${SEASON}野菜で温まる`,'がっつり高たんぱく','子どもが喜ぶ','なす抜き 中華','おやつ'];
 function setChrome(view){
   S.view=view;
-  const tab={home:'home',results:'home',fav:'fav',shop:'shop',set:'set'}[view];
+  const tab={home:'home',results:'home',fav:'fav',shop:'shop',set:'set',fridge:'fridge'}[view];
   document.querySelectorAll('.nav button').forEach(b=>{ if(b.dataset.tab===tab) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
   $('#hero').hidden=view!=='home';
   $('#searchbar').hidden=!(view==='home'||view==='results');
-  $('#ideas').innerHTML=view==='home'?IDEAS.map(t=>`<button type="button" class="idea" data-q="${esc(t)}">${esc(t)}</button>`).join(''):'';
+  $('#ideas').innerHTML=view==='home'?frCta()+IDEAS.map(t=>`<button type="button" class="idea" data-q="${esc(t)}">${esc(t)}</button>`).join(''):'';
 }
 function exclNote(){ return excludedN?`<p class="hint">苦手・アレルギーの設定で${fmt(excludedN)}品を除いています。<button class="linkish" type="button" data-tab="set">設定を見る</button></p>`:''; }
 
@@ -3988,7 +4024,7 @@ function renderSettings(){
     <div class="panel"><h3>保存されるデータについて</h3><p>お気に入り・買い物リスト・設定は、このブラウザの中だけに保存されます。ほかの人や別の端末とは共有されません。ブラウザのデータを消すとリセットされます。</p></div>
   </div></section>`;
 }
-function badges(){ $('#favN').textContent=favs.size||''; $('#shopN').textContent=shopLeft()||''; }
+function badges(){ const fb=$('#frN'); if(fb) fb.textContent=pantry.have.size||''; $('#favN').textContent=favs.size||''; $('#shopN').textContent=shopLeft()||''; }
 
 /* 詳細 */
 let cur=null, serv=2, wake=null, pushed=false;
@@ -4038,7 +4074,7 @@ function renderDetail(){
         ${r.named?'':`<p class="hint">食材と味つけの組み合わせから作ったアレンジレシピです。</p>`}</div>
       <nav class="snav" aria-label="このレシピの目次"><button type="button" data-jump="sec-ing">材料</button><button type="button" data-jump="sec-steps">作り方</button>${r.named&&r.d.tips&&r.d.tips.length?'<button type="button" data-jump="sec-tips">コツ</button>':''}<button type="button" data-jump="sec-nut">栄養</button></nav>
       <div id="sec-ing"><h3>材料 <span class="aside serv"><button type="button" id="sm" aria-label="1人分減らす">−</button><output id="sv">${serv}${r.cat==='タレ・調味料'?'回分':'人分'}</output><button type="button" id="sp" aria-label="1人分増やす">＋</button></span></h3>
-        <p class="hint ihint">材料はタップで「用意できた」チェックができます。</p><ul class="ing chk">${ing.main.concat(ing.base).map(([n,q])=>`<li class="${got.has(n)?'got':''}"><span>${esc(n)}</span><span>${esc(q)}</span></li>`).join('')}
+        <p class="hint ihint">材料はタップで「用意できた」チェックができます。</p><ul class="ing chk">${ing.main.concat(ing.base).map(([n,q])=>`<li class="${got.has(n)?'got':''}"><span>${esc(n)}${pantry.have.has(canon(n))?' <em class="home">家にある</em>':frHas(canon(n))===2?` <em class="home sub">${esc(frSubName(canon(n)))}で代用</em>`:''}</span><span>${esc(q)}</span></li>`).join('')}
           <li class="h">${r.named?'調味料など':esc(r.f.w)+'の調味料'}</li>${ing.sea.map(([n,q])=>`<li class="${got.has(n)?'got':''}"><span>${esc(n)}${sauceLink(n,r)}</span><span>${esc(q)}</span></li>`).join('')}</ul>
         <div class="ibtns"><button class="btn${inShop?'':' primary'}" type="button" id="addShop">${inShop?`買い物リストを${serv}人分で更新`:'買い物リストに追加'}</button><button class="btn" type="button" id="shareBtn">レシピを送る</button></div>
         <div id="copyArea"></div></div>
@@ -4065,7 +4101,7 @@ function sauceLink(n,r){ const t=SAUCE_LINK[n]; if(!t||t===r.name) return ''; co
 function addToShop(r){
   const ing=ingredients(r,serv);
   const skip=/^(水|冷水|湯|サラダ油|揚げ油|塩|塩\(ゆで用\)|酒|塩・こしょう|こしょう|黒こしょう)$/;
-  const items=ing.main.concat(ing.base,ing.sea).filter(([n])=>!skip.test(n)).map(([n,qq])=>[n,qq,false]);
+  const items=ing.main.concat(ing.base,ing.sea).filter(([n])=>!skip.test(n)&&!frHas(canon(n))).map(([n,qq])=>[n,qq,false]);
   shop=shop.filter(g=>g.name!==r.name); shop.push({name:r.name,serv,items}); store.set(SK+'shop',shop); badges();
 }
 function recipeText(r){ const ing=ingredients(r,serv), st=steps(r);
@@ -4091,6 +4127,7 @@ function goHome(){S.q='';S.tags=0;S.cu='';S.cat='';S.sort='auto';S.showAll=false
 $('#logo').addEventListener('click',goHome);
 try{ new IntersectionObserver(([e])=>$('#searchbar').classList.toggle('stuck',!e.isIntersecting)).observe($('.top')); }catch(e){}
 
+document.addEventListener('input',e=>{ if(e.target.id==='frq'){ FR.q=e.target.value; clearTimeout(FR.t); FR.t=setTimeout(()=>{ const el=$('#frq'); const pos=el?el.selectionStart:0; renderFridge(); const n=$('#frq'); if(n){ n.focus({preventScroll:true}); try{n.setSelectionRange(pos,pos);}catch(_){} } },250); } });
 document.addEventListener('change',e=>{
   const t=e.target;
   if(t.id==='cu'){S.cu=t.value;doSearch();}
@@ -4114,8 +4151,14 @@ document.addEventListener('click',e=>{
   const ta=T0.closest('[data-tact]'); if(ta){ const t=TMR.find(x=>String(x.id)===ta.closest('[data-tid]').dataset.tid); if(t){ if(ta.dataset.tact==='stop'){ TMR.splice(TMR.indexOf(t),1); } else if(t.paused){ t.paused=false; t.end=Date.now()+t.left*1000; if(!tmrIv) tmrIv=setInterval(tickTimers,250);} else { t.left=(t.end-Date.now())/1000; t.paused=true; } renderTimers(); } return; }
   const il=T0.closest('.ing.chk li'); if(il&&!il.classList.contains('h')&&!T0.closest('button')){ il.classList.toggle('got'); return; }
   const stp=T0.closest('.steps li'); if(stp){ stp.classList.toggle('done'); const a=document.querySelectorAll('.steps li').length,b=document.querySelectorAll('.steps li.done').length; const c=$('.cnt'); if(c) c.textContent=b?`${b} / ${a} 完了`:`全${a}手順`; return; }
+  const fr=T0.closest('[data-fr]'); if(fr){ const n=fr.dataset.fr; if(pantry.have.has(n)){ pantry.have.delete(n); pantry.must.delete(n); } else pantry.have.add(n); savePantry(); const y=window.scrollY; renderFridge(); window.scrollTo(0,y); return; }
+  const fm=T0.closest('[data-frmust]'); if(fm){ const n=fm.dataset.frmust; pantry.must.has(n)?pantry.must.delete(n):pantry.must.add(n); savePantry(); const y=window.scrollY; renderFridge(); window.scrollTo(0,y); return; }
+  const fmo=T0.closest('[data-frmore]'); if(fmo){ FR.more[fmo.dataset.frmore]=1; const y=window.scrollY; renderFridge(); window.scrollTo(0,y); return; }
+  const fc=T0.closest('[data-frcat]'); if(fc){ FR.cat=fc.dataset.frcat; const y=window.scrollY; renderFridge(); window.scrollTo(0,y); return; }
+  if(T0.closest('#frClear')){ pantry.have.clear(); pantry.must.clear(); savePantry(); renderFridge(); return; }
+  if(T0.closest('a[href="#fr-res"]')){ e.preventDefault(); document.getElementById('fr-res')?.scrollIntoView({behavior:'smooth',block:'start'}); return; }
   const tab=T0.closest('[data-tab]');
-  if(tab){ closeDetail(); const t=tab.dataset.tab; if(t==='home') goHome(); else if(t==='fav') renderFavs(); else if(t==='shop') renderShop(); else renderSettings(); window.scrollTo(0,0); return; }
+  if(tab){ closeDetail(); const t=tab.dataset.tab; if(t==='home') goHome(); else if(t==='fav') renderFavs(); else if(t==='shop') renderShop(); else if(t==='fridge') renderFridge(); else renderSettings(); window.scrollTo(0,0); return; }
   const tg=T0.closest('[data-tag]');
   if(tg){ S.tags^=T[tg.dataset.tag]; tg.setAttribute('aria-pressed',!!(S.tags&T[tg.dataset.tag])); doSearch(); return; }
   const ct=T0.closest('[data-cat]');
@@ -4139,7 +4182,7 @@ document.addEventListener('click',e=>{
     case 'reset': goHome(); break;
     case 'sm': if(serv>1){serv--; renderDetail();} break;
     case 'sp': if(serv<8){serv++; renderDetail();} break;
-    case 'addShop': addToShop(cur); renderDetail(); toast(`${serv}人分の材料を買い物リストに入れました`); break;
+    case 'addShop': addToShop(cur); renderDetail(); toast(pantry.have.size?`家にある食材を除いて、${serv}人分の材料を買い物リストに入れました`:`${serv}人分の材料を買い物リストに入れました`); break;
     case 'wakeBtn': toggleWake(T0.closest('button')); break;
     case 'shareBtn': shareRecipe(cur); break;
     case 'shopCopy': copyText(shopText()); break;
@@ -4155,6 +4198,113 @@ document.addEventListener('keydown',e=>{
 });
 document.addEventListener('visibilitychange',async()=>{ if(document.visibilityState==='visible'&&cur&&!wake&&$('#wakeBtn')?.getAttribute('aria-pressed')==='true'){ try{wake=await navigator.wakeLock.request('screen');}catch(e){} } });
 
+
+/* ===================== 冷蔵庫から探す ===================== */
+const FR_GARN=new Set(['小ねぎ','大葉','のり','パクチー','三つ葉','紅しょうが','かつお節','バジル','パセリ','レモン','天かす','いりごま','黒ごま','白ごま','すりごま','せり','えごまの葉','桜でんぶ','乾燥わかめ']);
+const FR_ASSUME=/^(水|湯|冷水|氷|ぬるま湯|塩|砂糖|しょうゆ|酢|みそ|味噌|サラダ油|ごま油|オリーブオイル|揚げ油|酒|みりん|片栗粉|薄力粉|小麦粉|パン粉|こしょう|塩・こしょう|黒こしょう|だし|ご飯|米)$/;
+const FR_SUBS=[
+ ['豚バラ肉','豚こま切れ肉'],['豚ロース肉','豚肩ロース肉','豚ヒレ肉'],['豚こま切れ肉','豚肩ロース肉'],
+ ['牛こま切れ肉','牛ロース肉','牛もも肉','牛もも肉ブロック'],
+ ['鶏もも肉','鶏むね肉','骨付き鶏もも肉'],
+ ['手羽元','手羽先'],
+ ['合いびき肉','豚ひき肉','鶏ひき肉'],
+ ['木綿豆腐','絹ごし豆腐'],
+ ['むきえび','えび'],
+ ['生鮭','サーモン'],
+ ['たら','鯛'],
+ ['ピザ用チーズ','スライスチーズ'],
+ ['ベーコン','ハム','ウインナー'],
+ ['トマト','ミニトマト'],
+];
+const FR_SUBMAP={}; FR_SUBS.forEach(g=>g.forEach(n=>FR_SUBMAP[n]=[...new Set([...(FR_SUBMAP[n]||[]),...g])]));
+const FR_KINOKO=/しいたけ|しめじ|まいたけ|えのき|エリンギ|マッシュルーム|なめこ/;
+const FR_GROUPS=[['meat','肉・加工肉'],['fish','魚介'],['eggsoy','卵・豆腐・大豆'],['veg','野菜'],['kinoko','きのこ'],['grain','ご飯・麺・パン・粉'],['dairy','乳製品'],['etc','果物・その他']];
+function frGroupOf(n){ const e=dbGet(n); const c=e?e.cat:''; if(FR_KINOKO.test(n)) return 'kinoko'; if(c==='egg'||c==='soy') return 'eggsoy'; if(c==='meat'||c==='fish'||c==='veg'||c==='grain'||c==='dairy') return c; if(c==='fruit'||c==='sweet'||c==='other') return 'etc'; return null; }
+const frAssumed=n=>{ if(FR_ASSUME.test(n)) return true; const e=dbGet(n); return !e||e.cat==='season'; };
+function frReq(r){
+  if(r._fr) return r._fr;
+  const out=[], seen=new Set();
+  const src=r.named?r.d.ings:r.ings.map(n=>[n,'']);
+  for(const [n0,q] of src){ const n=canon(n0); if(seen.has(n)||frAssumed(n)) continue; seen.add(n); out.push({n,opt:/適量|少々|適宜|お好み/.test(q)||(FR_GARN.has(n)&&!/(\d{2,}\s*g|束)/.test(q))}); }
+  return r._fr=out;
+}
+// 食材の一覧（よく使う順）
+const FR_ITEMS=(()=>{ const cnt={}; ALL.forEach(r=>{ if(!r.named) return; frReq(r).forEach(x=>{ cnt[x.n]=(cnt[x.n]||0)+(x.opt?.3:1); }); });
+  PR.forEach(p=>cnt[p.n]=(cnt[p.n]||0)+3); VG.forEach(v=>cnt[v.n]=(cnt[v.n]||0)+3);
+  const g={}; Object.keys(cnt).forEach(n=>{ const k=frGroupOf(n); if(!k) return; (g[k]=g[k]||[]).push(n); });
+  for(const k in g) g[k].sort((a,b)=>cnt[b]-cnt[a]);
+  return g; })();
+let pantry=(()=>{ const v=store.get(SK+'pantry',{have:[],must:[]}); return {have:new Set(v.have||[]),must:new Set(v.must||[])}; })();
+const FR={q:'',cat:'',more:{}};
+function savePantry(){ store.set(SK+'pantry',{have:[...pantry.have],must:[...pantry.must]}); badges(); }
+function frHas(n){ if(pantry.have.has(n)) return 1; const g=FR_SUBMAP[n]; if(g&&g.some(x=>pantry.have.has(x))) return 2; return 0; }
+function frSubName(n){ const g=FR_SUBMAP[n]; return g?g.find(x=>pantry.have.has(x)):null; }
+const FR_CATS=[['','すべて'],['主菜','主菜'],['副菜','副菜'],['汁物','汁物'],['鍋','鍋'],['ご飯もの','ご飯もの'],['麺','麺'],['パン・朝食','パン・朝食'],['おやつ','おやつ'],['一品','おつまみ']];
+function frMatch(){
+  if(!pantry.have.size) return null;
+  const must=[...pantry.must].filter(n=>pantry.have.has(n));
+  const B=[[],[],[]], combos=[];
+  for(const r of POOL){
+    if(r.cat==='タレ・調味料') continue;
+    if(FR.cat&&r.cat!==FR.cat) continue;
+    const req=frReq(r); const need=req.filter(x=>!x.opt); if(!need.length) continue;
+    if(must.length&&!must.every(m=>req.some(x=>x.n===m||(FR_SUBMAP[x.n]||[]).includes(m)))) continue;
+    let hit=0, sub=[], miss=[];
+    for(const x of need){ const h=frHas(x.n); if(h===1) hit++; else if(h===2){ hit++; sub.push([x.n,frSubName(x.n)]); } else miss.push(x.n); }
+    if(!hit) continue;
+    if(!r.named){ if(!miss.length&&!sub.length) combos.push({r,hit,sub,miss}); continue; }
+    if(miss.length>2) continue;
+    if(miss.length&&hit<Math.min(2,need.length-0)&&need.length>2) continue;
+    const opt=req.filter(x=>x.opt&&!frHas(x.n)).map(x=>x.n);
+    B[miss.length].push({r,hit,sub,miss,opt,rate:hit/need.length});
+  }
+  const sc=m=>m.hit-m.sub.length*.6-(m.r.cat==='おやつ'&&!FR.cat?1.2:0)+m.rate*.5;
+  const srt=(a,b)=>(sc(b)-sc(a))||byRS(a.r,b.r);
+  B.forEach(b=>b.sort(srt)); combos.sort((a,b)=>byRS(a.r,b.r));
+  return {B,combos:diverse(combos.map(x=>x.r),12)};
+}
+function frCard(m){
+  const extra=[m.miss.length?`<span class="fm-miss">あと <b>${m.miss.map(esc).join('・')}</b></span>`:`<span class="fm-ok">✓ 家にある食材で作れる</span>`,
+    m.sub.length?`<span class="fm-sub">${m.sub.map(([a,b])=>`${esc(a)}→${esc(b)}で代用`).join('、')}</span>`:'',
+    m.opt&&m.opt.length?`<span class="fm-opt">あれば：${m.opt.slice(0,3).map(esc).join('・')}</span>`:''].join('');
+  return card(m.r).replace('<div class="tags">',`<p class="fm">${extra}</p><div class="tags">`);
+}
+function renderFridge(){
+  setChrome('fridge');
+  const sel=[...pantry.have];
+  const q=hira(FR.q.trim()).toLowerCase();
+  const chip=n=>`<button type="button" class="fchip" data-fr="${esc(n)}" aria-pressed="${pantry.have.has(n)}">${esc(n.replace(/\(.+?\)/,''))}</button>`;
+  const groups=FR_GROUPS.map(([k,l])=>{ let list=(FR_ITEMS[k]||[]); if(q) list=list.filter(n=>hira(n).toLowerCase().includes(q)); if(!list.length) return '';
+    const open=q||FR.more[k]; const shown=open?list:list.slice(0,k==='veg'?24:14);
+    return `<div class="fgroup"><h3>${l}</h3><div class="fchips">${shown.map(chip).join('')}${!open&&list.length>shown.length?`<button type="button" class="fmore" data-frmore="${k}">ほか${list.length-shown.length}品 ＋</button>`:''}</div></div>`; }).join('');
+  const M=frMatch();
+  const sec=(title,note,list,key)=>{ if(!list.length) return ''; const lim=FR.more['r'+key]?list.length:12;
+    return `<section class="block"><div class="bh"><h2>${title} <span class="note">${list.length}品</span></h2>${note?`<span class="note">${note}</span>`:''}</div><div class="grid">${list.slice(0,lim).map(frCard).join('')}</div>${list.length>lim?`<button class="btn wide" type="button" data-frmore="r${key}">もっと見る（残り${list.length-lim}品）</button>`:''}</section>`; };
+  const total=M?M.B[0].length+M.B[1].length+M.B[2].length+M.combos.length:0;
+  $('#view').innerHTML=`<section class="block fr-top">
+      <div class="bh"><h2>冷蔵庫から探す</h2><span class="note">家にある食材をタップしてください</span></div>
+      <div class="fsel">${sel.length?`<div class="fsel-h"><b>選んだ食材 ${sel.length}品</b><button type="button" class="linkish" id="frClear">すべて外す</button></div>
+        <div class="fchips">${sel.map(n=>`<span class="ftag${pantry.must.has(n)?' must':''}"><button type="button" data-frmust="${esc(n)}" aria-pressed="${pantry.must.has(n)}" title="必ず使う">${pantry.must.has(n)?'★':'☆'}</button>${esc(n.replace(/\(.+?\)/,''))}<button type="button" data-fr="${esc(n)}" aria-label="${esc(n)}を外す">×</button></span>`).join('')}</div>
+        <p class="hint">☆をタップすると「必ず使いたい食材」になります（使い切りたい食材に）。ご飯（お米）と、しょうゆ・塩・砂糖・油などの基本調味料は家にある前提で探します。</p>`
+        :`<p class="hint" style="margin:0">食材を選ぶと、それで作れる料理がすぐ下に表示されます。選んだ食材はこの端末に保存されます。ご飯（お米）と基本調味料（しょうゆ・塩・砂糖・油など）は家にある前提です。</p>`}
+        ${sel.length?`<a class="btn primary wide" href="#fr-res">${total?`見つかった料理 ${total}品を見る ↓`:'料理を見る ↓'}</a>`:''}</div>
+      <label class="fsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="frq" type="search" placeholder="食材名で絞り込み（例：なす、豚肉）" value="${esc(FR.q)}" enterkeyhint="search" autocomplete="off"></label>
+      ${groups||`<p class="hint">「${esc(FR.q)}」に合う食材が見つかりません。</p>`}
+    </section>
+    <div id="fr-res"></div>
+    ${M?`<section class="block"><div class="fcats">${FR_CATS.map(([c,l])=>`<button type="button" class="chip" data-frcat="${c}" aria-pressed="${FR.cat===c}">${l}</button>`).join('')}</div></section>
+      ${total?'':`<section class="block"><div class="empty"><h3>ぴったりの料理が見つかりませんでした</h3><p>食材をもう少し追加するか、★（必ず使う）や料理の種類のしぼり込みを外してみてください。</p></div></section>`}
+      ${sec('今ある食材だけで作れる','',M.B[0],0)}
+      ${sec('あと1品あれば作れる','買い足すのは1つだけ',M.B[1],1)}
+      ${sec('あと2品あれば作れる','',M.B[2],2)}
+      ${M.combos.length?`<section class="block"><div class="bh"><h2>家の食材でできるアレンジ</h2><span class="note">選んだ肉・魚と野菜の組み合わせ</span></div><div class="grid">${M.combos.map(card).join('')}</div></section>`:''}`:''}`;
+}
+function frCta(){ const n=pantry.have.size; return `<button class="frcta" type="button" data-tab="fridge"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M5 10h14M8.5 6v1.5M8.5 13v3"/></svg></span><span><b>冷蔵庫にある食材から探す</b><small>${n?`登録中の食材 ${n}品で作れる料理を見る`:'家にある食材を選ぶだけで、作れる料理がわかります'}</small></span><span class="arr" aria-hidden="true">›</span></button>`; }
+function frHomeBlock(){
+  if(!pantry.have.size) return '';
+  const M=frMatch(); const L=M?[...M.B[0],...M.B[1]].slice(0,12):[]; if(!L.length) return '';
+  return `<section class="block"><div class="bh"><h2>冷蔵庫の食材で作れる</h2><span class="note">登録中の${pantry.have.size}品から</span><button class="more" type="button" data-tab="fridge">食材を変える</button></div><div class="shelf">${L.map(frCard).join('')}</div></section>`;
+}
 
 /* 起動 */
 rebuildPool();
