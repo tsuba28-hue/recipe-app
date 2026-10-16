@@ -407,6 +407,11 @@ body:has(#cook:not([hidden])) .timers{bottom:calc(92px + env(safe-area-inset-bot
 .plate .mtag,.plate .fav{z-index:1}
 .slink{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-size:.72rem;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:1px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.modesw{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:12px;padding:4px;border-radius:14px;background:var(--sunk)}
+.modesw button{border:0;background:transparent;border-radius:10px;padding:8px 6px;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.7}
+.modesw button b{font-size:15px}.modesw button small{font-size:11px}
+.modesw button[aria-checked="true"]{background:var(--surface);opacity:1;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.modesw button[aria-checked="true"] b{color:var(--accent)}
 </style>
 
 <header class="top">
@@ -4126,8 +4131,10 @@ for(const line of (CATALOG.trim()+'\n'+CATALOG2.trim()+'\n'+CATALOG3.trim()+'\n'
   (optS||'').split(' ').filter(Boolean).forEach(tok=>{const i=tok.indexOf('='); if(i>0) o[tok.slice(0,i)]=tok.slice(i+1); else o.flags.add(tok);});
   const pl=s=>s?s.split(',').map(x=>{const i=x.indexOf(':'); return [x.slice(0,i).trim(),x.slice(i+1).trim()];}):[];
   const PX=PROX[name];
-  const base={name,read,cu,cat,t:+t,ings:pl(PX?PX.ings:ingS),seas:pl(PX?PX.seas:seaS),steps:PX?PX.steps:(STEPX[name]||stepS.split('^')),s:+(o.s||2),g:o.g,alias:o.a?o.a.split(','):[],flags:o.flags,tips:(PX&&PX.tips)||TIPS[name]||[],pro:!!PX,region:o.r||REGION_EXTRA[name]||'',base:o.b||''};
-  if(o.v){ for(const pair of o.v.split(';')){ const [lab,ing]=pair.split(':'); NAMED.push({...base,name:(o.n||'{x}'+name).replace('{x}',lab),ings:base.ings.map(([n,q])=>[n==='{X}'?ing:n,q])}); } }
+  const easy={ings:pl(ingS),seas:pl(seaS),steps:STEPX[name]||stepS.split('^'),tips:TIPS[name]||[]};
+  const V=PX?{easy,pro:{ings:pl(PX.ings),seas:pl(PX.seas),steps:PX.steps,tips:PX.tips||TIPS[name]||[]}}:null;
+  const base={name,read,cu,cat,t:+t,ings:easy.ings,seas:easy.seas,steps:easy.steps,s:+(o.s||2),g:o.g,alias:o.a?o.a.split(','):[],flags:o.flags,tips:easy.tips,pro:!!PX,V,region:o.r||REGION_EXTRA[name]||'',base:o.b||''};
+  if(o.v){ for(const pair of o.v.split(';')){ const [lab,ing]=pair.split(':'); const mp=v=>({...v,ings:v.ings.map(([n,q])=>[n==='{X}'?ing:n,q])}); NAMED.push({...base,name:(o.n||'{x}'+name).replace('{x}',lab),ings:mp(easy).ings,V:V?{easy:mp(V.easy),pro:mp(V.pro)}:null}); } }
   else NAMED.push(base);
 }
 const CAT_GLYPH={一品:'肴',ご飯もの:'飯',麺:'麺',汁物:'汁',鍋:'鍋',おやつ:'甘','パン・朝食':'朝',粉もの:'粉'};
@@ -4217,8 +4224,15 @@ function makeCombo(id,m,p,v,f){
     nameH,nameOnly:nameH,textH:nameH+'|'+hira(p.n+' '+v.n+' '+f.w)+'|'+f.cu+'|'+m.l};
 }
 
+/* かんたん／本格 の切り替え */
+let MODE=(()=>{try{return JSON.parse(localStorage.getItem('rcp4-mode'))||'pro';}catch(e){return 'pro';}})();
+function applyMode(d){ if(d.V){ const v=d.V[MODE]; d.ings=v.ings; d.seas=v.seas; d.steps=v.steps; d.tips=v.tips; } }
+NAMED.forEach(applyMode);
 const ALL=[];
 NAMED.forEach(d=>ALL.push(makeNamed(ALL.length,d)));
+function setMode(m){ if(m===MODE) return; MODE=m; try{localStorage.setItem('rcp4-mode',JSON.stringify(m));}catch(e){}
+  for(let i=0;i<NAMED_N;i++){ const r=ALL[i]; if(!r.d.V) continue; applyMode(r.d); Object.assign(r,makeNamed(i,r.d)); } }
+const modeInfo=d=>{ const f=v=>({n:v.ings.length+v.seas.length,st:v.steps.length}); return {easy:f(d.V.easy),pro:f(d.V.pro)}; };
 const NAMED_N=ALL.length;
 for(const m of M) for(const p of PR){ if(m.noP.has(p.n)) continue;
   for(const v of VG){ if(m.noV.has(v.n)) continue;
@@ -4959,6 +4973,7 @@ function renderDetail(){
     <div class="sbody">
       <div><h2>${esc(r.name)}</h2>
         <div class="kv"><span><b>${r.t}</b>分</span><span><b>${r.kcal}</b>kcal（${r.cat==='タレ・調味料'?'1回分':'1人分'}）</span><span>${r.cu}・${esc(r.label)}</span>${r.region?`<span>${esc(r.region)}のご当地料理</span>`:''}</div>
+        ${r.named&&r.d.V?(()=>{const mi=modeInfo(r.d); return `<div class="modesw" role="radiogroup" aria-label="レシピの種類"><button type="button" role="radio" data-mode="easy" aria-checked="${MODE==='easy'}"><b>かんたん</b><small>材料${mi.easy.n}品・${mi.easy.st}手順</small></button><button type="button" role="radio" data-mode="pro" aria-checked="${MODE==='pro'}"><b>本格</b><small>材料${mi.pro.n}品・${mi.pro.st}手順</small></button></div>`;})():''}
         <div class="tags" style="margin-top:10px">${tagHtml(r,6)}</div>
         ${why.length?`<ul class="why" style="margin-top:12px">${why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:''}
         ${r.named?'':`<p class="hint">食材と味つけの組み合わせから作ったアレンジレシピです。</p>`}</div>
@@ -5035,6 +5050,7 @@ document.addEventListener('click',e=>{
     if(S.view==='fav'&&!cur) renderFavs(); return; }
   if(T0.closest('.x')||T0.id==='scrim'){ closeDetail(); return; }
   if(T0.closest('#cook')){ if(T0.closest('.ck-x')){ closeCook(); return; } if(T0.closest('.ck-next')){ cookGo(1); return; } if(T0.closest('.ck-prev')){ cookGo(-1); return; } if(T0.closest('.ck-ing')){ CK.ing=!CK.ing; renderCook(); return; } }
+  const md=T0.closest('.modesw [data-mode]'); if(md&&cur){ if(md.dataset.mode!==MODE){ const sh=T0.closest('.sheet'), y=sh?sh.scrollTop:0; setMode(md.dataset.mode); document.querySelectorAll('.steps li,.ing.chk li').forEach(li=>li.classList.remove('done','got')); renderDetail(); const sh2=document.querySelector('#scrim .sheet'); if(sh2) sh2.scrollTop=y; toast(MODE==='pro'?'本格レシピで表示中（全料理）':'かんたんレシピで表示中（全料理）'); } return; }
   const jp=T0.closest('[data-jump]'); if(jp){ const tg=document.getElementById(jp.dataset.jump), sh=T0.closest('.sheet'); if(tg&&sh){ const nav=sh.querySelector('.snav'); sh.scrollTo({top:tg.offsetTop-(nav?nav.offsetHeight:0)-8,behavior:'smooth'}); } return; }
   if(T0.closest('#cookBtn')){ const lis=[...document.querySelectorAll('.steps li')]; const k=lis.findIndex(li=>!li.classList.contains('done')); openCook(k<0?0:k); return; }
   if(T0.closest('.tdemo')) return;
