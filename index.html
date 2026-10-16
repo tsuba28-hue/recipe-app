@@ -449,6 +449,7 @@ body:has(#cook:not([hidden])) .timers{bottom:calc(92px + env(safe-area-inset-bot
   <div id="view"></div>
   <footer>
     <p>定番料理は分量と作り方をひとつずつ用意しています。「アレンジ」の印があるレシピは、食材・調理法・味つけの組み合わせから自動で作成したものです。栄養価は日本食品標準成分表の値をもとにした1人分の概算です。アレルギーがある方は、しょうゆなどの調味料も含め、実際の食品表示を必ず確認してください。</p>
+    <p class="ver">バージョン 2026.10.16b（かんたん／本格 切り替え対応）</p>
   </footer>
 </main>
 
@@ -5220,4 +5221,4 @@ $('#total2').textContent=fmt(ALL.length-NAMED_N);
 computeScores(); renderChips(); badges(); renderHome();
 
 </script>
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script>
+<script>if('serviceWorker' in navigator){let rl=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!rl){rl=true;location.reload();}});window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{reg.update();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')reg.update();});}).catch(()=>{}));}</script>
