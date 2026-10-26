@@ -22,6 +22,7 @@ img{max-width:100%} [hidden]{display:none!important}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
+[hidden]{display:none!important}
 /* Layout: header → sticky search bar → home shelves / results grid; phone gets an app-style bottom tab bar */
 :root{
   --bg:#F3F5F0; --surface:#FFFFFF; --sunk:#E8ECE3; --ink:#1B211D; --muted:#525D55; --line:#D3DACD;
@@ -449,7 +450,7 @@ body:has(#cook:not([hidden])) .timers{bottom:calc(92px + env(safe-area-inset-bot
   <div id="view"></div>
   <footer>
     <p>定番料理は分量と作り方をひとつずつ用意しています。「アレンジ」の印があるレシピは、食材・調理法・味つけの組み合わせから自動で作成したものです。栄養価は日本食品標準成分表の値をもとにした1人分の概算です。アレルギーがある方は、しょうゆなどの調味料も含め、実際の食品表示を必ず確認してください。</p>
-    <p class="ver">バージョン 2026.10.17b（タレ・調味料46種にも本格版）</p>
+    <p class="ver">バージョン 2026.10.26（冷蔵庫の食材検索の文字入力を修正）</p>
   </footer>
 </main>
 
@@ -5214,7 +5215,9 @@ function goHome(){S.q='';S.tags=0;S.cu='';S.cat='';S.sort='auto';S.showAll=false
 $('#logo').addEventListener('click',goHome);
 try{ new IntersectionObserver(([e])=>$('#searchbar').classList.toggle('stuck',!e.isIntersecting)).observe($('.top')); }catch(e){}
 
-document.addEventListener('input',e=>{ if(e.target.id==='frq'){ FR.q=e.target.value; clearTimeout(FR.t); FR.t=setTimeout(()=>{ const el=$('#frq'); const pos=el?el.selectionStart:0; renderFridge(); const n=$('#frq'); if(n){ n.focus({preventScroll:true}); try{n.setSelectionRange(pos,pos);}catch(_){} } },250); } });
+function frFilter(v){ FR.q=v; clearTimeout(FR.t); FR.t=setTimeout(()=>{ const g=$('#frGroups'); if(g) g.innerHTML=frGroupsHTML(); },200); }
+document.addEventListener('input',e=>{ if(e.target.id==='frq'){ if(e.isComposing) return; frFilter(e.target.value); } });
+document.addEventListener('compositionend',e=>{ if(e.target.id==='frq') frFilter(e.target.value); });
 document.addEventListener('change',e=>{
   const t=e.target;
   if(t.id==='cu'){S.cu=t.value;doSearch();}
@@ -5357,14 +5360,17 @@ function frCard(m){
     m.opt&&m.opt.length?`<span class="fm-opt">あれば：${m.opt.slice(0,3).map(esc).join('・')}</span>`:''].join('');
   return card(m.r).replace('<div class="tags">',`<p class="fm">${extra}</p><div class="tags">`);
 }
-function renderFridge(){
-  setChrome('fridge');
-  const sel=[...pantry.have];
+function frGroupsHTML(){
   const q=hira(FR.q.trim()).toLowerCase();
   const chip=n=>`<button type="button" class="fchip" data-fr="${esc(n)}" aria-pressed="${pantry.have.has(n)}">${esc(n.replace(/\(.+?\)/,''))}</button>`;
   const groups=FR_GROUPS.map(([k,l])=>{ let list=(FR_ITEMS[k]||[]); if(q) list=list.filter(n=>hira(n).toLowerCase().includes(q)); if(!list.length) return '';
     const open=q||FR.more[k]; const shown=open?list:list.slice(0,k==='veg'?24:14);
     return `<div class="fgroup"><h3>${l}</h3><div class="fchips">${shown.map(chip).join('')}${!open&&list.length>shown.length?`<button type="button" class="fmore" data-frmore="${k}">ほか${list.length-shown.length}品 ＋</button>`:''}</div></div>`; }).join('');
+  return groups||`<p class="hint">「${esc(FR.q)}」に合う食材が見つかりません。</p>`;
+}
+function renderFridge(){
+  setChrome('fridge');
+  const sel=[...pantry.have];
   const M=frMatch();
   const sec=(title,note,list,key)=>{ if(!list.length) return ''; const lim=FR.more['r'+key]?list.length:12;
     return `<section class="block"><div class="bh"><h2>${title} <span class="note">${list.length}品</span></h2>${note?`<span class="note">${note}</span>`:''}</div><div class="grid">${list.slice(0,lim).map(frCard).join('')}</div>${list.length>lim?`<button class="btn wide" type="button" data-frmore="r${key}">もっと見る（残り${list.length-lim}品）</button>`:''}</section>`; };
@@ -5377,7 +5383,7 @@ function renderFridge(){
         :`<p class="hint" style="margin:0">食材を選ぶと、それで作れる料理がすぐ下に表示されます。選んだ食材はこの端末に保存されます。ご飯（お米）と基本調味料（しょうゆ・塩・砂糖・油など）は家にある前提です。</p>`}
         ${sel.length?`<a class="btn primary wide" href="#fr-res">${total?`見つかった料理 ${total}品を見る ↓`:'料理を見る ↓'}</a>`:''}</div>
       <label class="fsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="frq" type="search" placeholder="食材名で絞り込み（例：なす、豚肉）" value="${esc(FR.q)}" enterkeyhint="search" autocomplete="off"></label>
-      ${groups||`<p class="hint">「${esc(FR.q)}」に合う食材が見つかりません。</p>`}
+      <div id="frGroups">${frGroupsHTML()}</div>
     </section>
     <div id="fr-res"></div>
     ${M?`<section class="block"><div class="fcats">${FR_CATS.map(([c,l])=>`<button type="button" class="chip" data-frcat="${c}" aria-pressed="${FR.cat===c}">${l}</button>`).join('')}</div></section>
